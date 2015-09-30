@@ -72,10 +72,10 @@ adapter.on('stateChange', function (id, state) {
 
     // you can use the ack flag to detect if it is status (true) or command (false)
     if (state && !state.ack) {
-        adapter.log.info('ack is not set!');
+        adapter.log.debug('ack is not set!');
         //OK unack Value, lets Check if its for us:
         if(id == "vuplus.0.VuPlus.COMMAND") {
-            adapter.log.info("Its our Command: " + state.val);
+            adapter.log.debug("Its our Command: " + state.val);
             //ACK
             adapter.setState(id, {val: state.val, ack: true});
             processCommand(state);
@@ -104,7 +104,7 @@ adapter.on('ready', function () {
 
 function processCommand(state) {
     if (state.val == "STANDBY_TOGGLE") {
-        adapter.log.info("STANDYTOOGLE");
+        adapter.log.info("Sending command: " + state.val);
         getResponse (state.val, 1, "/web/powerstate?newstate=0", evaluateCommandResponse);
     }
 }
@@ -112,7 +112,7 @@ function processCommand(state) {
 function getResponse (command, deviceId, path, callback){
    // var device = dreamSettings.boxes[deviceId];
     var options = {
-        host: adapter.config.IPAdresse,
+        host: adapter.config.IPAddress,
         port: "80",
         path: path,
         method: 'GET'
@@ -120,19 +120,19 @@ function getResponse (command, deviceId, path, callback){
 
     adapter.log.debug("creating request for command '"+command+"' (deviceId: "+deviceId+", host: "+options.host+", port: "+options.port+", path: '"+options.path+"')");
 
-    /*if (typeof device.username != 'undefined' && typeof device.password != 'undefined') {
-        if (device.username.length > 0 && device.password.length > 0) {
+    if (typeof adapter.config.Username != 'undefined' && typeof adapter.config.Password != 'undefined') {
+        if (adapter.config.Username.length > 0 && adapter.config.Password.length > 0) {
             options.headers = {
-                'Authorization': 'Basic ' + new Buffer(device.username + ':' + device.password).toString('base64')
+                'Authorization': 'Basic ' + new Buffer(adapter.config.Username + ':' + adapter.config.Password).toString('base64')
             }
-            logDebug("using authorization with user '"+device.username+"'");
+            adapter.log.debug("using authorization with user '"+adapter.config.Username+"'");
         } else {
-            logDebug("using no authorization");
+            adapter.log.debug("using no authorization");
         }
-    }*/
-    options.headers = {
-        'Authorization': 'Basic ' + new Buffer("root" + ':' + "16vpower").toString('base64')
-    };
+    }
+  /*  options.headers = {
+        'Authorization': 'Basic ' + new Buffer(adapter.config.Username + ':' + adapter.config.Password).toString('base64')
+    };*/
 
     var req = http.get(options, function(res) {
         var pageData = "";
@@ -235,12 +235,13 @@ function evaluateCommandResponse (command, deviceId, xml) {
 }
 
 function checkStatus() {
-    //adapter.log.debug("checkIP:" + adapter.config.IPAdresse);
-    ping.sys.probe(adapter.config.IPAdresse, function (isAlive) {
+    ping.sys.probe(adapter.config.IPAddress, function (isAlive) {
         if (isAlive) {
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
             getResponse ("GETVOLUME", 1, "/web/vol", evaluateCommandResponse);
+        } else {
+            adapter.log.debug("VUPlus: " + adapter.config.IPAddress + " is not reachable!");
         }
     });
 }
@@ -250,9 +251,9 @@ function main() {
 
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
-    adapter.log.info('config marcotest: ' + adapter.config.marcotest);
-    adapter.log.info('config test2: ' + adapter.config.test2);
-    adapter.log.info('config IPAdresse'+ adapter.config.IPAdresse);
+    adapter.log.debug('config IPAddress: ' + adapter.config.IPAddress);
+    adapter.log.debug('config Username: ' + adapter.config.Username);
+    adapter.log.debug('config Password'+ adapter.config.Password);
 
 
     /**
@@ -288,20 +289,20 @@ function main() {
     adapter.setState('VuPlus.COMMAND', {val: "", ack: true});
 
     // the variable testVariable is set to true as command (ack=false)
-    adapter.setState('testVariable', true);
+   // adapter.setState('testVariable', true);
 
     // same thing, but the value is flagged "ack"
     // ack should be always set to true if the value is received from or acknowledged from the target system
-    adapter.setState('testVariable', {val: true, ack: true});
+    //adapter.setState('testVariable', {val: true, ack: true});
 
     // same thing, but the state is deleted after 30s (getState will return null afterwards)
-    adapter.setState('testVariable', {val: true, ack: true, expire: 30});
+    //adapter.setState('testVariable', {val: true, ack: true, expire: 30});
 
 
     //adapter.setState('VuPlus.PowerState', {val: "Off", ack: true});
 
 
-
+/*
 
     // examples for the checkPassword/checkGroup functions
     adapter.checkPassword('admin', 'iobroker', function (res) {
@@ -310,14 +311,8 @@ function main() {
 
     adapter.checkGroup('admin', 'admin', function (res) {
         console.log('check group user admin group admin: ' + res);
-    });
-
-   //getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
-   // getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
-   // getResponse ("GETVOLUME", 1, "/web/vol", evaluateCommandResponse);
-    setInterval(checkStatus,5000);
-}
-
-function yo() {
-    console.log(("TEST!!!!"));
+    });*/
+    //Check ever 5 secs
+    adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
+    setInterval(checkStatus,adapter.config.PollingInterval);
 }

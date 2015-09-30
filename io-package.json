@@ -15,7 +15,8 @@
     "native": {
         "IPAddress": "192.168.179.28",
         "Username": "root",
-        "Password": "mine"
+        "Password": "secret",
+        "PollingInterval": 5000
     },
     "objects": [
 
