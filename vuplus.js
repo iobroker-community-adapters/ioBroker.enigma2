@@ -260,20 +260,71 @@ function main() {
      *
      *      For every state in the system there has to be also an object of type state
      *
-     *      Here a simple example for a boolean variable named "testVariable"
+     *
      *
      *      Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
      *
      */
 
-    adapter.setObject('testVariable', {
+
+    adapter.setObject('VuPlus.VOLUME', {
         type: 'state',
         common: {
-            type: 'boolean',
-            role: 'indicator'
+            type: 'integer',
+            role: 'state'
         },
         native: {}
     });
+
+    adapter.setObject('VuPlus.MUTED', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.STANDBY', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.CHANNEL', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.HDD_CAPACITY', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.HDD_FREE', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.COMMAND', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });
+
 
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
