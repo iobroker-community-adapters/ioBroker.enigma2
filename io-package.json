@@ -7,7 +7,7 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "vuplus.png",
-        "extIcon":                  "vuplus.png",
+        "extIcon":                  "https://raw.githubusercontent.com/vader722/ioBroker.vuplus/master/admin/vuplus.png",
         "loglevel":                 "info",
         "nondeletable":             true,
         "type":                     "common adapters"
