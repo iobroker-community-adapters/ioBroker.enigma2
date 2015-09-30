@@ -1,0 +1,23 @@
+{
+    "common": {
+        "name":                     "vuplus",
+        "version":                  "0.0.2",
+        "title":                    "vuplus Adapter",
+        "desc":                     "Javascript/Node.js based vuplus adapter",
+        "platform":                 "Javascript/Node.js",
+        "mode":                     "daemon",
+        "icon":                     "vuplus.png",
+        "extIcon":                  "vuplus.png",
+        "loglevel":                 "info",
+        "nondeletable":             true,
+        "type":                     "common adapters"
+    },
+    "native": {
+        "IPAddress": "192.168.179.28",
+        "Username": "root",
+        "Password": "mine"
+    },
+    "objects": [
+
+    ]
+}
