@@ -217,8 +217,8 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.log.debug("Current Title: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);
             adapter.log.debug("Current Description: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);
             adapter.setState('VuPlus.Current.PROVIDER', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicename[0], ack: true});
-            adapter.setState('VuPlus.Current.ACTUALTITLE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true});
-            adapter.setState('VuPlus.Current.ACTUALDESC', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
+            adapter.setState('VuPlus.Current.TITLE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true});
+            adapter.setState('VuPlus.Current.DESC', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 
             break;
         case "KEY":
@@ -342,7 +342,7 @@ function main() {
         },
         native: {}
     });	
-    adapter.setObject('VuPlus.Current.ACTUALTITLE', {
+    adapter.setObject('VuPlus.Current.TITLE', {
         type: 'state',
         common: {
             type: 'string',
@@ -350,7 +350,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('VuPlus.Current.ACTUALDESC', {
+    adapter.setObject('VuPlus.Current.DESC', {
         type: 'state',
         common: {
             type: 'string',
