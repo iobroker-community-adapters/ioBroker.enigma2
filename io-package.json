@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "vuplus",
-        "version":                  "0.0.2",
+        "version":                  "0.0.3",
         "title":                    "vuplus Adapter",
         "desc":                     "Javascript/Node.js based vuplus adapter",
         "platform":                 "Javascript/Node.js",
@@ -14,8 +14,8 @@
     },
     "native": {
         "IPAddress": "192.168.179.28",
-        "Username": "root",
-        "Password": "secret",
+        "Username": "",
+        "Password": "",
         "PollingInterval": 5000
     },
     "objects": [
