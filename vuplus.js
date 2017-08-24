@@ -210,6 +210,15 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('VuPlus.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
             adapter.setState('VuPlus.HDD_CAPACITY', {val: xml.e2abouts.e2about[0].e2hddinfo[0].capacity[0], ack: true});
             adapter.setState('VuPlus.HDD_FREE', {val: xml.e2abouts.e2about[0].e2hddinfo[0].free[0], ack: true});
+			
+			break;
+        case "GETCURRENT":
+            adapter.log.debug("Current Provider: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicename[0]);
+            adapter.log.debug("Current Title: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);
+            adapter.log.debug("Current Description: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);
+            adapter.setState('VuPlus.Current.PROVIDER', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicename[0], ack: true});
+            adapter.setState('VuPlus.Current.TITLE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true});
+            adapter.setState('VuPlus.Current.DESC', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 
             break;
         case "KEY":
@@ -240,6 +249,7 @@ function checkStatus() {
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
             getResponse ("GETVOLUME", 1, "/web/vol", evaluateCommandResponse);
+            getResponse ("GETCURRENT", 1, "/web/getcurrent", evaluateCommandResponse);
         } else {
             adapter.log.debug("VUPlus: " + adapter.config.IPAddress + " is not reachable!");
         }
@@ -317,6 +327,30 @@ function main() {
         native: {}
     });
     adapter.setObject('VuPlus.COMMAND', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });	
+    adapter.setObject('VuPlus.Current.PROVIDER', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });	
+    adapter.setObject('VuPlus.Current.TITLE', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state'
+        },
+        native: {}
+    });
+    adapter.setObject('VuPlus.Current.DESC', {
         type: 'state',
         common: {
             type: 'string',
