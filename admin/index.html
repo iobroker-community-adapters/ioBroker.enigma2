@@ -34,6 +34,7 @@
         "Username":                    {"en": "Username", "de": "Username", "ru": ""},
         "Password":                {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "PollingIntervall", "ru": ""},
+        "EnigmaLightPort":          {"en": "Port for EnigmaLight", "de": "Port für Enigmalight", "ru": ""},
         "on save adapter restarts with new config immediately": {
             "de": "Beim Speichern von Einstellungen der Adapter wird sofort neu gestartet.",
             "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
@@ -76,10 +77,28 @@
         <td><h3 class="translate">vuplus adapter settings</h3></td>
     </tr></table>
     <p>
-        <span class="translate">IPAddress</span> <input class="value" id="IPAddress"/><br>
-        <span class="translate">Username</span> <input class="value" id="Username"/><br>
-        <span class="translate">Password</span> <input class="value" id="Password"/><br>
-        <span class="translate">PollingInterval</span> <input class="value" id="PollingInterval"/><br>
+	<table>
+		<tr>
+			<td>IPAddress</td>
+			<td><input class="value" id="IPAddress"/></td>
+		</tr>
+		<tr>
+			<td>Username</td>
+			<td><input class="value" id="Username"/></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><input class="value" id="Password"/></td>
+		</tr>
+		<tr>
+			<td>PollingInterval</td>
+			<td><input class="value" id="PollingInterval"/></td>
+		</tr>
+		<tr>
+			<td>EnigmaLight Port (if in use)</td>
+			<td><input class="value" id="EnigmaLightPort"/></td>
+		</tr>
+	</table>
     </p>
 
     <p class="translate">on save adapter restarts with new config immediately</p>
