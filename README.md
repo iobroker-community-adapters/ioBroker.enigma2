@@ -22,6 +22,7 @@ Testes with a vuplus duo2
  - Username
  - Passwort
  - Polling interval (default 20000ms)
+ - Enigmalight Port (if is enabled) - Just enable webremote in the Settings of Enigmalight and set the Port to this Adapter (default: 1414)
 
 ## Usage
 This adapter creates different states to control and monitor the vuplus box.
