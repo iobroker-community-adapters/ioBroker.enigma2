@@ -5,6 +5,9 @@ Adapter for ioBroker to connect to a vuplus or Sat receiver (Dreambox might work
 This adapter is based on BasGo's adapter for CCU.IO
 Testes with a vuplus duo2
 
+### 0.0.4 (2017-09-10)
+* (NightWatcher) add support for EnigmaLight Server
+
 ### 0.0.3 (2017-08-24)
 * (NightWatcher) add command "getcurrent"
 
