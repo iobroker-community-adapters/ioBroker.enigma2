@@ -5,6 +5,9 @@ Adapter for ioBroker to connect to a vuplus or Sat receiver (Dreambox might work
 This adapter is based on BasGo's adapter for CCU.IO
 Testes with a vuplus duo2
 
+### 0.0.4 (2017-09-10)
+* (NightWatcher) add support for EnigmaLight Server
+
 ### 0.0.3 (2017-08-24)
 * (NightWatcher) add command "getcurrent"
 
@@ -19,6 +22,7 @@ Testes with a vuplus duo2
  - Username
  - Passwort
  - Polling interval (default 20000ms)
+ - Enigmalight Port (if is enabled) - Just enable webremote in the Settings of Enigmalight and set the Port to this Adapter (default: 1414)
 
 ## Usage
 This adapter creates different states to control and monitor the vuplus box.

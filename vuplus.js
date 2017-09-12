@@ -66,9 +66,8 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
     // Warning, state can be null if it was deleted
+	
     adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
-
-
 
     // you can use the ack flag to detect if it is status (true) or command (false)
     if (state && !state.ack) {
@@ -80,6 +79,10 @@ adapter.on('stateChange', function (id, state) {
             adapter.setState(id, {val: state.val, ack: true});
             processCommand(state);
         }
+		
+		if(id == "vuplus.0.VuPlus.EnigmaLight.LightsOn" && !state.ack) {
+				setEnigmaLightState('/control/light?set=' + (state.val == true ? 'on' : 'off' ));
+		}
     }
 });
 
@@ -153,6 +156,52 @@ function getResponse (command, deviceId, path, callback){
         adapter.log.info("received error: "+e.message);
     });
 
+}
+
+function getEnigmaLightState()
+{
+	var options = {
+        host: adapter.config.IPAddress,
+        port: adapter.config.EnigmaLightPort,
+        path: '/api/statusinfo',
+        method: 'GET'
+    };
+	
+	var req = http.get(options, function(res) {
+		var jsonString = "";
+		res.on('data', function (chunk) {
+            jsonString += chunk;
+        });
+		res.on('end', function () {
+			var obj = JSON.parse(jsonString);
+			
+			adapter.setState('VuPlus.EnigmaLight.LightsOn', (obj.current_mode == 'Off' ? false : true));
+			
+			adapter.log.debug("SUCCESS at collectiong Informations from EnigmaLight Server" + jsonString);
+		});
+    });
+    req.on('error', function(e) {
+        adapter.log.debug("Error at collectiong Informations from EnigmaLight Server");
+    });
+}
+
+function setEnigmaLightState(path)
+{
+	var options = {
+        host: adapter.config.IPAddress,
+        port: adapter.config.EnigmaLightPort,
+        path: path,
+        method: 'GET'
+    };
+	
+	var req = http.get(options, function(res) {
+		res.on('end', function () {			
+			adapter.log.debug("SUCCESS at setting Informations from EnigmaLight Server" + jsonString);
+		});
+    });
+    req.on('error', function(e) {
+        adapter.log.debug("Error at setting EnigmaLight Server");
+    });
 }
 
 function parseBool(string){
@@ -253,9 +302,14 @@ function checkStatus() {
         } else {
             adapter.log.debug("VUPlus: " + adapter.config.IPAddress + " is not reachable!");
         }
+		
+		adapter.getState('VuPlus.EnigmaLight.ENABLED', function (err, state) {
+			if(state.val)
+				 getEnigmaLightState();
+		});
+		
     });
 }
-
 
 function main() {
 
@@ -357,8 +411,43 @@ function main() {
             role: 'state'
         },
         native: {}
+    });	
+    adapter.setObject('VuPlus.EnigmaLight.ENABLED', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state'
+        },
+        native: {}
     });
-
+    adapter.setObject('VuPlus.EnigmaLight.LightsOn', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state'
+        },
+        native: {}
+    });	
+	
+	// Try to Connect to EnigmaLight Server
+	if(adapter.config.EnigmaLightPort > 0)
+	{		
+		var Enigmalights = {};
+		Enigmalights.options = {
+			host: adapter.config.IPAddress,
+			port: adapter.config.EnigmaLightPort,
+			method: 'GET'
+		};
+		
+		var req = http.get(Enigmalights.options, function(res) {
+            adapter.log.debug("VUPlus EnigmaLight Exists on Port: " + adapter.config.EnigmaLightPort);
+			adapter.setState('VuPlus.EnigmaLight.ENABLED', true);
+		});
+		
+		req.on('error', function(e) {
+            adapter.log.debug("VUPlus EnigmaLight does not xists on Port: " + adapter.config.EnigmaLightPort);
+		});
+	}
 
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
