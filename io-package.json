@@ -1,0 +1,29 @@
+{
+    "common": {
+        "name":                     "enigma2",
+        "version":                  "0.0.4",
+        "title":                    "enigma2 Adapter",
+        "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
+		"readme": "http://forum.iobroker.net/viewtopic.php?f=17&t=1739&p=85242#p85242",
+        "platform":                 "Javascript/Node.js",
+        "mode":                     "daemon",
+        "icon":                     "enigma2.png",
+        "extIcon":                  "https://telebreeze.com/sites/all/themes/nrghost/images/icons/enigma.png",
+        "loglevel":                 "info",
+        "nondeletable":             true,
+        "type":                     "common adapters"
+    },
+    "native": {
+        "IPAddress": "192.168.0.1",
+        "Port": "80",
+        "Username": "root",
+        "Password": "secret",
+		"BOXWLAN": false,
+		"secondharddisk": false,
+		"webif": false,
+        "PollingInterval": 3000
+    },
+    "objects": [
+
+    ]
+}
