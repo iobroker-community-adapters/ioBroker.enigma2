@@ -24,5 +24,8 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - VOLUME
 
 
+### 0.0.6 (2017-09-19)
+* (Matten Matten) add Erweiterung der Adapterkonfiguration
+
 ### 0.0.5 (2017-09-18)
-* (Matten Matten) add 
+* (Matten Matten) add grafische Optimierung der Adapterkonfiguration
