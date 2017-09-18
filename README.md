@@ -4,7 +4,7 @@ ioBroker enigma2 Adapter
 Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 
-## Examples
+## Funktionen
 - BOX_IP
 - CHANAL_SERVICEREFERENCE
 - CHANEL
@@ -23,6 +23,7 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - STANDBY
 - VOLUME
 
+## Version
 
 ### 0.0.6 (2017-09-19)
 * (Matten Matten) add Erweiterung der Adapterkonfiguration
