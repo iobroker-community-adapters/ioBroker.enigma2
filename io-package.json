@@ -4,7 +4,7 @@
         "version":                  "0.0.4",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
-	"readme":                   "xxx",
+	"readme":                   "https://github.com/Matten-Matten/iobroker.enigma2/blob/master/README.md",
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "enigma2.png",
