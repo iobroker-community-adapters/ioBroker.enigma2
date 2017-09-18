@@ -8,7 +8,7 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "enigma2.png",
-        "extIcon":                  "https://github.com/Matten-Matten/iobroker.enigma2/blob/master/admin/enigma2.png",
+        "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/iobroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
         "type":                     "common adapters"
