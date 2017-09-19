@@ -8,8 +8,8 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Funktionen
 - BOX_IP
-- CHANAL_SERVICEREFERENCE
-- CHANEL
+- CHANNEL_SERVICEREFERENCE
+- CHANNEL
 - EVENTDESCRIPTION
 - EVENTDURATION
 - EVENTREMAINING
