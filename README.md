@@ -3,6 +3,8 @@ ioBroker enigma2 Adapter
 ==============
 Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
+### basierend auf dem adapter von vader722/ioBroker.vuplus
+
 
 ## Funktionen
 - BOX_IP
