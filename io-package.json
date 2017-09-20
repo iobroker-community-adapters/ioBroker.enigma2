@@ -17,11 +17,11 @@
         "IPAddress": "192.168.0.1",
         "Port": "80",
         "Username": "root",
-        "Password": "secret",
+        "Password": "dreambox",
 	"BOXWLAN": false,
 	"secondharddisk": false,
 	"webif": false,
-        "PollingInterval": 3000
+        "PollingInterval": 5000
     },
     "objects": [
 
