@@ -124,6 +124,7 @@ function getResponse (command, deviceId, path, callback){
         port: adapter.config.Port,
 		secondharddisk: adapter.config.secondharddisk,
 		BOXWLAN: adapter.config.BOXWLAN,
+		webif: adapter.config.webif,
         path: path,
         method: 'GET'
     };
@@ -217,9 +218,11 @@ function evaluateCommandResponse (command, deviceId, xml) {
             break;
         case "GETVOLUME":
             adapter.log.debug("Box Volume:" + parseInt(xml.e2volume.e2current[0]));
-            adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.VOLUME', {val: parseInt(xml.e2volume.e2current[0]), ack: true});
+		if (adapter.config.webif === 'false' || adapter.config.webif === false){
+            adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
+			};			
 
 			break;
         case "GETCURRENT":
@@ -235,7 +238,11 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.EVENTDESCRIPTION', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
-
+		if (adapter.config.webif === 'true' || adapter.config.webif === true){
+			adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2currentserviceinformation.e2volume[0].e2ismuted[0]), ack: true});
+			adapter.log.debug("Box Muted:" + parseBool(xml.e2currentserviceinformation.e2volume[0].e2ismuted[0]));
+			};
+		
             break;
         case "GETINFO":
             adapter.log.debug("Box Sender: " +xml.e2abouts.e2about[0].e2servicename[0]);
