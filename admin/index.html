@@ -36,25 +36,15 @@
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
-		"second hard disk":         {"en": "second hard disk", "de": "zweite Festplatte", "ru": ""},
-		//Network
-		"Network":                  {"en": "Network", "de": "Netzwerkverbindung", "ru": ""},
-		//Web Interface Version
-		"Web Interface":            {"en": "Web Interface", "de": "Web Interface", "ru": ""},
-		//xxx
-		"Box connected to WirelesLAN":   {"en": "Box connected to WirelesLAN", "de": "Box mit WirelesLAN verbunden", "ru": ""},
-		"Box connected to LAN":          {"en": "Box connected to LAN", "de": "Box mit LAN verbunden", "ru": ""},
+	//Network
+		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
+		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
+		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
 		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
 		"no":                            {"en": "no", "de": "NEIN", "ru": ""},		
         "on save adapter restarts with new config immediately": {
             "de": "Beim Speichern der Einstellungen wird der Adapter sofort neu gestartet.",
             "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
-		//messagetext
-//		"messagetext = Text of Message":         {"en": "messagetext = Text of Message", "de": "Nachrichten Text = denine Nachricht Info oder Frage eintragen", "ru": ""},
-		//messagetype
-//		"messagetype = Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention":         {"en": "messagetype = Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention", "de": "Nachrichten Typ = Nummer von 0 bis 3 eintragen, 0= JA/NEIN, 1= Info, 2=Nachricht, 3=Achtung", "ru": ""},
-		//timeout
-//		"timeout = Can be empty or the Number of seconds the Message should disappear after.":         {"en": "timeout = Can be empty or the Number of seconds the Message should disappear after.", "de": "Timeout = Anzeigelänge der Nachricht in Sekunden. Leer lassen wenn keine Anzeigelänge gewünscht ist.", "ru": ""},
         }
     };
 
@@ -73,9 +63,7 @@
         onChange(false);
     }
 
-		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
-		if (settings.webif === undefined) settings.webif = false;
-		if (settings.BOXWLAN === undefined) settings.BOXWLAN = false;
+		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -134,34 +122,16 @@
 				<option value="10000">10 sec.</option>
 				<option value="15000">15 sec.</option>
             </select></td>
-        </tr>
-        <tr>
-            <td><label class="translate" for="BOXWLAN">Network</label></td>
-            <td colspan="2"><select id="BOXWLAN" class="value">
-                <option value="true" class="translate">Box connected to WirelesLAN</option>
-                <option value="false" class="translate">Box connected to LAN</option>
-            </select></td>
         </tr>		
     </table>
-    <h4>FOLGENDES NUR BEI EINER ZWEITEN FESTPLATTE AKTIVIEREN!</h4>
+    <h4 class="translate">HDD Settings</h4>
+    <h5 class="translate">Important! otherwise the adapter ejects errors</h5>
     <table>
         <tr>
-            <td><label class="translate" for="secondharddisk">second hard disk</label></td>
-            <td colspan="2"><select id="secondharddisk" class="value">
+            <td><label class="translate" for="internalharddisk">internal hard disk</label></td>
+            <td colspan="2"><select id="internalharddisk" class="value">
+                <option value="false" class="translate">no</option>			
                 <option value="true" class="translate">Yes</option>
-                <option value="false" class="translate">no</option>
-            </select></td>
-        </tr>
-		
-    </table>
-
-    <h4>OPTIONAL</h4>
-    <table>
-        <tr>
-            <td><label class="translate" for="webif">Web Interface</label></td>
-            <td colspan="2"><select id="webif" class="value">
-                <option value="true">Webif/Dream-Webif</option>
-                <option value="false">Open WebIf</option>
             </select></td>
         </tr>
 		
@@ -172,8 +142,8 @@
 	    messagetype = Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention<br />
 	    timeout = Can be empty or the Number of seconds the Message should disappear after.<br />
 	</p>
-<p>-----------------------------------------------------------------------------------------------------------------</p>
-<p>Beispiel für "Javascript/Blockly Script Engine"</p>
+
+<h4>Beispiel für "Javascript/Blockly Script Engine"</h4>
 
     <table><tr>
         <td><img src="beispiel.png"/></td>
@@ -182,3 +152,4 @@
 </div>
 
 </html>
+
