@@ -255,7 +255,9 @@ function main() {
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -263,7 +265,9 @@ function main() {
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -271,7 +275,9 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -279,7 +285,9 @@ function main() {
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -287,7 +295,9 @@ function main() {
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -295,7 +305,9 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -303,7 +315,9 @@ function main() {
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -311,7 +325,9 @@ function main() {
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -319,7 +335,9 @@ function main() {
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -327,7 +345,9 @@ function main() {
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -335,7 +355,9 @@ function main() {
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -344,7 +366,9 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -352,7 +376,9 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -361,7 +387,9 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
@@ -369,7 +397,9 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         type: 'state',
         common: {
             type: 'string',
-            role: 'state'
+            role: 'state',
+	    read:  true,
+            write: false
         },
         native: {}
     });
