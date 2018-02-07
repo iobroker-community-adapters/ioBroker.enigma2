@@ -25,6 +25,10 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Version
 
+### 0.0.9 (2018-02-07)
+* (Matten-Matten)  Kategorie geändert
+* (Matten-Matten)  Abfrage Werte sind nur noch lesbar nicht mehr beschreibbar.
+
 ### 0.0.8 (2017-11-25)
 * (Matten-Matten)  Fehlerbehebung in HDD Abfrage
 * (Matten-Matten)  Fehlerbehebung wenn Box Heruntergefahren (nicht erreichbar)
