@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "0.0.8",
+        "version":                  "0.0.9",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 	"readme":                   "https://github.com/Matten-Matten/iobroker.enigma2/blob/master/README.md",
@@ -11,7 +11,7 @@
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/iobroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
-        "type":                     "common adapters"
+        "type":                     "multimedia"
     },
     "native": {
         "IPAddress": "192.168.0.1",
