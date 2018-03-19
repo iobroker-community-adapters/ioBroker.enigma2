@@ -1,1 +1,139 @@
+<html>
 
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+<script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+<script type="text/javascript" src="../../js/translate.js"></script>
+<script type="text/javascript" src="../../lib/js/materialize.js"></script>
+<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="words.js"></script>
+
+
+<!-- you have to define 2 functions in the global scope: -->
+<script type="text/javascript">
+    // Dictionary (systemDictionary is global variable from adapter-settings.js)
+    systemDictionary = {
+		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
+        "example adapter settings": {"de": "enigma2", "ru": "Пример"},
+        "IPAddress":                {"en": "IP address", "de": "IP Adresse", "ru": ""},
+		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
+        "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
+        "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
+        "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
+	//Network
+		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
+		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
+		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
+		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
+		"no":                            {"en": "no", "de": "NEIN", "ru": ""},		
+        "on save adapter restarts with new config immediately": {
+            "de": "Beim Speichern der Einstellungen wird der Adapter sofort neu gestartet.",
+            "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
+        }
+    };
+    // the function loadSettings has to exist ...
+    function load(settings, onChange) {
+        // example: select elements with id=key and class=value and insert value
+        for (var key in settings) {
+            // example: select elements with id=key and class=value and insert value
+            if ($('#' + key + '.value').attr('type') == 'checkbox') {
+                $('#' + key + '.value').prop('checked', settings[key]).change(onChange);
+            } else {
+                $('#' + key + '.value').val(settings[key]).change(onChange).keyup(onChange);
+            }
+        }
+        // Signal to admin, that no changes yet
+        onChange(false);
+    }
+		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
+		
+    // ... and the function save has to exist.
+    // you have to make sure the callback is called with the settings object as first param!
+    function save(callback) {
+        // example: select elements with class=value and build settings object
+        var obj = {};
+        $('.value').each(function () {
+            var $this = $(this);
+            obj[$this.attr('id')] = $this.val();
+        });
+        callback(obj);
+    }
+</script>
+
+<!-- you have to put your config page in a div with id adapter-container -->
+<div id="adapter-container">
+
+    <table><tr>
+        <td><img src="enigma2.png"/></td>
+        <td><h3 class="translate">enigma2 adapter settings</h3></td>
+    </tr></table>
+    <h3 class="translate">on save adapter restarts with new config immediately</h3>
+    <h4 class="translate">enigma2 adapter settings</h4>
+    <table>
+        <tr>
+            <td><label class="translate" for="IPAddress">IPAddress</label></td>
+            <td><input type="text" id="IPAddress" class="value"/></td>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="Port">Port</label></td>
+            <td><input type="text" id="Port" class="value"/></td>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="Username">Username</label></td>
+            <td><input type="text" id="Username" class="value"/></td>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="Password">Password</label></td>
+            <td><input type="password" id="Password" class="value"/></td>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="PollingInterval">PollingInterval</label></td>
+            <td colspan="10"><select id="PollingInterval" class="value">
+                <option value="2000">2 sec.</option>
+				<option value="3000">3 sec.</option>
+				<option value="4000">4 sec.</option>
+				<option value="5000">5 sec.</option>
+				<option value="6000">6 sec.</option>
+				<option value="7000">7 sec.</option>
+				<option value="8000">8 sec.</option>
+				<option value="9000">9 sec.</option>
+				<option value="10000">10 sec.</option>
+				<option value="15000">15 sec.</option>
+            </select></td>
+        </tr>		
+    </table>
+    <h4 class="translate">HDD Settings</h4>
+    <h5 class="translate">Important! otherwise the adapter ejects errors</h5>
+    <table>
+        <tr>
+            <td><label class="translate" for="internalharddisk">internal hard disk</label></td>
+            <td colspan="2"><select id="internalharddisk" class="value">
+                <option value="false" class="translate">no</option>			
+                <option value="true" class="translate">Yes</option>
+            </select></td>
+        </tr>
+		
+    </table>
+    <h4>Message Info</h4>
+	<p>
+		messagetext = Text of Message<br />
+	    messagetype = Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention<br />
+	    timeout = Can be empty or the Number of seconds the Message should disappear after.<br />
+	</p>
+
+<h4>Beispiel für "Javascript/Blockly Script Engine"</h4>
+
+    <table><tr>
+        <td><img src="beispiel.png"/></td>
+    </tr></table>
+	
+</div>
+
+</html>
