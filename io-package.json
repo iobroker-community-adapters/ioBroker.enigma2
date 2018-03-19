@@ -11,6 +11,7 @@
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/iobroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
+	"materialize":              true,
         "type":                     "multimedia"
     },
     "native": {
