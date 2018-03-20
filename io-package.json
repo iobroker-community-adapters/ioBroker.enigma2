@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "0.0.10",
+        "version":                  "0.0.11",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 	"readme":                   "https://github.com/Matten-Matten/iobroker.enigma2/blob/master/README.md",
@@ -23,11 +23,6 @@
 	"secondharddisk": false,
 	"webif": false,
         "PollingInterval": 5000
-    },
-    "devDependencies": {
-        "gulp": "^3.9.1",
-        "mocha": "^4.1.0",
-        "chai": "^4.1.2"
     },
     "objects": [
 
