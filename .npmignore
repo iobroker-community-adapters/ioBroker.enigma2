@@ -4,7 +4,6 @@ tasks
 node_modules
 .idea
 .git
-/node_modules
 test
 .travis.yml
 appveyor.yml
