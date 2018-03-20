@@ -40,7 +40,7 @@ var request		= require('request'),
     xml2js		= require("xml2js");
 
 // you have to require the utils module and call adapter function
-var ping		= require(__dirname + '/lib/ping');
+var ping  =    require(__dirname + '/lib/ping.js');
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
 // you have to call the adapter function and pass a options object
