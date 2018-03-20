@@ -34,12 +34,13 @@
 
 var request		= require('request'),
     net			= require('net'),
-    ping		= require("ping"),
+//    ping		= require("ping"),
     http		= require('http'),
     querystring	= require('querystring'),
     xml2js		= require("xml2js");
 
 // you have to require the utils module and call adapter function
+var ping		= require(__dirname + '/lib/ping');
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
 // you have to call the adapter function and pass a options object
