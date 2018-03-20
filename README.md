@@ -3,8 +3,6 @@ ioBroker enigma2 Adapter
 ==============
 Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
-### basierend auf dem adapter von vader722/ioBroker.vuplus
-
 
 ## Funktionen
 - BOX_IP
@@ -27,6 +25,7 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ### 0.0.11 (2018-02-07)
 * (wendy2702 & Matten-Matten)      Admin3 
+* (wendy2702 & Matten-Matten)      installierbar
 
 ### 0.0.10 (2018-02-07)
 * (Matten-Matten)  Umstellungsversuch Admin3
@@ -52,4 +51,3 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## issues
 * kein Senden von Befehlen aus dem Adapter heraus.
-* keine Installation von Github möglich. (ZIP downloaden entpacken, den Ordner in "iobroker.enigma2" umbenennen und in "ioBroker\node_modules" einfügen)
