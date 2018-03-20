@@ -19,7 +19,7 @@
 	"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
         "example adapter settings": {"de": "enigma2", "ru": "Пример"},
         "IPAddress":                {"en": "IP address", "de": "IP Adresse", "ru": ""},
-	"Port":                     {"en": "Port", "de": "Port", "ru": ""},
+		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
@@ -67,7 +67,7 @@
 <div class="m adapter-container">
 
     <div class="row">
-        <div class="col s12 m8 l2">
+        <div class="col s12 m4">
             <img src="enigma2.png" class="logo">
         </div>
     </div>
@@ -77,9 +77,11 @@
             <label class="translate" for="IPAddress">IPAddress</label>
         </div>
         <div class="col s12 m2">
-            <input class="value" id="Port" type="number" min="80" max="999"/>
-            <label class="translate" for="Port">Port</label>
-        </div>
+                    <input class="value number" id="port" size="5" maxlength="5" type="number"/>
+                    <label class="translate" for="Port">Port:</label>
+                </div>
+		</div>
+	<div class="row">
         <div class="col s12 m4">
             <input class="value" id="Username" />
             <label class="translate" for="Username">Username</label>
@@ -88,33 +90,33 @@
             <input class="value" id="Password" type="password" />
             <label class="translate" for="Password">Password</label>
         </div>
-	<div class="col s12 m2">
-		<tr>
-            <td><label class="translate" for="PollingInterval">PollingInterval</label></td>
-            <td colspan="10"><select id="PollingInterval" class="value">
-                <option value="2000">2 sec.</option>
-				<option value="3000">3 sec.</option>
-				<option value="4000">4 sec.</option>
-				<option value="5000">5 sec.</option>
-				<option value="6000">6 sec.</option>
-				<option value="7000">7 sec.</option>
-				<option value="8000">8 sec.</option>
-				<option value="9000">9 sec.</option>
-				<option value="10000">10 sec.</option>
-				<option value="15000">15 sec.</option>
-            </select></td>
-        </tr>
-	</div>
-	    <div class="col s12 m4">
-        <tr>
-            <td><label class="translate" for="internalharddisk">internal hard disk</label></td>
-            <td colspan="2"><select id="internalharddisk" class="value">
-                <option value="false" class="translate">no</option>			
-                <option value="true" class="translate">Yes</option>
-            </select></td>
-        </tr>
+		</div>
+	<div class="row">
+        <div class="input-field col s12 m2 l3">
+            <select  class="value" id="PollingInterval">
+                        <option value="2000" class="translate">2 sec.</option>
+                        <option value="3000" class="translate">3 sec.</option>
+                        <option value="4000" class="translate">4 sec.</option>
+                        <option value="5000" class="translate">5 sec.</option>
+                        <option value="6000" class="translate">6 sec.</option>
+                        <option value="7000" class="translate">7 sec.</option>
+                        <option value="8000" class="translate">8 sec.</option>
+                        <option value="9000" class="translate">9 sec.</option>
+						<option value="10000" class="translate">10 sec.</option>
+						<option value="15000" class="translate">15 sec.</option>
+            </select>
+            <label class="translate" for="PollingInterval">PollingInterval</label>
         </div>
-    </div>
+		</div>
+	<div class="row">
+		<div class="input-field col s12 m2 l3">
+            <select  class="value" id="internalharddisk">
+                        <option value="false" class="translate">no</option>
+                        <option value="true" class="translate">Yes</option>
+            </select>
+            <label class="translate" for="internalharddisk">internal hard disk</label>
+        </div>
+        </div>
 </div>
 </body>
 </html>
