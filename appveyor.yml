@@ -13,7 +13,6 @@ install:
   - npm install
   - npm install winston@2.3.1
   - 'npm install https://github.com/ioBroker/ioBroker.js-controller/tarball/master --production'
-  - npm install ping
 test_script:
   - echo %cd%
   - node --version
