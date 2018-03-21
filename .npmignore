@@ -5,8 +5,9 @@ tasks
 node_modules
 .idea
 .git
+/node_modules
 .gitignore
 test
 .travis.yml
 appveyor.yml
-/node_modules
+
