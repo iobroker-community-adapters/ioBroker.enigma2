@@ -1,0 +1,34 @@
+{
+  "author": {
+    "name": "danielzzz",
+    "email": "daniel@zelisko.net",
+    "url": "http://daniel.zelisko.net"
+  },
+  "name": "ping",
+  "description": "a simple wrapper for ping",
+  "version": "0.1.10",
+  "homepage": "http://github.com/danielzzz/node-ping",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/danielzzz/node-ping.git"
+  },
+  "engines": {
+    "node": ">=0.6.2"
+  },
+  "dependencies": {
+    "q": "1.x"
+  },
+  "devDependencies": {},
+  "main": "index.js",
+  "readme": "#NODE-PING\na ping wrapper for nodejs\n\n#LICENSE MIT\n\n(C) Daniel Zelisko\n\nhttp://github.com/danielzzz/node-ping\n\n#DESCRIPTION\n\nnode-ping is a simple wrapper for the system ping utility\n\n#INSTALLATION\n\nnpm install ping\n\n#USAGE\n\n##Tradition calls\n\n    var ping = require('ping');\n\n    var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];\n    hosts.forEach(function(host){\n        ping.sys.probe(host, function(isAlive){\n            var msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';\n            console.log(msg);\n        });\n    });\n\n##Promise wrapper\n\n    var ping = require('ping');\n\n    var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];\n\n    hosts.forEach(function (host) {\n        ping.promise.probe(host)\n            .then(function (res) {\n                console.log(res);\n            });\n    });\n\n##Promise Wrapper with configable ping options\n\n    //Only promise wrapper supports configable ping options\n    hosts.forEach(function (host) {\n        ping.promise.probe(host, {\n            timeout: 10,\n            extra: [\"-i 2\"]\n        }).then(function (res) {\n                console.log(res);\n            });\n    });\n\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/danielzzz/node-ping/issues"
+  },
+  "_id": "ping@0.1.10",
+  "dist": {
+    "shasum": "bedf0e6e78df7a56370b4b3c0d22b0dfdc249bcf"
+  },
+  "_from": "ping@",
+  "_resolved": "https://registry.npmjs.org/ping/-/ping-0.1.10.tgz"
+}
