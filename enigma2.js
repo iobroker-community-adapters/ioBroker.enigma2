@@ -34,7 +34,7 @@
 var request		= require('request'),
     net			= require('net'),
  //   ping		= require("ping"),
-    ping		= require(__dirname + '/lib/ping-sys'),
+    ping		= require(__dirname + '/lib/ping/index'),
     http		= require('http'),
     querystring	= require('querystring'),
     xml2js		= require("xml2js");
