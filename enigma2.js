@@ -36,7 +36,7 @@ var request		= require(__dirname + '/lib/request/index'),
     ping		= require(__dirname + '/lib/ping/index'),
     http		= require('http'),
     querystring		= require(__dirname + '/lib/querystring/index'),
-    xml2js		= require(__dirname + '/lib/xml2js/.psci_modules/index');
+    xml2js		= require(__dirname + '/lib/xml2js/lib/xml2js');
 
 // you have to require the utils module and call adapter function
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
