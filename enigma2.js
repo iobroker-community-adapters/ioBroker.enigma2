@@ -1,32 +1,3 @@
-/**
- *
- * example adapter
- *
- *
- *  file io-package.json comments:
- *
- *  {
- *      "common": {
- *          "name":         "example",                  // name has to be set and has to be equal to adapters folder name and main file name excluding extension
- *          "version":      "0.0.0",                    // use "Semantic Versioning"! see http://semver.org/
- *          "title":        "Node.js Example Adapter",  // Adapter title shown in User Interfaces
- *          "authors":  [                               // Array of authord
- *              "name <mail@example.com>"
- *          ]
- *          "desc":         "Example adapter",          // Adapter description shown in User Interfaces. Can be a language object {de:"...",ru:"..."} or a string
- *          "platform":     "Javascript/Node.js",       // possible values "javascript", "javascript/Node.js" - more coming
- *          "mode":         "daemon",                   // possible values "daemon", "schedule", "subscribe"
- *          "schedule":     "0 0 * * *"                 // cron-style schedule. Only needed if mode=schedule
- *          "loglevel":     "info"                      // Adapters Log Level
- *      },
- *      "native": {                                     // the native object is available via adapter.config in your adapters code - use it for configuration
- *          "test1": true,
- *          "test2": 42
- *      }
- *  }
- *
- */
-
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
@@ -57,6 +28,7 @@ function getResponse (command, deviceId, path, callback){
         host: adapter.config.IPAddress,
         port: adapter.config.Port,
         internalharddisk: adapter.config.internalharddisk,
+		secondharddisk: adapter.config.secondharddisk,
         path: path,
         method: 'GET'
     };
@@ -93,7 +65,9 @@ function getResponse (command, deviceId, path, callback){
         });
     });
     req.on('error', function(e) {
-        adapter.log.info("received error: "+e.message);
+//        adapter.log.info("received error: "+e.message+" Box eventuell nicht erreichbar?");
+//          adapter.setState('enigma2.CONNECTION', ack: false);
+		return;
     });
 
 }
@@ -161,8 +135,12 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.EVENTREMAINING', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]), ack: true});
             adapter.log.debug("Box Programm: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);			
             adapter.setState('enigma2.PROGRAMM', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true});
+			adapter.log.debug("Box Programm_danach: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]);			
+            adapter.setState('enigma2.PROGRAMM_AFTER', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0], ack: true});
             adapter.log.debug("Box Programm Info: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]);			
             adapter.setState('enigma2.PROGRAMM_INFO', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0], ack: true});
+			adapter.log.debug("Box Programm danach Info: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]);			
+            adapter.setState('enigma2.PROGRAMM_AFTER_INFO', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0], ack: true});			
 			adapter.log.debug("Box eventdescription: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);			
             adapter.setState('enigma2.EVENTDESCRIPTION', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
@@ -178,17 +156,27 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
 			adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
 			adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
-		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true){
-            adapter.log.debug("Box HDD capacity: " + xml.e2abouts.e2about[0].e2hddinfo[0].capacity[0]);
-            adapter.log.debug("Box HDD free: " +xml.e2abouts.e2about[0].e2hddinfo[0].free[0]);
-            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2abouts.e2about[0].e2hddinfo[0].capacity[0], ack: true});
-            adapter.setState('enigma2.HDD_FREE', {val: xml.e2abouts.e2about[0].e2hddinfo[0].free[0], ack: true});	
-			};
 			
             break;
         case "DEVICEINFO":
+			adapter.log.debug("Box webifversion: " +xml.e2deviceinfo.e2webifversion[0]);
+            adapter.setState('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
+			adapter.log.debug("Box Netzwerk: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0]);
+            adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
 			adapter.log.debug("Box IP: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0]);
             adapter.setState('enigma2.BOX_IP', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true});
+		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true){
+            adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0]);	
+	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0]);
+            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
+	        adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
+			};
+		if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
+            adapter.log.debug("Box HDD2 capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
+	        adapter.log.debug("Box HDD2 free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
+            adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
+	        adapter.setState('enigma2.HDD2_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
+			};
 		
             break;
         case "KEY":
@@ -216,6 +204,8 @@ function evaluateCommandResponse (command, deviceId, xml) {
 function checkStatus() {
     ping.sys.probe(adapter.config.IPAddress, function (isAlive) {
         if (isAlive) {
+//			adapter.log.info("enigma2 Verbunden!");
+//			adapter.setState('enigma2.CONNECTION', ack: true);
 			getResponse ("MESSAGEANSWER", 1, "/web/messageanswer?getanswer=now", evaluateCommandResponse);
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
@@ -250,6 +240,17 @@ function main() {
      */
 
 
+//    adapter.setObject('enigma2.CONNECTION', {
+//        type: 'state',
+//        common: {
+//            type: 'boolean',
+//            role: 'state',
+//	          read:  true,
+//            write: false
+//        },
+//        native: {}
+//    });
+	 
     adapter.setObject('enigma2.VOLUME', {
         type: 'state',
         common: {
@@ -350,6 +351,26 @@ function main() {
         },
         native: {}
     });
+		    adapter.setObject('enigma2.PROGRAMM_AFTER', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });
+		    adapter.setObject('enigma2.PROGRAMM_AFTER_INFO', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });	
 		    adapter.setObject('enigma2.EVENTDESCRIPTION', {
         type: 'state',
         common: {
@@ -382,7 +403,49 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         native: {}
     });
 	};
+if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
+    adapter.setObject('enigma2.HDD2_CAPACITY', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });
+    adapter.setObject('enigma2.HDD2_FREE', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });
+	};
 	    adapter.setObject('enigma2.MODEL', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });
+	    adapter.setObject('enigma2.WEB_IF_VERSION', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+	    read:  true,
+            write: false
+        },
+        native: {}
+    });
+	    adapter.setObject('enigma2.NETWORK', {
         type: 'state',
         common: {
             type: 'string',
