@@ -63,3 +63,4 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## issues
 * kein Senden von Befehlen aus dem Adapter heraus.
+
