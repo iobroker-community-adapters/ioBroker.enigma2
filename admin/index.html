@@ -38,6 +38,7 @@
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
+		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
 		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
 		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
 		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
@@ -64,6 +65,7 @@
     }
 
 		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
+		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -130,6 +132,13 @@
         <tr>
             <td><label class="translate" for="internalharddisk">internal hard disk</label></td>
             <td colspan="2"><select id="internalharddisk" class="value">
+                <option value="false" class="translate">no</option>			
+                <option value="true" class="translate">Yes</option>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="secondharddisk">second hard disk</label></td>
+            <td colspan="2"><select id="secondharddisk" class="value">
                 <option value="false" class="translate">no</option>			
                 <option value="true" class="translate">Yes</option>
             </select></td>
