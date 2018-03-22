@@ -27,6 +27,9 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Version
 
+### 0.2.1 (2018-03-22)
+* (Matten-Matten)      Fehlerbehebung in der HDD Abfrage
+
 ### 0.2.0 (2018-03-22)
 * (Matten-Matten)      keine Fehlermeldung mehr wenn Box in DeepStandby
 * (Matten-Matten)      Erweiterung (PROGRAMM_AFTER ; PROGRAMM_AFTER_INFO ; WEB_IF_VERSION ; NETWORK) hinzugefügt
