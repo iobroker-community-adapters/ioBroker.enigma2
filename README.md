@@ -6,6 +6,7 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Funktionen
 - BOX_IP
+- NETWORK
 - CHANNEL_SERVICEREFERENCE
 - CHANNEL
 - EVENTDESCRIPTION
@@ -18,19 +19,27 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - MUTED
 - PROGRAMM
 - PROGRAMM_INFO
+- PROGRAMM_AFTER
+- PROGRAMM_AFTER_INFO
 - STANDBY
 - VOLUME
+- WEB_IF_VERSION
 
 ## Version
 
-### 0.1.0 (2018-02-07)
+### 0.2.0 (2018-03-22)
+* (Matten-Matten)      keine Fehlermeldung mehr wenn Box in DeepStandby
+* (Matten-Matten)      Erweiterung (PROGRAMM_AFTER ; PROGRAMM_AFTER_INFO ; WEB_IF_VERSION ; NETWORK) hinzugefügt
+* (Matten-Matten)      Auswahl Konfiguration einer 2. Festplatte
+
+### 0.1.0 (2018-03-21)
 * (Matten-Matten)      installierbar
 
-### 0.0.11 (2018-02-07)
+### 0.0.11 (2018-03-19)
 * (Matten-Matten)                  Adapterkonfigurationsmaske (für Admin3) überarbeitet
 * (wendy2702 & Matten-Matten)      Admin3 
 
-### 0.0.10 (2018-02-07)
+### 0.0.10 (2018-03-19)
 * (Matten-Matten)  Umstellungsversuch Admin3
 
 ### 0.0.9 (2018-02-07)
