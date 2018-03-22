@@ -31,13 +31,12 @@
 /*jslint node: true */
 "use strict";
 
-var request		= require('request'),
-    net			= require('net'),
- //   ping		= require("ping"),
+var request		= require(__dirname + '/lib/request/index'),
+    net			= require(__dirname + '/lib/net/index'),
     ping		= require(__dirname + '/lib/ping/index'),
     http		= require('http'),
-    querystring	= require('querystring'),
-    xml2js		= require("xml2js");
+    querystring		= require(__dirname + '/lib/querystring/index'),
+    xml2js		= require(__dirname + '/lib/xml2js/x');
 
 // you have to require the utils module and call adapter function
 //var ping  =    require(__dirname + '/lib/ping.js');
