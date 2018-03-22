@@ -1,7 +1,7 @@
 {
   "name": "iobroker.enigma2",
   "description": "enigma2 adapter für VU+;Dreambox;EDISON...",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "author": {},
   "contributors": [
     {}
