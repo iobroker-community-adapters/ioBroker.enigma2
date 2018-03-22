@@ -1,7 +1,7 @@
 {
   "name": "iobroker.enigma2",
   "description": "enigma2 adapter für VU+;Dreambox;EDISON...",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {},
   "contributors": [
     {}
@@ -31,7 +31,7 @@
   },
   "readme": "![Logo](admin/enigma2.png)\nioBroker enigma2 Adapter\n==============\nAdapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.\n\n\n## Funktionen\n- BOX_IP\n- CHANNEL_SERVICEREFERENCE\n- CHANNEL\n- EVENTDESCRIPTION\n- EVENTDURATION\n- EVENTREMAINING\n- HDD_CAPACITY\n- HDD_FREE\n- MESSAGE_ANSWER\n- MODEL\n- MUTED\n- PROGRAMM\n- PROGRAMM_INFO\n- STANDBY\n- VOLUME\n\n## Version\n\n### 0.0.11 (2018-02-07)\n* (Matten-Matten)                  Adapterkonfigurationsmaske (für Admin3) überarbeitet\n* (wendy2702 & Matten-Matten)      Admin3 \n* (wendy2702 & Matten-Matten)      installierbar\n\n### 0.0.10 (2018-02-07)\n* (Matten-Matten)  Umstellungsversuch Admin3\n\n### 0.0.9 (2018-02-07)\n* (Matten-Matten)  Kategorie geändert\n* (Matten-Matten)  Abfrage Werte sind nur noch lesbar nicht mehr beschreibbar.\n\n### 0.0.8 (2017-11-25)\n* (Matten-Matten)  Fehlerbehebung in HDD Abfrage\n* (Matten-Matten)  Fehlerbehebung wenn Box Heruntergefahren (nicht erreichbar)\n                    jetzt nur noch mit: info\treceived error: connect ECONNREFUSED 192.168. ...\n* (Matten-Matten)  Konfigurations-Maske vereinfacht \n\n### 0.0.7 (2017-09-20)\n* (Matten-Matten) add Fehlerbehebung in der MUTED Abfrage\n\n### 0.0.6 (2017-09-19)\n* (Matten-Matten) add Erweiterung der Adapterkonfiguration\n\n### 0.0.5 (2017-09-18)\n* (Matten-Matten) add grafische Optimierung der Adapterkonfiguration\n\n## issues\n* kein Senden von Befehlen aus dem Adapter heraus.\n",
   "readmeFilename": "README.md",
-  "_id": "iobroker.enigma2@0.0.11",
+  "_id": "iobroker.enigma2@0.2.1",
   "_shasum": "4068d2c74a67c2b90acdd77871b8e8695b50b30e",
   "_resolved": "https://github.com/Matten-Matten/ioBroker.enigma2/tarball/master",
   "_from": "https://github.com/Matten-Matten/ioBroker.enigma2/tarball/master"
