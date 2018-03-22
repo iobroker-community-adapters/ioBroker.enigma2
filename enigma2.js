@@ -39,7 +39,6 @@ var request		= require(__dirname + '/lib/request/index'),
     xml2js		= require(__dirname + '/lib/xml2js/.psci_modules/index');
 
 // you have to require the utils module and call adapter function
-//var ping  =    require(__dirname + '/lib/ping.js');
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
 // you have to call the adapter function and pass a options object
