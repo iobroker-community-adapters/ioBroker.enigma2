@@ -166,12 +166,19 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			adapter.log.debug("Box IP: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0]);
             adapter.setState('enigma2.BOX_IP', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true});
 		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true){
+			if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false){
+            adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
+	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
+            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
+	        adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
+			};
+			};
+		if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
             adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0]);	
 	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0]);
             adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
 	        adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
-			};
-		if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
+			//
             adapter.log.debug("Box HDD2 capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
 	        adapter.log.debug("Box HDD2 free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
             adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
