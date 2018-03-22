@@ -25,6 +25,7 @@
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
+		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
 		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
 		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
 		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
@@ -49,6 +50,7 @@
         onChange(false);
     }
 		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
+		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -115,6 +117,13 @@
                         <option value="true" class="translate">Yes</option>
             </select>
             <label class="translate" for="internalharddisk">internal hard disk</label>
+        </div>
+		<div class="input-field col s12 m2 l3">
+				<select  class="value" id="secondharddisk">
+                        <option value="false" class="translate">no</option>
+                        <option value="true" class="translate">Yes</option>
+				</select>
+            <label class="translate" for="secondharddisk">second hard disk</label>
         </div>
         </div>
 </div>
