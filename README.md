@@ -33,7 +33,6 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 ### 0.2.0 (2018-03-22)
 * (Matten-Matten)      keine Fehlermeldung mehr wenn Box in DeepStandby
 * (Matten-Matten)      Erweiterung (PROGRAMM_AFTER ; PROGRAMM_AFTER_INFO ; WEB_IF_VERSION ; NETWORK) hinzugefügt
-* (Matten-Matten)      Auswahl Konfiguration einer 2. Festplatte
 
 ### 0.1.0 (2018-03-21)
 * (Matten-Matten)      installierbar
