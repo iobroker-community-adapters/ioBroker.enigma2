@@ -257,7 +257,241 @@ function main() {
 //        },
 //        native: {}
 //    });
-	 
+//####################################################################################	 
+	//PORT
+	adapter.setObject('command.command-config.PORT', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });	
+	
+	//IP
+	adapter.setObject('command.command-config.IP', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	//SET_VOLUME
+	adapter.setObject('command.SET_VOLUME', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });	
+	//STANDBY_TOGGL
+	adapter.setObject('command.STANDBY_TOGGLE', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	//MUTE_TOGGLE
+	adapter.setObject('command.MUTE_TOGGLE', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	//CHANNEL_UP
+	adapter.setObject('command.CHANNEL_UP', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//CHANNEL_DOWN
+	adapter.setObject('command.CHANNEL_DOWN', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//OK
+	adapter.setObject('command.OK', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//EXIT
+	adapter.setObject('command.EXIT', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//EPG
+	adapter.setObject('command.EPG', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//MENU
+	adapter.setObject('command.MENU', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//PLAY
+	adapter.setObject('command.PLAY', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//PAUSE
+	adapter.setObject('command.PAUSE', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//REC
+	adapter.setObject('command.REC', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//STOP
+	adapter.setObject('command.STOP', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//TV
+	adapter.setObject('command.TV', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//RADIO
+	adapter.setObject('command.RADIO', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//UP
+	adapter.setObject('command.UP', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//DOWN
+	adapter.setObject('command.DOWN', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//RIGHT
+	adapter.setObject('command.RIGHT', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });		
+	//LEFT
+	adapter.setObject('command.LEFT', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });	
+	
+//######################################################################################		 
     adapter.setObject('enigma2.VOLUME', {
         type: 'state',
         common: {
