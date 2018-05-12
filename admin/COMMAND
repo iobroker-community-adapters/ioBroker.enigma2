@@ -7,7 +7,7 @@ var STATE, IP, PORT, ADAPTER, VOL;
 //####### WERTE IN DEN KLAMMERN ANPASSEN #########
 //                                              ##
 // Hier die IP ADRESSE der e2 Box eintragen     ##
-IP = '192.168.27.66';//                         ##
+IP = '192.168.0.1';//                           ##
 //                                              ##
 // Hier den PORT der e2 Box eintragen           ##
 PORT = '80';//                                  ##
