@@ -1,5 +1,6 @@
 //########### ENIGMA 2 BUTTON SCRIPT ############
 //
+// -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
 var STATE, IP, PORT, ADAPTER, VOL;
 //
