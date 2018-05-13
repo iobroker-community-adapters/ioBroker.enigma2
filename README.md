@@ -24,6 +24,31 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - STANDBY
 - VOLUME
 - WEB_IF_VERSION
+## ab V 0.2.2  (nur in Verbindung mit folgenden Script)
+ https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
+ Dieses JAVA script muss im SCRIPT ADAPTER (Script Engine) angelegt, konfiguriert gespeichert und gestartet werden.
+
+- command.CHANNEL_DOWN
+- command.CHANNEL_UP
+- command.DOWN
+- command.UP
+- command.EPG
+- command.EXIT
+- command.LEFT
+- command.MENU
+- command.MUTE_TOGGLE
+- command.OK
+- command.PAUSE
+- command.PLAY
+- command.RADIO
+- command.REC
+- command.RIGHT
+- command.SET_VOLUME
+- command.STANDBY_TOGGLE
+- command.STOP
+- command.TV
+- command.UP
+
 
 ## Version
 
