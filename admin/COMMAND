@@ -33,7 +33,7 @@ var ADAPTER_INSTANZ = 'enigma2.0';//            ##
 //
 // WEBIF_VERSION
 if (WEBINTERFACE === '0') {
-  // DREAMWEBIF
+  // DREAMWEBIF 
   EXIT = '1';
   MENU = '141';
   RADIO = '377';
