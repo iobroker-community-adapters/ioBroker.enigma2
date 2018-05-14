@@ -2,7 +2,7 @@
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
-var WEBINTERFACE, EXIT, STATE, MENU, RADIO, ADAPTER, IP, TV, PORT, VOL;
+var WEBINTERFACE, EXIT, STATE, MENU, RADIO, ADAPTER, IP, TV, PORT, VOL, USER, PW;
 //
 //
 //####### WERTE IN DEN KLAMMERN ANPASSEN #########
