@@ -257,48 +257,27 @@ function main() {
 //        },
 //        native: {}
 //    });
-//####################################################################################	 
-	//PORT
-	adapter.setObject('command.command-config.PORT', {
-        type: 'state',
-        common: {
-            type: 'integer',
-            role: 'state',
-			read:  true,
-            write: true
-        },
-        native: {}
-    });	
-	
-	//IP
-	adapter.setObject('command.command-config.IP', {
-        type: 'state',
-        common: {
-            type: 'integer',
-            role: 'state',
-			read:  true,
-            write: true
-        },
-        native: {}
-    });
+
+//######################## COMMANDS ####################################################	 
+
 	//SET_VOLUME
 	adapter.setObject('command.SET_VOLUME', {
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state',
-			read:  true,
+            role: 'level.volume',
+			read:  false,
             write: true
         },
         native: {}
     });	
-	//STANDBY_TOGGL
+	//STANDBY_TOGGLE
 	adapter.setObject('command.STANDBY_TOGGLE', {
         type: 'state',
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -309,7 +288,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -320,7 +299,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -331,7 +310,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -342,7 +321,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -353,7 +332,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -364,7 +343,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -375,7 +354,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -385,8 +364,8 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'button',
-			read:  true,
+            role: 'button.play',
+			read:  false,
             write: true
         },
         native: {}
@@ -396,8 +375,8 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'button',
-			read:  true,
+            role: 'button.pause',
+			read:  false,
             write: true
         },
         native: {}
@@ -408,7 +387,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -418,8 +397,8 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'button',
-			read:  true,
+            role: 'button.stop',
+			read:  false,
             write: true
         },
         native: {}
@@ -430,7 +409,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -441,7 +420,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -452,7 +431,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -463,7 +442,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -474,7 +453,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
@@ -485,19 +464,20 @@ function main() {
         common: {
             type: 'boolean',
             role: 'button',
-			read:  true,
+			read:  false,
             write: true
         },
         native: {}
     });	
 	
-//######################################################################################		 
+//####################### STATE ###############################################################	
+	
     adapter.setObject('enigma2.VOLUME', {
         type: 'state',
         common: {
-            type: 'integer',
-            role: 'state',
-	    read:  true,
+            type: 'number',
+            role: 'level.volume',
+			read:  true,
             write: false
         },
         native: {}
@@ -507,7 +487,7 @@ function main() {
         common: {
             type: 'integer',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -516,8 +496,8 @@ function main() {
         type: 'state',
         common: {
             type: 'boolean',
-            role: 'state',
-	    read:  true,
+            role: 'media.mute',
+			read:  true,
             write: false
         },
         native: {}
@@ -525,9 +505,9 @@ function main() {
 	adapter.setObject('enigma2.EVENTDURATION', {
         type: 'state',
         common: {
-            type: 'integer',
-            role: 'state',
-	    read:  true,
+            type: 'number',
+            role: 'media.duration',
+			read:  true,
             write: false
         },
         native: {}
@@ -535,9 +515,9 @@ function main() {
 		adapter.setObject('enigma2.EVENTREMAINING', {
         type: 'state',
         common: {
-            type: 'integer',
-            role: 'state',
-	    read:  true,
+            type: 'number',
+            role: 'media.duration',
+			read:  true,
             write: false
         },
         native: {}
@@ -547,7 +527,7 @@ function main() {
         common: {
             type: 'boolean',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -681,7 +661,7 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -691,7 +671,7 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -700,8 +680,8 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         type: 'state',
         common: {
             type: 'string',
-            role: 'state',
-	    read:  true,
+            role: 'info.ip',
+			read:  true,
             write: false
         },
         native: {}
