@@ -52,6 +52,9 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Version
 
+### 0.2.3 (2018-08-17)
+* (Matten-Matten)      Admin V3.51
+
 ### 0.2.2 (2018-05-12)
 * (Matten-Matten)      Button hinzugefügt
 
