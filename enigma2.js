@@ -10,8 +10,8 @@ const querystring	= require('querystring');
 const xml2js		= require('xml2js');
 
 // you have to require the utils module and call adapter function
-//const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
-const utils =    require('utils'); // Get common adapter utils
+const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
+
 
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
