@@ -2,12 +2,12 @@
 /*jslint node: true */
 'use strict';
 
-const request		= require('request');
-const net		= require('net');
-const ping		= require('ping');
+const request		= require(__dirname + '/lib/request/index');
+const net		= require(__dirname + '/lib/net/index');
+const ping		= require(__dirname + '/lib/ping/index');
 const http		= require('http');
-const querystring	= require('querystring');
-const xml2js		= require('xml2js');
+const querystring	= require(__dirname + '/lib/querystring/index');
+const xml2js		= require(__dirname + '/lib/xml2js/lib/xml2js');
 
 // you have to require the utils module and call adapter function
 const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
