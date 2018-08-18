@@ -4,17 +4,15 @@
         "version":                  "0.2.3",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
-	"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
+		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "enigma2.png",
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/ioBroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
-	"materialize":              true,
-	"authors": [
-                                    "Matten-Matten <matten-matten@web.de>"
-        ],
+		"materialize":              true,
+		"authors": 					[ "Matten-Matten <matten-matten@web.de>" ],
         "type":                     "multimedia"
     },
     "native": {
@@ -22,9 +20,9 @@
         "Port": "80",
         "Username": "root",
         "Password": "dreambox",
-	"BOXWLAN": false,
-	"secondharddisk": false,
-	"webif": false,
+		"BOXWLAN": false,
+		"secondharddisk": false,
+		"webif": false,
         "PollingInterval": 5000
     },
     "objects": [
