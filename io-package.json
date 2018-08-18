@@ -13,6 +13,9 @@
         "nondeletable":             true,
 	"materialize":              true,
         "type":                     "multimedia"
+	"author": [
+            "Matten-Matten <matten-matten@web.de>"
+        ],
     },
     "native": {
         "IPAddress": "192.168.0.1",
