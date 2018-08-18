@@ -2,20 +2,20 @@
 /*jslint node: true */
 'use strict';
 
-const request		= require(__dirname + '/lib/request/index');
-const net		= require(__dirname + '/lib/net/index');
-const ping		= require(__dirname + '/lib/ping/index');
-const http		= require('http');
-const querystring	= require(__dirname + '/lib/querystring/index');
-const xml2js		= require(__dirname + '/lib/xml2js/lib/xml2js');
+var request		= require(__dirname + '/lib/request/index'),
+    net			= require(__dirname + '/lib/net/index'),
+    ping		= require(__dirname + '/lib/ping/index'),
+    http		= require('http'),
+    querystring		= require(__dirname + '/lib/querystring/index'),
+    xml2js		= require(__dirname + '/lib/xml2js/lib/xml2js');
 
 // you have to require the utils module and call adapter function
-const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
+var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.example.0
-const adapter = utils.adapter('enigma2');
+var adapter = utils.adapter('enigma2');
 
 adapter.on('ready', function () {
     main();
