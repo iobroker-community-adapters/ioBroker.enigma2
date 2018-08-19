@@ -16,20 +16,20 @@
 
     // Dictionary (systemDictionary is global variable from adapter-settings.js)
     systemDictionary = {
-	"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
+		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
         "example adapter settings": {"de": "enigma2", "ru": "Пример"},
         "IPAddress":                {"en": "IP address", "de": "IP Adresse (nur http kein https)", "ru": ""},
 		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
-		"IP-PORT":					{"en": "IP address and Port", "de": "IP Adresse und Port", "ru": ""},
-		"IP-PORT_info":				{"en": "only http not https", "de": "nur http kein https", "ru": ""},
-		"USER-PW":					{"en": "User and Password", "de": "Benutzer und Passwort", "ru": ""},
-		"USER-PW_info":				{"en": "Standard Password = dreambox", "de": "Standard Passwort = dreambox", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
+		"webif":          			  {"en": "Dream Webinterface", "de": "Webinterface", "ru": ""},
+		"Dream Webinterface":         {"en": "Dream Webinterface", "de": "Dream Webinterface", "ru": ""},
+		"Open Webinterface":          {"en": "Open Webinterface", "de": "Open Webinterface", "ru": ""},
+		"buttonscript":				  {"en": "button script", "de": "Button Script", "ru": ""},
 		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
 		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
 		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
@@ -55,6 +55,8 @@
     }
 		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
 		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
+		if (settings.buttonscript === undefined) settings.buttonscript = false;
+		if (settings.webif === undefined) settings.webif = 1;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -106,6 +108,10 @@
                     <!-- Tab1 Login + Intervalle-->
                     <li class="tab col s4">
                         <a href="#tab-main" class="translate">enigma2 adapter settings</a>
+                    </li>
+                    <!-- Tab2 Webinterface-->
+                    <li class="tab col s4">
+                        <a href="#tab-2" class="translate">buttonscript</a>
                     </li>
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
@@ -188,8 +194,64 @@
 								</div>
 					</div>
 				</div>
+				<div class="row">
+                    <div class="col s12">
+                        <p class="translate title">second hard disk</p>
 
+								<div class="row">
+									<div class="input-field col s12 m2 l3">
+										<select  class="value" id="secondharddisk">
+											<option value="false" class="translate">no</option>
+											<option value="true" class="translate">Yes</option>
+										</select>
+											<label class="translate" for="secondharddisk">second hard disk</label>
+									</div>
+								</div>
+					</div>
+				</div>
             </div> <!-- Ende Tab1 -->
+			
+ <!-- Tab2 buttonscript -->
+            <div id="tab-2" class="col s12 page">
+                <div class="row">
+                    <div class="col s12 m4 l2">
+                        <img src="enigma2.png" class="logo">
+                    </div>
+                </div>
+				<div class="row">
+                    <div class="col s12">
+                        <p class="translate title">buttonscript</p>
+
+								<div class="row">
+									<div class="input-field col s12 m2 l3">
+										<select  class="value" id="buttonscript">
+											<option value="false" class="translate">no</option>
+											<option value="true" class="translate">Yes</option>
+										</select>
+											<label class="translate" for="buttonscript">buttonscript</label>
+									</div>
+								</div>
+					</div>
+				</div>
+				<div class="row">
+                    <div class="col s12">
+                        <p class="translate title">webif</p>
+
+								<div class="row">
+									<div class="input-field col s12 m2 l3">
+										<select  class="value" id="webif">
+											<option value="0" class="translate">Dream Webinterface</option>
+											<option value="1" class="translate">Open Webinterface</option>
+										</select>
+											<label class="translate" for="webif">webif</label>
+									</div>
+								</div>
+					</div>
+				</div>
+
+
+            </div> <!-- Ende Tab2 -->
+			
         </div><!-- Ende row -->
     </div><!-- Ende Adapter Container -->
 </body>
