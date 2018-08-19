@@ -24,6 +24,9 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - STANDBY
 - VOLUME
 - WEB_IF_VERSION
+
+- enigma2-CONNECTION
+
 ## ab V 0.2.2  (nur in Verbindung mit folgenden Script)
  https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
  Dieses JAVA script muss im SCRIPT ADAPTER (Script Engine) angelegt, konfiguriert gespeichert und gestartet werden.
@@ -51,6 +54,11 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 
 ## Version
+
+### 0.3.0 (2018-08-19)
+* (Matten-Matten)      enigma2-CONNECTION hinzugefügt
+* (Matten-Matten)      Update Configurationsmaske
+* (Matten-Matten)      Update ENIGMA 2 BUTTON SCRIPT V2.0 (nur noch manuell die Adapter Instanz im Script festlegen)
 
 ### 0.2.3 (2018-08-17)
 * (Matten-Matten)      Admin V3.51
