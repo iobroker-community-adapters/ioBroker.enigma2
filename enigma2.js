@@ -30,6 +30,8 @@ function getResponse (command, deviceId, path, callback){
         port: adapter.config.Port,
         internalharddisk: adapter.config.internalharddisk,
 		secondharddisk: adapter.config.secondharddisk,
+		webif: adapter.config.webif,
+		buttonscript: adapter.config.buttonscript,
         path: path,
         method: 'GET'
     };
@@ -66,7 +68,8 @@ function getResponse (command, deviceId, path, callback){
         });
     });
     req.on('error', function(e) {
-//        adapter.log.info("received error: "+e.message+" Box eventuell nicht erreichbar?");
+//		adapter.setState('enigma2-CONNECTION', false );
+        adapter.log.debug("received error: "+e.message+" Box eventuell nicht erreichbar?");
 //          adapter.setState('enigma2.CONNECTION', ack: false);
 		return;
     });
@@ -166,26 +169,33 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
 			adapter.log.debug("Box IP: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0]);
             adapter.setState('enigma2.BOX_IP', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true});
-		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true){
-	//		if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false){
-            adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
-	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
-            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
-	        adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
+		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true)
+		{
+	 		if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false)
+			{
+				adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
+				adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
+				adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
+				adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
 			};
-	//		};
-	//	if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
-        //    adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0]);	
-	//        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0]);
-        //    adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
-	//        adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
-			//
-        //    adapter.log.debug("Box HDD2 capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
-	//        adapter.log.debug("Box HDD2 free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
-        //    adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
-	//        adapter.setState('enigma2.HDD2_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
-	//		};
-		
+		};
+	 	if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true)
+		{
+            adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0]);	
+	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0]);
+            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
+			adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
+            adapter.log.debug("Box HDD2 capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
+	        adapter.log.debug("Box HDD2 free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
+            adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
+	        adapter.setState('enigma2.HDD2_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
+		};
+
+//############################	TEST #################################
+//	
+// Box Standby
+//
+//####################################################################
             break;
         case "KEY":
         case "VOLUME_UP":
@@ -209,11 +219,12 @@ function evaluateCommandResponse (command, deviceId, xml) {
     }
 }
 
-function checkStatus() {
-    ping.sys.probe(adapter.config.IPAddress, function (isAlive) {
+function checkStatus() 
+{
+    ping.sys.probe(adapter.config.IPAddress, function(isAlive){
         if (isAlive) {
-//			adapter.log.info("enigma2 Verbunden!");
-//			adapter.setState('enigma2.CONNECTION', ack: true);
+			adapter.log.debug("enigma2 Verbunden!");
+			adapter.setState('enigma2-CONNECTION', true );
 			getResponse ("MESSAGEANSWER", 1, "/web/messageanswer?getanswer=now", evaluateCommandResponse);
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
@@ -222,9 +233,41 @@ function checkStatus() {
 			getResponse ("DEVICEINFO", 1, "/web/deviceinfo", evaluateCommandResponse);
         } else {
             adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
+			adapter.setState('enigma2-CONNECTION', false );
+			// Werte aus Adapter löschen
+			adapter.setState('enigma2.BOX_IP', "" );
+			adapter.setState('enigma2.CHANNEL', "" );
+			adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "" );
+			adapter.setState('enigma2.EVENTDESCRIPTION', "" );
+			adapter.setState('enigma2.EVENTDURATION', "" );
+			adapter.setState('enigma2.EVENTREMAINING', "" );
+			adapter.setState('enigma2.MESSAGE_ANSWER', "" );
+			adapter.setState('enigma2.MODEL', "" );
+			adapter.setState('enigma2.MUTED', "" );
+			adapter.setState('enigma2.NETWORK', "" );
+			adapter.setState('enigma2.PROGRAMM', "" );
+			adapter.setState('enigma2.PROGRAMM_AFTER', "" );
+			adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "" );
+			adapter.setState('enigma2.PROGRAMM_INFO', "" );
+			adapter.setState('enigma2.STANDBY', true );
+			adapter.setState('enigma2.VOLUME', "" );
+			adapter.setState('enigma2.WEB_IF_VERSION', "" );
         }
     });
 }
+
+//########## TEST ##############################################
+
+function test() 
+{
+if (adapter.getState('enigma2-CONNECTION').val === true) {
+		adapter.log.info("laeuft alter");
+} else {
+        adapter.log.info("laeuft trotzdem alter");
+        }
+}
+
+//########## TEST ENDE #########################################
 
 
 function main() {
@@ -247,20 +290,91 @@ function main() {
      *
      */
 
-
-//    adapter.setObject('enigma2.CONNECTION', {
-//        type: 'state',
-//        common: {
-//            type: 'boolean',
-//            role: 'state',
-//	          read:  true,
-//            write: false
-//        },
-//        native: {}
-//    });
+//#########Verbindung#############################
+    adapter.setObject('enigma2-CONNECTION', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+	        read:  true,
+            write: false
+        },
+        native: {}
+    });
+adapter.setState('enigma2-CONNECTION', false );
 
 //######################## COMMANDS ####################################################	 
 
+if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === true){
+	
+    adapter.setObject('command.Button-Config.Port', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+adapter.setState('command.Button-Config.Port', adapter.config.Port );
+
+//adapter.config.IPAddress
+    adapter.setObject('command.Button-Config.IP', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+adapter.setState('command.Button-Config.IP', adapter.config.IPAddress );
+//adapter.config.Username
+    adapter.setObject('command.Button-Config.USER', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+adapter.setState('command.Button-Config.USER', adapter.config.Username );
+
+//adapter.config.Password
+    adapter.setObject('command.Button-Config.PW', {
+        type: 'state',
+        common: {
+            type: 'integer',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+adapter.setState('command.Button-Config.PW', adapter.config.Password );
+
+//adapter.config.webif
+    adapter.setObject('command.Button-Config.Webif', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+adapter.setState('command.Button-Config.Webif', adapter.config.webif );
+//######################################################################################
 	//SET_VOLUME
 	adapter.setObject('command.SET_VOLUME', {
         type: 'state',
@@ -470,7 +584,7 @@ function main() {
         },
         native: {}
     });	
-	
+};	
 //####################### STATE ###############################################################	
 	
     adapter.setObject('enigma2.VOLUME', {
@@ -588,7 +702,7 @@ function main() {
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -598,7 +712,7 @@ function main() {
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -609,7 +723,7 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
@@ -619,34 +733,34 @@ if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddis
         common: {
             type: 'string',
             role: 'state',
-	    read:  true,
+			read:  true,
             write: false
         },
         native: {}
     });
 	};
-//if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
-//    adapter.setObject('enigma2.HDD2_CAPACITY', {
-//        type: 'state',
-//        common: {
-//            type: 'string',
-//            role: 'state',
-//	    read:  true,
-//            write: false
-//        },
-//        native: {}
-//    });
-//    adapter.setObject('enigma2.HDD2_FREE', {
-//        type: 'state',
-//        common: {
-//            type: 'string',
-//            role: 'state',
-//	    read:  true,
-//            write: false
-//        },
-//        native: {}
-//    });
-//	};
+if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
+    adapter.setObject('enigma2.HDD2_CAPACITY', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+    adapter.setObject('enigma2.HDD2_FREE', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	};
 	    adapter.setObject('enigma2.MODEL', {
         type: 'state',
         common: {
