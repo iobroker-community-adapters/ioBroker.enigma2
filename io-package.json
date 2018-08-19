@@ -21,6 +21,7 @@
         "Username": "root",
         "Password": "dreambox",
 	"BOXWLAN": false,
+	"internalharddisk": false,
 	"secondharddisk": false,
 	"buttonscript": false,
 	"webif": 1,
