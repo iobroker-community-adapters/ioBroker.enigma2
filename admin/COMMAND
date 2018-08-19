@@ -1,36 +1,48 @@
-//########### ENIGMA 2 BUTTON SCRIPT V1.2 ############
+//########### ENIGMA 2 BUTTON SCRIPT V2.0 ############
+//
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
-var WEBINTERFACE, EXIT, STATE, MENU, RADIO, ADAPTER, IP, TV, PORT, VOL, USER, PW;
 //
 //
 //####### WERTE IN DEN KLAMMERN ANPASSEN #########
 //                                              ##
-// Hier die IP ADRESSE der e2 Box eintragen     ##
-IP = '192.168.0.1';//                           ##
-//                                              ##
-// Hier den PORT der e2 Box eintragen           ##
-PORT = '80';//                                  ##
-//                                              ##
-// USER der e2 Box eintragen                    ##
-USER = 'root';//                                ##
-//                                              ##
-// Hier das PASSWORT der e2 Box eintragen       ##
-PW = 'dreambox';//                              ##
-//                                              ##
-// Hier die WEBIF_VERSION eintragen             ##
-//      0= Dream webif / 1= openwebif           ##
-WEBINTERFACE = '1';//                           ##
 // Hier die Adapter Instanz festlegen           ##
 var ADAPTER_INSTANZ = 'enigma2.0';//            ##
 //                                              ##
 //################################################
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 //### AB HIER NIX VERÄNDERN ###########################################################################################
 //
-//
+var WEBINTERFACE, EXIT, STATE, MENU, RADIO, ADAPTER, IP, TV, PORT, VOL, USER, PW;
+//getState("enigma2.0.command.Button-Config.IP").val
+
+IP = getState(ADAPTER_INSTANZ + ".command.Button-Config.IP").val;
+PORT = getState(ADAPTER_INSTANZ + ".command.Button-Config.Port").val;
+USER = getState(ADAPTER_INSTANZ + ".command.Button-Config.USER").val;
+PW = getState(ADAPTER_INSTANZ + ".command.Button-Config.PW").val;
+WEBINTERFACE = getState(ADAPTER_INSTANZ + ".command.Button-Config.Webif").val;
+
 // WEBIF_VERSION
 if (WEBINTERFACE === '0') {
   // DREAMWEBIF 
@@ -47,7 +59,7 @@ if (WEBINTERFACE === '0') {
   TV = '377';
   console.log('WEBIF_VERSION = openwebif');
 } else {
-  console.error('WEBIF_VERSION AUSWÄHLEN!');
+  console.error('WEBIF_VERSION in Enigma2 Adapter-Einstellungen AUSWÄHLEN und das Buttonscript erneut starten!');
 }
 // Schaltzustand der e2 Box
 on({id: ADAPTER_INSTANZ + ".command.STANDBY_TOGGLE"/*command.STANDBY_TOGGLE*/, change: "any"}, function (obj) {
