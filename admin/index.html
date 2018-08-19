@@ -39,6 +39,10 @@
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
+		"webif":          			  {"en": "Dream Webinterface", "de": "Webinterface", "ru": ""},
+		"Dream Webinterface":         {"en": "Dream Webinterface", "de": "Dream Webinterface", "ru": ""},
+		"Open Webinterface":          {"en": "Open Webinterface", "de": "Open Webinterface", "ru": ""},
+		"buttonscript":				  {"en": "button script", "de": "Button Script", "ru": ""},
 		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
 		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
 		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
@@ -66,6 +70,8 @@
 
 		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
 		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
+		if (settings.buttonscript === undefined) settings.buttonscript = false;
+		if (settings.webif === undefined) settings.webif = 1;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -134,6 +140,27 @@
             <td colspan="2"><select id="internalharddisk" class="value">
                 <option value="false" class="translate">no</option>			
                 <option value="true" class="translate">Yes</option>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="secondharddisk">second hard disk</label></td>
+            <td colspan="2"><select id="secondharddisk" class="value">
+                <option value="false" class="translate">no</option>			
+                <option value="true" class="translate">Yes</option>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="buttonscript">buttonscript</label></td>
+            <td colspan="2"><select id="buttonscript" class="value">
+                <option value="false" class="translate">no</option>			
+                <option value="true" class="translate">Yes</option>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="webif">webif</label></td>
+            <td colspan="2"><select id="webif" class="value">
+                <option value="0" class="translate">Dream Webinterface</option>			
+                <option value="1" class="translate">Open Webinterface</option>
             </select></td>
         </tr>
 		
