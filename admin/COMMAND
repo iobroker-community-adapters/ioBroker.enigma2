@@ -78,6 +78,21 @@ on({id: "system.adapter." + ADAPTER_INSTANZ + ".alive"/*ADAPTER_INSTANZ + .alive
     ADAPTER = false;
   }
 });
+// Message
+var MTEXT, MTYPE, MTIMEOUT;
+
+on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change: "any"}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  MTEXT = getState("enigma2.0.Message.Text").val;
+  MTYPE = getState("enigma2.0.Message.Type").val;
+  MTIMEOUT = getState("enigma2.0.Message.Timeout").val;
+  if (ADAPTER === true) {
+    try {
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/message?text=',MTEXT,'&type=',MTYPE,'&timeout=',MTIMEOUT].join(''))).on("error", function (e) {console.error(e);});
+    } catch (e) { console.error(e); }
+  }
+});
 // Box Standby
 on({id: ADAPTER_INSTANZ + ".command.STANDBY_TOGGLE"/*command.STANDBY_TOGGLE*/, change: "any"}, function (obj) {
   var value = obj.state.val;
