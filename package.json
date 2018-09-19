@@ -38,4 +38,4 @@
     "test": "node node_modules/mocha/bin/mocha --exit"
   },
   "readmeFilename": "README.md"
-}
+} 
