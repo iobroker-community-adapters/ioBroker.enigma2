@@ -590,7 +590,7 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         type: 'state',
         common: {
             type: 'string',
-            role: 'state',
+            role: 'text',
 			desc: 'messagetext=Text of Message',
 			read:  true,
             write: true
@@ -601,7 +601,7 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         type: 'state',
         common: {
             type: 'number',
-            role: 'state',
+            role: 'level',
 			desc: 'messagetype=Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention',
 			read:  true,
             write: true
@@ -612,7 +612,7 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         type: 'state',
         common: {
             type: 'number',
-            role: 'state',
+            role: 'control',
 			desc: 'timeout=Can be empty or the Number of seconds the Message should disappear after',
 			read:  true,
             write: true
@@ -647,7 +647,7 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         type: 'state',
         common: {
             type: 'integer',
-            role: 'state',
+            role: 'message',
 			read:  true,
             write: false
         },
