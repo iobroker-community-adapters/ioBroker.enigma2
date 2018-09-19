@@ -52,8 +52,16 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - command.TV
 - command.UP
 
+## Message
+ - Message.Button-Send
+ - Message.Text
+ - Message.Type
+ - Message.Timeout
 
 ## Version
+
+### 0.3.1 (2018-09-20)
+* (Matten-Matten)      Message senden hinzugefügt
 
 ### 0.3.0 (2018-08-19)
 * (Matten-Matten)      enigma2-CONNECTION hinzugefügt
