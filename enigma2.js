@@ -584,6 +584,52 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });	
+//##################### Message #####################
+
+    adapter.setObject('Message.Text', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+			desc: 'messagetext=Text of Message',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+    adapter.setObject('Message.Type', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'state',
+			desc: 'messagetype=Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	adapter.setObject('Message.Timeout', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'state',
+			desc: 'timeout=Can be empty or the Number of seconds the Message should disappear after',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+		adapter.setObject('Message.Button-Send', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button',
+			read:  false,
+            write: true
+        },
+        native: {}
+    });	
+//#################### ENDE Message ########################
 };	
 //####################### STATE ###############################################################	
 	
