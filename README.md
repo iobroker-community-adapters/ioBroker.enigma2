@@ -53,17 +53,19 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - command.UP
 
 ## Message
- - Message.Button-Send   = Send the Message
- - Message.Text          = Text of Message
- - Message.Type          = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
- - Message.Timeout       = Can be empty or the Number of seconds the Message should disappear after.
- - MESSAGE_ANSWER        = If answer = "yes", "MESSAGE_ANSWER" is set to true
+ - Message.Button-Send    = Send the Message
+ - Message.Text           = Text of Message
+ - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
+ - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
+ - MESSAGE_ANSWER         = If answer = "yes", "MESSAGE_ANSWER" is set to true
+ - Message.Question_Activ = If an question is activ
 
 ## Version
 
-### 0.3.2 (2018-09-20)
+### 0.3.3 (2018-09-20)
 * (Matten-Matten)      Message senden hinzugefügt
 * (Matten-Matten)      Message answer (true/false) hinzugefügt
+* (Matten-Matten)      Message.Question_Activ hinzugefügt
 
 
 ### 0.3.0 (2018-08-19)
