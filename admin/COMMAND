@@ -91,6 +91,7 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
     try {
       require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/message?text=',MTEXT,'&type=',MTYPE,'&timeout=',MTIMEOUT].join(''))).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
+   setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, '', 1500, false);
   }
 });
 // Box Standby
