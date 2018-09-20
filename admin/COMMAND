@@ -1,5 +1,5 @@
-//################# ENIGMA 2 BUTTON SCRIPT V2.2 #########################################
- console.log('Start ENIGMA 2 BUTTON SCRIPT V2.2 ');
+//################# ENIGMA 2 BUTTON SCRIPT V2.3 #########################################
+ console.log('Start ENIGMA 2 BUTTON SCRIPT V2.3 ');
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
@@ -91,8 +91,11 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
   MTIMEOUT = getState(ADAPTER_INSTANZ + ".Message.Timeout").val;
   if (ADAPTER === true) {
     try {
-      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/message?text=',MTEXT,'&type=',MTYPE,'&timeout=',MTIMEOUT].join(''))).on("error", function (e) {console.error(e);});
+    //  require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/message?text=',MTEXT,'&type=',MTYPE,'&timeout=',MTIMEOUT].join(''))).on("error", function (e) {console.error(e);});
+      require("request")('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
+    //console.log('http://' + USER + ':****@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
+    console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
    setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, '', 1500, false);
   }
 });
