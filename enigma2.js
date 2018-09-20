@@ -644,6 +644,17 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });
+		adapter.setObject('Message.Question_Activ', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	adapter.setState('Message.Question_Activ', false );
 //#################### ENDE Message ########################
 };	
 //####################### STATE ###############################################################	
