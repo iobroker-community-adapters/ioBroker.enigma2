@@ -1,5 +1,5 @@
-//################# ENIGMA 2 BUTTON SCRIPT V2.3 #########################################
- console.log('Start ENIGMA 2 BUTTON SCRIPT V2.3 ');
+//################# ENIGMA 2 BUTTON SCRIPT V2.4 #########################################
+ console.log('Start ENIGMA 2 BUTTON SCRIPT V2.4 ');
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
@@ -96,7 +96,15 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
     } catch (e) { console.error(e); }
     //console.log('http://' + USER + ':****@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
     console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
-   setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, '', 1500, false);
+    if (MTYPE === 0) 
+    {
+        // if (MTIMEOUT > 0) 
+          //  {
+              setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", true, 1500, false);
+           // }    
+        setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", false, parseFloat(MTIMEOUT) * 1000, false);
+    }
+        setStateDelayed(ADAPTER_INSTANZ + ".Message.Text", '', 1500, false);
   }
 });
 // Box Standby
