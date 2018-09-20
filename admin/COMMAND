@@ -95,7 +95,7 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
       require("request")('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
     //console.log('http://' + USER + ':****@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
-    console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
+    //console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
     if (MTYPE === 0) 
     {
         // if (MTIMEOUT > 0) 
