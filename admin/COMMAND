@@ -51,6 +51,7 @@ if (WEBINTERFACE === '0') {
   RADIO = '377';
   TV = '385';
   console.log('WEBIF_VERSION = Dream webif');
+  console.log('ADAPTER INSTANZ = ' + ADAPTER_INSTANZ);
 } else if (WEBINTERFACE == '1') {
   // OPENWEBIF
   EXIT = '174';
@@ -58,6 +59,7 @@ if (WEBINTERFACE === '0') {
   RADIO = '385';
   TV = '377';
   console.log('WEBIF_VERSION = openwebif');
+  console.log('ADAPTER INSTANZ = ' + ADAPTER_INSTANZ);
 } else {
   console.error('WEBIF_VERSION in Enigma2 Adapter-Einstellungen AUSWÄHLEN und das Buttonscript erneut starten!');
 }
