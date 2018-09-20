@@ -100,6 +100,10 @@ function evaluateCommandResponse (command, deviceId, xml) {
 		case "MESSAGEANSWER":
  			adapter.log.debug("message answer: " +xml.e2simplexmlresult.e2statetext[0]);			
             adapter.setState('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
+		if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === true){	
+			adapter.log.debug("message answer2: " + parseBool(xml.e2simplexmlresult.e2statetext));			
+            adapter.setState('Message.MESSAGE_ANSWER', {val: parseBool(xml.e2simplexmlresult.e2state), ack: true});
+			};	
             break;			
         case "RESTART":
         case "REBOOT":
@@ -252,6 +256,7 @@ function checkStatus()
 			adapter.setState('enigma2.STANDBY', true );
 			adapter.setState('enigma2.VOLUME', "" );
 			adapter.setState('enigma2.WEB_IF_VERSION', "" );
+			adapter.setState('Message.MESSAGE_ANSWER', false );
         }
     });
 }
@@ -629,6 +634,16 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });	
+	    adapter.setObject('Message.MESSAGE_ANSWER', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
 //#################### ENDE Message ########################
 };	
 //####################### STATE ###############################################################	
