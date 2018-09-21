@@ -20,6 +20,7 @@ const adapter = utils.adapter('enigma2');
 
 adapter.on('ready', function () {
     main();
+    deleteObject();
 });
 
 
@@ -260,19 +261,6 @@ function checkStatus()
         }
     });
 }
-
-//########## TEST ##############################################
-
-function test() 
-{
-if (adapter.getState('enigma2-CONNECTION').val === true) {
-		adapter.log.info("laeuft alter");
-} else {
-        adapter.log.info("laeuft trotzdem alter");
-        }
-}
-
-//########## TEST ENDE #########################################
 
 
 function main() {
@@ -918,3 +906,54 @@ if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk ==
     setInterval(checkStatus,adapter.config.PollingInterval);
 }
 
+
+function deleteObject () {
+
+    if (adapter.config.buttonscript === 'false' || adapter.config.buttonscript === false){
+
+adapter.delObject('command.Button-Config.USER');
+//adapter.log.info("delete command.Button-Config.USER");
+
+adapter.delObject('command.Button-Config.PW');
+//adapter.log.info("delete command.Button-Config.PW");
+
+adapter.delObject('command.Button-Config.Webif');
+//adapter.log.info("delete command.Button-Config.Webif");	
+ 	
+adapter.delObject('command.Button-Config.Port');
+adapter.delObject('command.Button-Config.IP');
+adapter.delObject('command.SET_VOLUME');
+adapter.delObject('command.STANDBY_TOGGLE');
+adapter.delObject('command.MUTE_TOGGLE');
+adapter.delObject('command.CHANNEL_UP');
+adapter.delObject('command.CHANNEL_DOWN');
+adapter.delObject('command.OK');
+adapter.delObject('command.EXIT');
+adapter.delObject('command.EPG');
+adapter.delObject('command.MENU');
+adapter.delObject('command.PLAY');
+adapter.delObject('command.PAUSE');
+adapter.delObject('command.REC');
+adapter.delObject('command.STOP');
+adapter.delObject('command.TV');
+adapter.delObject('command.RADIO');
+adapter.delObject('command.UP');
+adapter.delObject('command.DOWN');
+adapter.delObject('command.RIGHT');
+adapter.delObject('command.LEFT');
+adapter.delObject('Message.Text');
+adapter.delObject('Message.Type');
+adapter.delObject('Message.Timeout');
+adapter.delObject('Message.Button-Send');
+adapter.delObject('Message.MESSAGE_ANSWER');
+adapter.delObject('Message.Question_Activ');
+
+adapter.delObject('ALEXA.' + adapter.config.devicename);
+adapter.delObject('command.Button-Config.devicename');
+
+adapter.log.info("lösche enigma2 Buttons");
+}
+else {
+adapter.log.info("erstelle enigma2 Buttons");
+        };
+}
