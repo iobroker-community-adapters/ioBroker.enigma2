@@ -958,3 +958,32 @@ adapter.log.info("erstelle enigma2 Buttons");
         };
 }
 
+//################### Alexa del ###########################
+
+if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
+
+adapter.delObject('Alexa.MUTED');
+adapter.delObject('Alexa.STANDBY');
+
+//adapter.delObject('ALEXA.' + adapter.config.devicename);
+//adapter.delObject('command.Button-Config.devicename');
+
+adapter.log.info("lösche enigma2 Alexa Button");
+}
+else {
+adapter.log.info("erstelle enigma2 Alexa Button");
+};
+//################### HDD1 del ###########################
+if (adapter.config.internalharddisk === 'false' || adapter.config.internalharddisk === false){
+
+adapter.delObject('enigma2.HDD_CAPACITY');
+adapter.delObject('enigma2.HDD_FREE');
+};
+//################### HDD1 del ###########################
+if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false){
+
+adapter.delObject('enigma2.HDD2_CAPACITY');
+adapter.delObject('enigma2.HDD2_FREE');
+};
+
+}
