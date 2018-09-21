@@ -972,5 +972,5 @@ function checkStatus2()
         }
     });
 	
-    setInterval(checkStatus2,8000);
+    setInterval(checkStatus2,30000);
 }
