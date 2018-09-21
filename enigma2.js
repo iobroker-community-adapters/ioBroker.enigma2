@@ -33,7 +33,7 @@ function getResponse (command, deviceId, path, callback){
 		secondharddisk: adapter.config.secondharddisk,
 		webif: adapter.config.webif,
 		buttonscript: adapter.config.buttonscript,
-	        alexa: adapter.config.alexa,
+		alexa: adapter.config.alexa,
         path: path,
         method: 'GET'
     };
@@ -296,6 +296,7 @@ function main() {
         native: {}
     });
 adapter.setState('enigma2-CONNECTION', false );
+
 //######################### Alexa #################################################
 
 if (adapter.config.alexa === 'true' || adapter.config.alexa === true){
@@ -327,6 +328,7 @@ if (adapter.config.alexa === 'true' || adapter.config.alexa === true){
         native: {}
     });	
 };	
+
 //######################## COMMANDS ####################################################	 
 
 if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === true){
@@ -623,6 +625,8 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });
+adapter.setState('Message.Question_Text', 'Text of Message' );
+	
     adapter.setObject('Message.Type', {
         type: 'state',
         common: {
@@ -634,6 +638,8 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });
+adapter.setState('Message.Question_Type', 1 );
+
 	adapter.setObject('Message.Timeout', {
         type: 'state',
         common: {
@@ -645,6 +651,8 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
         },
         native: {}
     });
+adapter.setState('Message.Question_Timeout', 15 );
+		
 		adapter.setObject('Message.Button-Send', {
         type: 'state',
         common: {
@@ -677,6 +685,7 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
     });
 	adapter.setState('Message.Question_Activ', false );
 //#################### ENDE Message ########################
+
 };	
 //####################### STATE ###############################################################	
 	
@@ -979,6 +988,9 @@ adapter.delObject('Message.Button-Send');
 adapter.delObject('Message.MESSAGE_ANSWER');
 adapter.delObject('Message.Question_Activ');
 
+//adapter.delObject('Alexa.MUTED');
+//adapter.delObject('Alexa.STANDBY');
+
 //adapter.delObject('ALEXA.' + adapter.config.devicename);
 //adapter.delObject('command.Button-Config.devicename');
 
@@ -986,9 +998,8 @@ adapter.log.info("lösche enigma2 Buttons");
 }
 else {
 adapter.log.info("erstelle enigma2 Buttons");
-        };
-}
-
+};
+		
 //################### Alexa del ###########################
 
 if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
@@ -1018,3 +1029,4 @@ adapter.delObject('enigma2.HDD2_FREE');
 };
 
 }
+
