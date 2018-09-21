@@ -384,8 +384,10 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
 	adapter.setObject('command.SET_VOLUME', {
         type: 'state',
         common: {
-            type: 'integer',
+            type: 'number',
             role: 'level.volume',
+			min: 0,
+			max: 100,
 			read:  false,
             write: true
         },
