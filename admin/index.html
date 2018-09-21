@@ -36,6 +36,8 @@
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
+	//Alexa
+		"alexa":                    {"en": "Alexa devices", "de": "Alexa Gräte", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -72,6 +74,7 @@
 		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
 		if (settings.buttonscript === undefined) settings.buttonscript = false;
 		if (settings.webif === undefined) settings.webif = 1;
+		if (settings.alexa === undefined) settings.alexa = false;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -161,6 +164,13 @@
             <td colspan="2"><select id="webif" class="value">
                 <option value="0" class="translate">Dream Webinterface</option>			
                 <option value="1" class="translate">Open Webinterface</option>
+            </select></td>
+        </tr>
+		<tr>
+            <td><label class="translate" for="alexa">alexa</label></td>
+            <td colspan="2"><select id="alexa" class="value">
+                <option value="false" class="translate">no</option>			
+                <option value="true" class="translate">Yes</option>
             </select></td>
         </tr>
 		
