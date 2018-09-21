@@ -62,6 +62,10 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Version
 
+### 0.4.0 (2018-09-21)
+* (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
+* (Matten-Matten)      "enigma2-CONNECTION" wird jetzt alle 30 Sekunden geprüft
+
 ### 0.3.3 (2018-09-20)
 * (Matten-Matten)      Message senden hinzugefügt
 * (Matten-Matten)      Message answer (true/false) hinzugefügt
