@@ -1,5 +1,5 @@
-//################# ENIGMA 2 BUTTON SCRIPT V2.4 #########################################
- console.log('Start ENIGMA 2 BUTTON SCRIPT V2.4 ');
+//################# ENIGMA 2 BUTTON SCRIPT V3.0 #########################################
+ console.log('Start ENIGMA 2 BUTTON SCRIPT V3.0 ');
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
@@ -107,6 +107,52 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
         setStateDelayed(ADAPTER_INSTANZ + ".Message.Text", '', 1500, false);
   }
 });
+//########## ALEXA ######################################
+
+// Alexa MUTE
+on({id: ADAPTER_INSTANZ + ".Alexa.MUTED"/*Alexa.MUTED*/, val: true}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  if (getState(ADAPTER_INSTANZ + ".enigma2.MUTED").val === true) {
+    try {
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',113].join(''))).on("error", function (e) {console.error(e);});
+      //console.log('Ton EIN');
+    } catch (e) { console.error(e); }
+  }
+});
+on({id: ADAPTER_INSTANZ + ".Alexa.MUTED"/*Alexa.MUTED*/, val: false}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  if (getState(ADAPTER_INSTANZ + ".enigma2.MUTED").val === false) {
+    try {
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',113].join(''))).on("error", function (e) {console.error(e);});
+      //console.log('Ton AUS');
+    } catch (e) { console.error(e); }
+  }
+});
+
+// Alexa Standby 
+on({id: ADAPTER_INSTANZ + ".Alexa.STANDBY"/*Alexa.STANDBY*/, val: true}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  if (getState(ADAPTER_INSTANZ + ".enigma2.STANDBY").val === true) {
+    try {
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',116].join(''))).on("error", function (e) {console.error(e);});
+      console.log('TV EIN');
+    } catch (e) { console.error(e); }
+  }
+});
+on({id: ADAPTER_INSTANZ + ".Alexa.STANDBY"/*Alexa.STANDBY*/, val: false}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  if (getState(ADAPTER_INSTANZ + ".enigma2.STANDBY").val === false) {
+    try {
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',116].join(''))).on("error", function (e) {console.error(e);});
+      console.log('TV AUS');
+    } catch (e) { console.error(e); }
+  }
+});
+
 // Box Standby
 on({id: ADAPTER_INSTANZ + ".command.STANDBY_TOGGLE"/*command.STANDBY_TOGGLE*/, change: "any"}, function (obj) {
   var value = obj.state.val;
