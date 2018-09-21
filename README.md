@@ -62,8 +62,9 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ## Version
 
-### 0.4.0 (2018-09-21)
+### 0.4.1 (2018-09-21)
 * (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
+* (Matten-Matten)      Alexa (Mute,Standby)
 
 
 ### 0.3.3 (2018-09-20)
