@@ -948,8 +948,8 @@ adapter.delObject('Message.Button-Send');
 adapter.delObject('Message.MESSAGE_ANSWER');
 adapter.delObject('Message.Question_Activ');
 
-adapter.delObject('ALEXA.' + adapter.config.devicename);
-adapter.delObject('command.Button-Config.devicename');
+//adapter.delObject('ALEXA.' + adapter.config.devicename);
+//adapter.delObject('command.Button-Config.devicename');
 
 adapter.log.info("lösche enigma2 Buttons");
 }
