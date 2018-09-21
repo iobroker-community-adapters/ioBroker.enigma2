@@ -21,7 +21,6 @@ const adapter = utils.adapter('enigma2');
 adapter.on('ready', function () {
     main();
     deleteObject();
-    checkStatus2();
 });
 
 
@@ -959,18 +958,3 @@ adapter.log.info("erstelle enigma2 Buttons");
         };
 }
 
-
-function checkStatus2() 
-{
-    ping.sys.probe(adapter.config.IPAddress, function(isAlive){
-        if (isAlive) {
-			adapter.log.debug("enigma2 Verbunden!");
-			adapter.setState('enigma2-CONNECTION', true );
-        } else {
-            		adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
-			adapter.setState('enigma2-CONNECTION', false );
-        }
-    });
-	
-    setInterval(checkStatus2,30000);
-}
