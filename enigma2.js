@@ -33,6 +33,7 @@ function getResponse (command, deviceId, path, callback){
 		secondharddisk: adapter.config.secondharddisk,
 		webif: adapter.config.webif,
 		buttonscript: adapter.config.buttonscript,
+	        alexa: adapter.config.alexa,
         path: path,
         method: 'GET'
     };
@@ -295,7 +296,37 @@ function main() {
         native: {}
     });
 adapter.setState('enigma2-CONNECTION', false );
+//######################### Alexa #################################################
 
+if (adapter.config.alexa === 'true' || adapter.config.alexa === true){
+	
+	//STANDBY
+    adapter.setObject('Alexa.MUTED', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'switch',
+			desc: 'Alexa Comando',
+			def: false,
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
+	//STANDBY
+	adapter.setObject('Alexa.STANDBY', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'switch',
+			desc: 'Alexa Comando',
+			def: false,
+			read:  true,
+            write: true
+        },
+        native: {}
+    });	
+};	
 //######################## COMMANDS ####################################################	 
 
 if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === true){
