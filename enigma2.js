@@ -228,8 +228,8 @@ function checkStatus()
 {
     ping.sys.probe(adapter.config.IPAddress, function(isAlive){
         if (isAlive) {
-			//adapter.log.debug("enigma2 Verbunden!");
-			//adapter.setState('enigma2-CONNECTION', true );
+			adapter.log.debug("enigma2 Verbunden!");
+			adapter.setState('enigma2-CONNECTION', true );
 			getResponse ("MESSAGEANSWER", 1, "/web/messageanswer?getanswer=now", evaluateCommandResponse);
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
@@ -237,8 +237,8 @@ function checkStatus()
 			getResponse ("GETCURRENT", 1, "/web/getcurrent", evaluateCommandResponse);
 			getResponse ("DEVICEINFO", 1, "/web/deviceinfo", evaluateCommandResponse);
         } else {
-            		//adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
-			//adapter.setState('enigma2-CONNECTION', false );
+            		adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
+			adapter.setState('enigma2-CONNECTION', false );
 			// Werte aus Adapter löschen
 			adapter.setState('enigma2.BOX_IP', "" );
 			adapter.setState('enigma2.CHANNEL', "" );
