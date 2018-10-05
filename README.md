@@ -64,7 +64,8 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
-* (Matten-Matten)      Button BUTTON SCRIPT auf V3.1 angepasst (https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND)
+* (Matten-Matten)      Button BUTTON SCRIPT auf V3.1 angepasst
+                       (https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND)
 
 ### 0.4.1 (2018-09-21)
 * (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
