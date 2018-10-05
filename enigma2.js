@@ -998,14 +998,9 @@ adapter.delObject('command.OK');
 adapter.delObject('command.EXIT');
 adapter.delObject('command.EPG');
 adapter.delObject('command.MENU');
-/*
-if (adapter.config.webif === '1' || adapter.config.webif === 1){
 adapter.delObject('command.PLAY');
 adapter.delObject('command.PAUSE');
-} else {
 adapter.delObject('command.PLAY-PAUSE');
-};
-*/
 adapter.delObject('command.REC');
 adapter.delObject('command.STOP');
 adapter.delObject('command.TV');
@@ -1027,10 +1022,10 @@ adapter.delObject('Message.Question_Activ');
 //adapter.delObject('ALEXA.' + adapter.config.devicename);
 //adapter.delObject('command.Button-Config.devicename');
 
-adapter.log.info("lösche enigma2 Button");
+//adapter.log.info("lösche enigma2 Button");
 }
 else {
-adapter.log.info("erstelle enigma2 Button");
+//adapter.log.info("erstelle enigma2 Button");
 };
 		
 //################### Alexa del ###########################
@@ -1043,10 +1038,10 @@ adapter.delObject('Alexa.STANDBY');
 //adapter.delObject('ALEXA.' + adapter.config.devicename);
 //adapter.delObject('command.Button-Config.devicename');
 
-adapter.log.info("lösche enigma2 Alexa Button");
+//adapter.log.info("lösche enigma2 Alexa Button");
 }
 else {
-adapter.log.info("erstelle enigma2 Alexa Button");
+//adapter.log.info("erstelle enigma2 Alexa Button");
 };
 //################### HDD1 del ###########################
 if (adapter.config.internalharddisk === 'false' || adapter.config.internalharddisk === false){
