@@ -501,7 +501,12 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
             write: true
         },
         native: {}
-    });		
+    });	
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+
+if (adapter.config.webif === '1' || adapter.config.webif === 1){
+	
 	//PLAY
 	adapter.setObject('command.PLAY', {
         type: 'state',
@@ -523,7 +528,29 @@ adapter.setState('command.Button-Config.Webif', adapter.config.webif );
             write: true
         },
         native: {}
-    });		
+    });	
+	
+//adapter.delObject('command.PLAY-PAUSE');
+
+} else {
+	//PLAY-PAUSE
+	adapter.setObject('command.PLAY-PAUSE', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'button.play',
+			read:  false,
+            write: true
+        },
+        native: {}
+    });	
+	
+//adapter.delObject('command.PLAY');
+//adapter.delObject('command.PAUSE');	
+
+};	
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	//REC
 	adapter.setObject('command.REC', {
         type: 'state',
@@ -971,8 +998,14 @@ adapter.delObject('command.OK');
 adapter.delObject('command.EXIT');
 adapter.delObject('command.EPG');
 adapter.delObject('command.MENU');
+/*
+if (adapter.config.webif === '1' || adapter.config.webif === 1){
 adapter.delObject('command.PLAY');
 adapter.delObject('command.PAUSE');
+} else {
+adapter.delObject('command.PLAY-PAUSE');
+};
+*/
 adapter.delObject('command.REC');
 adapter.delObject('command.STOP');
 adapter.delObject('command.TV');
@@ -994,10 +1027,10 @@ adapter.delObject('Message.Question_Activ');
 //adapter.delObject('ALEXA.' + adapter.config.devicename);
 //adapter.delObject('command.Button-Config.devicename');
 
-adapter.log.info("lösche enigma2 Buttons");
+adapter.log.info("lösche enigma2 Button");
 }
 else {
-adapter.log.info("erstelle enigma2 Buttons");
+adapter.log.info("erstelle enigma2 Button");
 };
 		
 //################### Alexa del ###########################
@@ -1021,12 +1054,19 @@ if (adapter.config.internalharddisk === 'false' || adapter.config.internalharddi
 adapter.delObject('enigma2.HDD_CAPACITY');
 adapter.delObject('enigma2.HDD_FREE');
 };
-//################### HDD1 del ###########################
+//################### HDD2 del ###########################
 if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false){
 
 adapter.delObject('enigma2.HDD2_CAPACITY');
 adapter.delObject('enigma2.HDD2_FREE');
 };
+//################### PLAY PAUSE del #####################
 
+if (adapter.config.webif === '1' || adapter.config.webif === 1){
+adapter.delObject('command.PLAY-PAUSE');
+} else {
+adapter.delObject('command.PLAY');
+adapter.delObject('command.PAUSE');
+};
 }
 
