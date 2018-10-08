@@ -1,5 +1,5 @@
-//################# ENIGMA 2 BUTTON SCRIPT V3.1 #########################################
- console.log('Start ENIGMA 2 BUTTON SCRIPT V3.1 ');
+//################# ENIGMA 2 BUTTON SCRIPT V3.2 #########################################
+ console.log('Start ENIGMA 2 BUTTON SCRIPT V3.2 ');
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
@@ -278,7 +278,7 @@ on({id: ADAPTER_INSTANZ + ".command.PLAY-PAUSE"/*command.PLAY-PAUSE*/, change: "
   var oldValue = obj.oldState.val;
   if (ADAPTER === true) {
     try {
-      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',164].join(''))).on("error", function (e) {console.error(e);});
+      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/remotecontrol?command=',207,'&rcu=advanced'].join(''))).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
   }
 });
