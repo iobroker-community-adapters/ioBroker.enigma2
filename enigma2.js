@@ -344,7 +344,7 @@ if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === tr
         native: {}
     });
 	
-adapter.setState('command.Button-Config.Port', true );
+adapter.setState('command.Button-Config.Port', adapter.config.Port, true );
 
 //adapter.config.IPAddress
     adapter.setObject('command.Button-Config.IP', {
