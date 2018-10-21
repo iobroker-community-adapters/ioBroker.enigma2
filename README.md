@@ -53,19 +53,27 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - command.UP
 
 ## Message
+ - ANSWER_IS              = MESSAGE ANSWER, and clear after 8 sec.
  - Message.Button-Send    = Send the Message
  - Message.Text           = Text of Message
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
- - MESSAGE_ANSWER         = If answer = "yes", "MESSAGE_ANSWER" is set to true
+ - MESSAGE_ANSWER         = If answer = "yes or no", "MESSAGE_ANSWER" is set to true
  - Message.Question_Activ = If an question is activ
 
 ## Version
 
+
+### 0.4.3 (2018-10-21)
+* (Matten-Matten)      Nicht bestätigte Werte und zustände (rot angezeigt) angepasst
+* (Matten-Matten)      Message um ein Objekt erweitert "ANSWER_IS"
+* (Matten-Matten)      Button BUTTON SCRIPT auf V3.4 angepasst
+                       (https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND)
+
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.1 angepasst
-                       (https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND)
+
 
 ### 0.4.1 (2018-09-21)
 * (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
