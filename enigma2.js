@@ -652,7 +652,7 @@ if (adapter.config.webif === '1' || adapter.config.webif === 1){
         },
         native: {}
     });
-adapter.setState('Message.Question_Text', 'Text of Message', true );
+adapter.setState('Message.Text', 'Text of Message', true );
 	
     adapter.setObject('Message.Type', {
         type: 'state',
