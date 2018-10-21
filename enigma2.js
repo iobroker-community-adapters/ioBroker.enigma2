@@ -259,6 +259,7 @@ function checkStatus()
 			adapter.setState('enigma2.VOLUME', "" );
 			adapter.setState('enigma2.WEB_IF_VERSION', "" );
 			adapter.setState('Message.MESSAGE_ANSWER', false, true );
+			adapter.setState('Message.ANSWER_IS', "" );
         }
     });
 }
@@ -702,6 +703,16 @@ adapter.setState('Message.Timeout', 15, true );
         },
         native: {}
     });
+	     adapter.setObject('Message.ANSWER_IS', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+			read:  true,
+            write: true
+        },
+        native: {}
+    });
 		adapter.setObject('Message.Question_Activ', {
         type: 'state',
         common: {
@@ -1016,6 +1027,7 @@ adapter.delObject('Message.Type');
 adapter.delObject('Message.Timeout');
 adapter.delObject('Message.Button-Send');
 adapter.delObject('Message.MESSAGE_ANSWER');
+adapter.delObject('Message.ANSWER_IS');
 adapter.delObject('Message.Question_Activ');
 
 //adapter.delObject('Alexa.MUTED');
