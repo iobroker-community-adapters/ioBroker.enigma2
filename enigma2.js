@@ -667,7 +667,7 @@ adapter.setState('Message.Text', 'Text of Message', true );
         },
         native: {}
     });
-adapter.setState('Message.Question_Type', 1, true );
+adapter.setState('Message.Type', 1, true );
 
 	adapter.setObject('Message.Timeout', {
         type: 'state',
@@ -680,7 +680,7 @@ adapter.setState('Message.Question_Type', 1, true );
         },
         native: {}
     });
-adapter.setState('Message.Question_Timeout', 15, true );
+adapter.setState('Message.Timeout', 15, true );
 		
 		adapter.setObject('Message.Button-Send', {
         type: 'state',
