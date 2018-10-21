@@ -230,7 +230,7 @@ function checkStatus()
     ping.sys.probe(adapter.config.IPAddress, function(isAlive){
         if (isAlive) {
 			adapter.log.debug("enigma2 Verbunden!");
-			adapter.setState('enigma2-CONNECTION', true );
+			adapter.setState('enigma2-CONNECTION', true, true );
 			getResponse ("MESSAGEANSWER", 1, "/web/messageanswer?getanswer=now", evaluateCommandResponse);
             getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
             getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
@@ -239,7 +239,7 @@ function checkStatus()
 			getResponse ("DEVICEINFO", 1, "/web/deviceinfo", evaluateCommandResponse);
         } else {
             		adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
-			adapter.setState('enigma2-CONNECTION', false );
+			adapter.setState('enigma2-CONNECTION', false, false );
 			// Werte aus Adapter löschen
 			adapter.setState('enigma2.BOX_IP', "" );
 			adapter.setState('enigma2.CHANNEL', "" );
@@ -255,10 +255,10 @@ function checkStatus()
 			adapter.setState('enigma2.PROGRAMM_AFTER', "" );
 			adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "" );
 			adapter.setState('enigma2.PROGRAMM_INFO', "" );
-			adapter.setState('enigma2.STANDBY', true );
+			adapter.setState('enigma2.STANDBY', true, true );
 			adapter.setState('enigma2.VOLUME', "" );
 			adapter.setState('enigma2.WEB_IF_VERSION', "" );
-			adapter.setState('Message.MESSAGE_ANSWER', false );
+			adapter.setState('Message.MESSAGE_ANSWER', false, true );
         }
     });
 }
@@ -295,7 +295,7 @@ function main() {
         },
         native: {}
     });
-adapter.setState('enigma2-CONNECTION', false );
+adapter.setState('enigma2-CONNECTION', false, true );
 
 //######################### Alexa #################################################
 
@@ -344,7 +344,7 @@ if (adapter.config.buttonscript === 'true' || adapter.config.buttonscript === tr
         native: {}
     });
 	
-adapter.setState('command.Button-Config.Port', adapter.config.Port );
+adapter.setState('command.Button-Config.Port', true );
 
 //adapter.config.IPAddress
     adapter.setObject('command.Button-Config.IP', {
@@ -358,7 +358,7 @@ adapter.setState('command.Button-Config.Port', adapter.config.Port );
         native: {}
     });
 	
-adapter.setState('command.Button-Config.IP', adapter.config.IPAddress );
+adapter.setState('command.Button-Config.IP', adapter.config.IPAddress, true );
 //adapter.config.Username
     adapter.setObject('command.Button-Config.USER', {
         type: 'state',
@@ -371,7 +371,7 @@ adapter.setState('command.Button-Config.IP', adapter.config.IPAddress );
         native: {}
     });
 	
-adapter.setState('command.Button-Config.USER', adapter.config.Username );
+adapter.setState('command.Button-Config.USER', adapter.config.Username, true );
 
 //adapter.config.Password
     adapter.setObject('command.Button-Config.PW', {
@@ -385,7 +385,7 @@ adapter.setState('command.Button-Config.USER', adapter.config.Username );
         native: {}
     });
 	
-adapter.setState('command.Button-Config.PW', adapter.config.Password );
+adapter.setState('command.Button-Config.PW', adapter.config.Password, true );
 
 //adapter.config.webif
     adapter.setObject('command.Button-Config.Webif', {
@@ -399,7 +399,7 @@ adapter.setState('command.Button-Config.PW', adapter.config.Password );
         native: {}
     });
 	
-adapter.setState('command.Button-Config.Webif', adapter.config.webif );
+adapter.setState('command.Button-Config.Webif', adapter.config.webif, true );
 //######################################################################################
 	//SET_VOLUME
 	adapter.setObject('command.SET_VOLUME', {
@@ -652,7 +652,7 @@ if (adapter.config.webif === '1' || adapter.config.webif === 1){
         },
         native: {}
     });
-adapter.setState('Message.Question_Text', 'Text of Message' );
+adapter.setState('Message.Question_Text', 'Text of Message', true );
 	
     adapter.setObject('Message.Type', {
         type: 'state',
@@ -660,12 +660,14 @@ adapter.setState('Message.Question_Text', 'Text of Message' );
             type: 'number',
             role: 'level',
 			desc: 'messagetype=Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention',
+			min: 0,
+			max: 3,
 			read:  true,
             write: true
         },
         native: {}
     });
-adapter.setState('Message.Question_Type', 1 );
+adapter.setState('Message.Question_Type', 1, true );
 
 	adapter.setObject('Message.Timeout', {
         type: 'state',
@@ -678,7 +680,7 @@ adapter.setState('Message.Question_Type', 1 );
         },
         native: {}
     });
-adapter.setState('Message.Question_Timeout', 15 );
+adapter.setState('Message.Question_Timeout', 15, true );
 		
 		adapter.setObject('Message.Button-Send', {
         type: 'state',
@@ -710,7 +712,7 @@ adapter.setState('Message.Question_Timeout', 15 );
         },
         native: {}
     });
-	adapter.setState('Message.Question_Activ', false );
+	adapter.setState('Message.Question_Activ', false, true );
 //#################### ENDE Message ########################
 
 };	
