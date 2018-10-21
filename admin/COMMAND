@@ -1,5 +1,5 @@
-//################# ENIGMA 2 BUTTON SCRIPT V3.3 #########################################
- console.log('Start ENIGMA 2 BUTTON SCRIPT V3.3 ');
+//################# ENIGMA 2 BUTTON SCRIPT V3.4 #########################################
+ console.log('Start ENIGMA 2 BUTTON SCRIPT V3.4 ');
 //
 // -> https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
 //
@@ -35,6 +35,7 @@ var ADAPTER_INSTANZ = 'enigma2.0';//            ##
 //### AB HIER NIX VERÄNDERN #############################################################
 //
 var WEBINTERFACE, EXIT, STATE, MENU, RADIO, ADAPTER, IP, TV, PORT, VOL, USER, PW;
+var result;
 //getState("enigma2.0.command.Button-Config.IP").val
 
 IP = getState(ADAPTER_INSTANZ + ".command.Button-Config.IP").val;
@@ -82,6 +83,20 @@ on({id: "system.adapter." + ADAPTER_INSTANZ + ".alive"/*ADAPTER_INSTANZ + .alive
     ADAPTER = false;
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Message +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+on({id: ADAPTER_INSTANZ + ".Message.Timeout"/*Message.Timeout*/, change: "ne"}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  setState(ADAPTER_INSTANZ + ".Message.Timeout"/*Message.Timeout*/, (obj.state ? obj.state.val : ""), true);
+});
+on({id: ADAPTER_INSTANZ + ".Message.Type"/*Message.Type*/, change: "ne"}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  setState(ADAPTER_INSTANZ + ".Message.Type"/*Message.Type*/, (obj.state ? obj.state.val : ""), true);
+});
+
 // Message
 var MTEXT, MTYPE, MTIMEOUT;
 
@@ -92,24 +107,38 @@ on({id: ADAPTER_INSTANZ + ".Message.Button-Send"/*Message.Button-Send*/, change:
   MTYPE = getState(ADAPTER_INSTANZ + ".Message.Type").val;
   MTIMEOUT = getState(ADAPTER_INSTANZ + ".Message.Timeout").val;
   if (ADAPTER === true) {
+      
     try {
-    //  require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/message?text=',MTEXT,'&type=',MTYPE,'&timeout=',MTIMEOUT].join(''))).on("error", function (e) {console.error(e);});
-      require("request")('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT).on("error", function (e) {console.error(e);});
+        
+    require("request")(('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT), function (error, response, result) {
+      if ((function (){var val = result; if (val === 'true') return true; if (val === 'false') return false; return !!val;})() === true) {
+      console.log((String('Message gesendet = ') + String((function (){var val = result; if (val === 'true') return true; if (val === 'false') return false; return !!val;})())));
+            setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, 'Message erfolgreich gesendet', true);
+            setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, '', 4000, true);
+        }
+    }).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
-    //console.log('http://' + USER + ':****@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
-    //console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
-    if (MTYPE === 0) 
-    {
-        // if (MTIMEOUT > 0) 
-          //  {
-              setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", true, 1500, false);
-           // }    
-        setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", false, parseFloat(MTIMEOUT) * 1000, false);
-    }
-        setStateDelayed(ADAPTER_INSTANZ + ".Message.Text", '', 1500, false);
+    console.debug('http://' + USER + ':' + PW + '@' + IP + ':' + PORT + '/web/message?text=' + MTEXT + '&type=' + MTYPE + '&timeout=' + MTIMEOUT);
+  //setStateDelayed(ADAPTER_INSTANZ + ".Message.Text"/*Message.Text*/, '', 1500, false);
+            if (MTYPE === 0) 
+            {
+                setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", true, true, 1500, false);
+                setStateDelayed(ADAPTER_INSTANZ + ".Message.Question_Activ", false, true, (parseFloat(MTIMEOUT) * 1000), false);
+            }
   }
 });
-//########## ALEXA ######################################
+
+/*Message.ANSWER_IS*/
+on({id: ADAPTER_INSTANZ + ".Message.MESSAGE_ANSWER"/*Message.MESSAGE_ANSWER*/, change: "ne"}, function (obj) {
+  var value = obj.state.val;
+  var oldValue = obj.oldState.val;
+  if ((obj.state ? obj.state.val : "") === true && getState(ADAPTER_INSTANZ + ".Message.Question_Activ").val === true) {
+    setState("enigma2.0.Message.ANSWER_IS"/*Message.ANSWER_IS*/, getState(ADAPTER_INSTANZ + ".enigma2.MESSAGE_ANSWER").val, true);
+    setStateDelayed(ADAPTER_INSTANZ + ".Message.ANSWER_IS"/*Message.ANSWER_IS*/, '', true, 8000, false);
+  }
+});
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ALEXA +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 // Alexa MUTE
 on({id: ADAPTER_INSTANZ + ".Alexa.MUTED"/*Alexa.MUTED*/, val: true}, function (obj) {
@@ -155,6 +184,8 @@ on({id: ADAPTER_INSTANZ + ".Alexa.STANDBY"/*Alexa.STANDBY*/, val: false}, functi
   }
 });
 
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STANDBY_TOGGLE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // Box Standby
 on({id: ADAPTER_INSTANZ + ".command.STANDBY_TOGGLE"/*command.STANDBY_TOGGLE*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -165,6 +196,9 @@ on({id: ADAPTER_INSTANZ + ".command.STANDBY_TOGGLE"/*command.STANDBY_TOGGLE*/, c
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SET_VOLUME +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // VOLUME
 on({id: ADAPTER_INSTANZ + ".command.SET_VOLUME"/*command.SET_VOLUME*/, change: "ne"}, function (obj) {
   var value = obj.state.val;
@@ -172,10 +206,18 @@ on({id: ADAPTER_INSTANZ + ".command.SET_VOLUME"/*command.SET_VOLUME*/, change: "
   if (ADAPTER === true) {
     VOL = getState(ADAPTER_INSTANZ + ".command.SET_VOLUME").val;
     try {
-      require("request")((['http://',USER,':',PW,'@',IP,':',PORT,'/web/vol?set=set',Math.round(VOL)].join(''))).on("error", function (e) {console.error(e);});
+      require("request")(((['http://',USER,':',PW,'@',IP,':',PORT,'/web/vol?set=set',Math.round(VOL)].join(''))), function (error, response, result) {
+      if ((function (){var val = result; if (val === 'true') return true; if (val === 'false') return false; return !!val;})() === true) {
+      console.log((String('Volume set on ',VOL,' = ') + String((function (){var val = result; if (val === 'true') return true; if (val === 'false') return false; return !!val;})())));
+      setStateDelayed(ADAPTER_INSTANZ + ".command.SET_VOLUME", VOL, true);
+    }
+    }).on("error", function (e) {console.error(e);});
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   MUTE   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // MUTE
 on({id: ADAPTER_INSTANZ + ".command.MUTE_TOGGLE"/*command.MUTE_TOGGLE*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -186,6 +228,9 @@ on({id: ADAPTER_INSTANZ + ".command.MUTE_TOGGLE"/*command.MUTE_TOGGLE*/, change:
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CHANNEL_UP +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // CHANNEL_UP
 on({id: ADAPTER_INSTANZ + ".command.CHANNEL_UP"/*command.CHANNEL_UP*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -196,6 +241,9 @@ on({id: ADAPTER_INSTANZ + ".command.CHANNEL_UP"/*command.CHANNEL_UP*/, change: "
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CHANNEL_DOWN +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // CHANNEL_DOWN
 on({id: ADAPTER_INSTANZ + ".command.CHANNEL_DOWN"/*command.CHANNEL_DOWN*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -206,6 +254,9 @@ on({id: ADAPTER_INSTANZ + ".command.CHANNEL_DOWN"/*command.CHANNEL_DOWN*/, chang
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++    OK    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // OK
 on({id: ADAPTER_INSTANZ + ".command.OK"/*command.OK*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -216,6 +267,9 @@ on({id: ADAPTER_INSTANZ + ".command.OK"/*command.OK*/, change: "any"}, function 
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   DOWN   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // DOWN
 on({id: ADAPTER_INSTANZ + ".command.DOWN"/*command.DOWN*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -226,6 +280,9 @@ on({id: ADAPTER_INSTANZ + ".command.DOWN"/*command.DOWN*/, change: "any"}, funct
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   EPG    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // EPG
 on({id: ADAPTER_INSTANZ + ".command.EPG"/*command.EPG*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -236,6 +293,9 @@ on({id: ADAPTER_INSTANZ + ".command.EPG"/*command.EPG*/, change: "any"}, functio
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   EXIT   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // EXIT
 on({id: ADAPTER_INSTANZ + ".command.EXIT"/*command.EXIT*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -248,6 +308,9 @@ on({id: ADAPTER_INSTANZ + ".command.EXIT"/*command.EXIT*/, change: "any"}, funct
     console.warn('DER RECEIVER IST AUS!');
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   LEFT   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // LEFT
 on({id: ADAPTER_INSTANZ + ".command.LEFT"/*command.LEFT*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -258,6 +321,9 @@ on({id: ADAPTER_INSTANZ + ".command.LEFT"/*command.LEFT*/, change: "any"}, funct
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++   MENU   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // MENU
 on({id: ADAPTER_INSTANZ + ".command.MENU"/*command.MENU*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -270,7 +336,9 @@ on({id: ADAPTER_INSTANZ + ".command.MENU"/*command.MENU*/, change: "any"}, funct
     console.warn('DER RECEIVER IST AUS!');
   }
 });
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PLAY PAUSE STOP +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 if (WEBINTERFACE === '0') {    
 // PLAY-PAUSE
 on({id: ADAPTER_INSTANZ + ".command.PLAY-PAUSE"/*command.PLAY-PAUSE*/, change: "any"}, function (obj) {
@@ -324,7 +392,9 @@ on({id: ADAPTER_INSTANZ + ".command.STOP"/*command.STOP*/, change: "any"}, funct
   }
 });
 }
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++  RADIO  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // RADIO
 on({id: ADAPTER_INSTANZ + ".command.RADIO"/*command.RADIO*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -337,6 +407,9 @@ on({id: ADAPTER_INSTANZ + ".command.RADIO"/*command.RADIO*/, change: "any"}, fun
     console.warn('DER RECEIVER IST AUS!');
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++          +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // REC
 on({id: ADAPTER_INSTANZ + ".command.REC"/*command.REC*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -347,6 +420,9 @@ on({id: ADAPTER_INSTANZ + ".command.REC"/*command.REC*/, change: "any"}, functio
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++  RIGHT  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // RIGHT
 on({id: ADAPTER_INSTANZ + ".command.RIGHT"/*command.RIGHT*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -357,6 +433,9 @@ on({id: ADAPTER_INSTANZ + ".command.RIGHT"/*command.RIGHT*/, change: "any"}, fun
     } catch (e) { console.error(e); }
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++     TV    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // TV
 on({id: ADAPTER_INSTANZ + ".command.TV"/*command.TV*/, change: "any"}, function (obj) {
   var value = obj.state.val;
@@ -369,6 +448,9 @@ on({id: ADAPTER_INSTANZ + ".command.TV"/*command.TV*/, change: "any"}, function 
     console.warn('DER RECEIVER IST AUS!');
   }
 });
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++    UP     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 // UP
 on({id: ADAPTER_INSTANZ + ".command.UP"/*command.UP*/, change: "any"}, function (obj) {
   var value = obj.state.val;
