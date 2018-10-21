@@ -706,7 +706,7 @@ adapter.setState('Message.Timeout', 15, true );
 	     adapter.setObject('Message.ANSWER_IS', {
         type: 'state',
         common: {
-            type: 'boolean',
+            type: 'string',
             role: 'state',
 			read:  true,
             write: true
