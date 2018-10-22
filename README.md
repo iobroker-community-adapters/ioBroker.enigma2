@@ -1,7 +1,8 @@
 ![Logo](admin/enigma2.png)
 ioBroker enigma2 Adapter
 ==============
-Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
+Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
+(DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 
 
 ## Funktionen
@@ -27,10 +28,7 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 
 - enigma2-CONNECTION
 
-## ab V 0.2.2  (nur in Verbindung mit folgenden Script)
- https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND
- Dieses JAVA script muss im SCRIPT ADAPTER (Script Engine) angelegt, konfiguriert gespeichert und gestartet werden.
-
+## Command
 - command.CHANNEL_DOWN
 - command.CHANNEL_UP
 - command.DOWN
@@ -45,6 +43,7 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - command.PLAY
 - command.RADIO
 - command.REC
+- command.REMOTE-CONTROL
 - command.RIGHT
 - command.SET_VOLUME
 - command.STANDBY_TOGGLE
@@ -53,22 +52,25 @@ Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen.
 - command.UP
 
 ## Message
- - ANSWER_IS              = MESSAGE ANSWER, and clear after 8 sec.
- - Message.Button-Send    = Send the Message
- - Message.Text           = Text of Message
+ - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
- - MESSAGE_ANSWER         = If answer = "yes or no", "MESSAGE_ANSWER" is set to true
- - Message.Question_Activ = If an question is activ
-
+ 
+ 
+ 
 ## Version
+
+### 1.0.0 (2018-10-23)
+* (Matten-Matten)      add command.REMOTE-CONTROL
+* (Matten-Matten)      Message optimized
+* (Matten-Matten)      Command-Button integrated (no extra script needed!)
 
 
 ### 0.4.3 (2018-10-21)
 * (Matten-Matten)      Nicht bestätigte Werte und zustände (rot angezeigt) angepasst
 * (Matten-Matten)      Message um ein Objekt erweitert "ANSWER_IS"
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.4 angepasst
-                       (https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/COMMAND)
+                       
 
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
