@@ -751,7 +751,17 @@ if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk ==
 
 
 function deleteObject () {
-		
+//old only in V1.0.0
+adapter.delObject('command.Button-Config.USER');
+adapter.delObject('command.Button-Config.PW');
+adapter.delObject('command.Button-Config.Webif');
+adapter.delObject('command.Button-Config.Port');
+adapter.delObject('command.Button-Config.IP');
+adapter.delObject('Message.Button-Send');
+adapter.delObject('Message.MESSAGE_ANSWER');
+adapter.delObject('Message.ANSWER_IS');
+adapter.delObject('Message.Question_Activ');	
+	
 //################### Alexa del ###########################
 
 if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
