@@ -1,8 +1,8 @@
 ![Logo](admin/enigma2.png)
 ioBroker enigma2 Adapter
 ==============
-Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
-(DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
+- Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
+- (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 
 
 ## Funktionen
