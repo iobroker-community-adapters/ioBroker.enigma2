@@ -761,10 +761,14 @@ adapter.delObject('Message.Button-Send');
 adapter.delObject('Message.MESSAGE_ANSWER');
 adapter.delObject('Message.ANSWER_IS');
 adapter.delObject('Message.Question_Activ');	
+adapter.delObject('command.PLAY');
+adapter.delObject('command.PAUSE');
+adapter.delObject('Alexa.MUTED');
+adapter.delObject('Alexa.STANDBY');	
 	
 //################### Alexa del ###########################
 
-if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
+/*if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
 	
 adapter.delObject('Alexa.MUTED');
 adapter.delObject('Alexa.STANDBY');
@@ -772,7 +776,7 @@ adapter.delObject('Alexa.STANDBY');
 }
 else {
 //adapter.log.info("erstelle enigma2 Alexa Button");
-};
+};*/
 //################### HDD1 del ###########################
 if (adapter.config.internalharddisk === 'false' || adapter.config.internalharddisk === false){
 
