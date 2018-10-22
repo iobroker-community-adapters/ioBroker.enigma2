@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "0.4.3",
+        "version":                  "1.0.0",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
@@ -11,8 +11,8 @@
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/ioBroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
-		"materialize":              true,
-		"authors": 					[ "Matten-Matten <matten-matten@web.de>" ],
+	"materialize":              true,
+	"authors": 		    [ "Matten-Matten <matten-matten@web.de>" ],
         "type":                     "multimedia"
     },
     "native": {
@@ -20,14 +20,240 @@
         "Port": "80",
         "Username": "root",
         "Password": "dreambox",
-	"BOXWLAN": false,
 	"internalharddisk": false,
-	"secondharddisk": false,
-	"buttonscript": false,
-	"webif": 1,
         "PollingInterval": 5000
     },
     "objects": [
 
+    ],
+    "instanceObjects": [
+		{
+            "_id":  "command.REMOTE-CONTROL",
+            "type": "state",
+            "common": {
+                "role":  "state",
+                "name":  "enigma2 send remote control command as number",
+                "type":  "number",
+                "read":  true,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.SET_VOLUME",
+            "type": "state",
+            "common": {
+                "role":  "level.volume",
+                "name":  "SET VOLUME",
+                "type":  "number",
+				"min":	 0,
+				"max":   100,
+                "read":  true,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.STANDBY_TOGGLE",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "toggle to Standby",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.MUTE_TOGGLE",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "toggle to Mute/Unmute",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.CHANNEL_UP",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "CHANNEL UP",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.CHANNEL_DOWN",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "CHANNEL DOWN",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.OK",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "OK Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.EXIT",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "EXIT Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.EPG",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "EPG Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.MENU",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "MENU Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.PLAY_PAUSE",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "PLAY-PAUSE Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.REC",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "REC. Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.STOP",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "STOP Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.TV",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "TV Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.RADIO",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "RADIO Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.UP",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "UP Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command.DOWN",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "DOWN Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },{
+            "_id":  "command.RIGHT",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "RIGHT Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },{
+            "_id":  "command.LEFT",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "LEFT Button",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        }
     ]
 }
