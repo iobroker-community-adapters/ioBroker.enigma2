@@ -135,6 +135,4 @@ ioBroker enigma2 Adapter
 ### 0.0.5 (2017-09-18)
 * (Matten-Matten) add grafische Optimierung der Adapterkonfiguration
 
-## issues
-* kein Senden von Befehlen aus dem Adapter heraus.
 
