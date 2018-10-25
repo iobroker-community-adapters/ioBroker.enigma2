@@ -50,9 +50,10 @@ var PATH_ABOUT          = '/web/about';
 var PATH_GET_CURRENT    = '/web/getcurrent';
 var PATH_POWERSTATE     = '/web/powerstate';
 var PATH_MESSAGE		= '/web/message?text=';
-var PATH_MESSAGE_TYPE	= '1';
-var PATH_MESSAGE_TIMEOUT = '10';
-
+var PATH_DELETE			= '/web/timerdelete?sRef=';
+var PATH_TIMER_TOGGLE	= '/api/timertogglestatus?sRef=';
+var PATH_TIMERLIST  	= '/web/timerlist';
+var IP_CHECK          	= '/web/about';
 
 var commands = {
     CHANNEL_DOWN:	CMD_CHANNEL_DOWN,
@@ -92,7 +93,7 @@ adapter.on('stateChange', function (id, state) {
         }
 	}
 });
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++ enigma2.Update
 adapter.on('stateChange', function (id, state) {
     if (id && state && !state.ack) {
         var parts = id.split('.');
@@ -104,12 +105,31 @@ adapter.on('stateChange', function (id, state) {
                 }
             });
         } else
+        if (id === adapter.namespace + '.Timer.Update') {
+			getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+			adapter.log.debug("Timer manuell aktualisiert");
+			adapter.setState('Timer.Update', {val: state.val, ack: true});
+            
+		} else
+        if (id === adapter.namespace + '.enigma2.Update') {
+			getResponse('GETSTANDBY', deviceId, PATH_POWERSTATE,  evaluateCommandResponse);
+			getResponse('MESSAGEANSWER', deviceId, PATH_MESSAGEANSWER,  evaluateCommandResponse);
+            getResponse('GETINFO',    deviceId, PATH_ABOUT,       evaluateCommandResponse);
+            getResponse('GETVOLUME',  deviceId, PATH_VOLUME,      evaluateCommandResponse);
+            getResponse('GETCURRENT', deviceId, PATH_GET_CURRENT, evaluateCommandResponse);	
+			adapter.log.debug("E2 States manuell aktualisiert");
+			adapter.setState('enigma2.Update', {val: state.val, ack: true});
+            
+		} else
         if (id === adapter.namespace + '.enigma2.STANDBY') {
+			getResponse('GETSTANDBY', deviceId, PATH_POWERSTATE,  evaluateCommandResponse);
+			//getResponse('GETINFO',    deviceId, PATH_ABOUT,       evaluateCommandResponse);
+			//getResponse('GETCURRENT', deviceId, PATH_GET_CURRENT, evaluateCommandResponse);
             getResponse('NONE', deviceId, PATH_POWERSTATE + '?newstate=' + (state.val ? 1 : 0), function (error, command, deviceId, xml) {
                 if (!error) {
                     adapter.setState('enigma2.STANDBY', state.val, true);
                 } else {
-                    adapter.setState('enigma2.STANDBY', {val: state.val, ack: true});
+                    adapter.setState('enigma2.STANDBY', {val: state.val, ack: true});	
                 }
             });
         } else if (id === adapter.namespace + '.command.SET_VOLUME') {
@@ -118,6 +138,7 @@ adapter.on('stateChange', function (id, state) {
                     adapter.setState('command.SET_VOLUME', {val: '', ack: true});
                 } else {
                     adapter.setState('command.SET_VOLUME', {val: state.val, ack: true});
+					getResponse('GETVOLUME',  deviceId, PATH_VOLUME, evaluateCommandResponse);
                 }
             });
         } else if (id === adapter.namespace + '.command.REMOTE-CONTROL') {
@@ -140,9 +161,8 @@ adapter.on('stateChange', function (id, state) {
 			adapter.getState('Message.Timeout', function(err, state) {
 				adapter.log.debug('Info Message Type: ' + state.val);
 				var PATH_MESSAGE_TIMEOUT  = state.val;
-
-			//getResponse('NONE', deviceId, PATH_MESSAGE + encodeURIComponent(state.val) + '&type=1&timeout=5', function (error, command, deviceId, xml) {
-            getResponse('NONE', deviceId, PATH_MESSAGE + encodeURIComponent(PATH_MESSAGE_TEXT) + '&type=' + PATH_MESSAGE_TYPE + '&timeout=' + PATH_MESSAGE_TIMEOUT, function (error, command, deviceId, xml) {
+				
+			getResponse('NONE', deviceId, PATH_MESSAGE + encodeURIComponent(PATH_MESSAGE_TEXT) + '&type=' + PATH_MESSAGE_TYPE + '&timeout=' + PATH_MESSAGE_TIMEOUT, function (error, command, deviceId, xml) {
                 if (!error) {
                     adapter.setState('Message.Text', PATH_MESSAGE_TEXT, true);
                 } else {
@@ -151,13 +171,330 @@ adapter.on('stateChange', function (id, state) {
 			});
             });
 			});
-		}
+		} else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
+			adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer0.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer0.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer1.Timer_Toggle') {
+			adapter.getState('Timer.Timer1.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer1.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer1.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer1.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer2.Timer_Toggle') {
+			adapter.getState('Timer.Timer2.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer2.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer2.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer2.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer3.Timer_Toggle') {
+			adapter.getState('Timer.Timer3.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer3.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer3.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer3.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer4.Timer_Toggle') {
+			adapter.getState('Timer.Timer4.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer4.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer4.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer4.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer5.Timer_Toggle') {
+			adapter.getState('Timer.Timer5.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer5.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer5.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer5.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer6.Timer_Toggle') {
+			adapter.getState('Timer.Timer6.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer6.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer6.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer6.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer7.Timer_Toggle') {
+			adapter.getState('Timer.Timer7.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer7.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer7.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer7.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer8.Timer_Toggle') {
+			adapter.getState('Timer.Timer8.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer8.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer8.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer8.Timer_Toggle', state.val, true);
+                } else {
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer0.Delete') {
+			adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer0.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer0.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer0.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer1.Delete') {
+			adapter.getState('Timer.Timer1.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer1.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer1.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer1.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer1.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer2.Delete') {
+			adapter.getState('Timer.Timer2.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer2.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer2.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer2.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer2.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer3.Delete') {
+			adapter.getState('Timer.Timer3.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer3.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer3.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer3.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer3.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer4.Delete') {
+			adapter.getState('Timer.Timer4.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer4.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer4.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer4.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer4.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer5.Delete') {
+			adapter.getState('Timer.Timer5.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer5.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer5.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer5.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer5.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer6.Delete') {
+			adapter.getState('Timer.Timer6.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer6.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer6.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer6.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer6.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer7.Delete') {
+			adapter.getState('Timer.Timer7.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer7.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer7.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer7.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer7.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		} else if (id === adapter.namespace + '.Timer.Timer8.Delete') {
+			adapter.getState('Timer.Timer8.Timer_servicereference', function(err, state) {
+				var T_sRef  = state.val;
+			adapter.getState('Timer.Timer8.Timer_Start', function(err, state) {
+				var T_begin  = state.val;
+			adapter.getState('Timer.Timer8.Timer_End', function(err, state) {
+				var T_end  = state.val;	
+            getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
+                if (!error) {
+                    adapter.setState('Timer.Timer8.Delete', state.val, true);
+                } else {
+                    adapter.setState('Timer.Timer8.Delete', {val: state.val, ack: true});
+					getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);
+                }
+            });
+			});
+			});
+			});  
+		};
     }
 	
 });
 
 adapter.on('ready', function () {
     main();
+	main2();
+	timer();
     deleteObject();
 });
 
@@ -168,9 +505,7 @@ function getResponse (command, deviceId, path, callback){
     var options = {
         host:				adapter.config.IPAddress,
         port:				adapter.config.Port,
-        internalharddisk:	adapter.config.internalharddisk,
-		secondharddisk:		adapter.config.secondharddisk,
-		alexa:				adapter.config.alexa,
+		TimerCheck:			adapter.config.TimerCheck,
         path:				path,
         method:				'GET'
     };
@@ -222,6 +557,20 @@ function parseBool(string){
     }
 }
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+/*function checkIPStatus() 
+{
+    ping.sys.probe(adapter.config.IPAddress, function(isAlive){
+        if (isAlive) {
+			adapter.log.info("mit enigma2 Verbunden!");
+        } else {
+            adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
+        }
+    });
+}*/
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function evaluateCommandResponse (command, deviceId, xml) {
     adapter.log.debug("evaluating response for command '"+command+"': "+JSON.stringify(xml));
@@ -287,51 +636,86 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.EVENTDESCRIPTION', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
-
-//			adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2currentserviceinformation.e2volume[0].e2ismuted), ack: true});
-//			adapter.log.debug("Box Muted:" + parseBool(xml.e2currentserviceinformation.e2volume[0].e2ismuted));
-
-		
             break;
         case "GETINFO":
             adapter.log.debug("Box Sender: " +xml.e2abouts.e2about[0].e2servicename[0]);
             adapter.setState('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
-			adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
-			adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
-			
+			//adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
+			//adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
             break;
         case "DEVICEINFO":
-			adapter.log.debug("Box webifversion: " +xml.e2deviceinfo.e2webifversion[0]);
             adapter.setState('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
-			adapter.log.debug("Box Netzwerk: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0]);
             adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
-			adapter.log.debug("Box IP: " +xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0]);
             adapter.setState('enigma2.BOX_IP', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true});
-		if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true)
-		{
-	 		if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false)
-			{
-				adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
-				adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
-				adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
-				adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
+			adapter.setState('enigma2.MODEL', {val: xml.e2deviceinfo.e2devicename[0], ack: true});
+			 break;
+		case "DEVICEINFO_HDD":
+		if(xml.e2deviceinfo.e2hdds[0].e2hdd !== undefined){
+			
+			    adapter.setObject('enigma2.HDD_CAPACITY', {
+					type: 'state',
+					common: {
+						type: 'string',
+						role: 'state',
+						name: 'maximal Flash Capacity (Flash 1)',
+						read:  true,
+						write: false
+					},
+					native: {}
+				});
+				adapter.setObject('enigma2.HDD_FREE', {
+					type: 'state',
+					common: {
+						type: 'string',
+						role: 'state',
+						name: 'free Flash Capacity (Flash 1)',
+						read:  true,
+						write: false
+					},
+					native: {}
+				});
+				
+			adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
+			adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});
+			if(xml.e2deviceinfo.e2hdds[0].e2hdd[1] !== undefined){
+				
+				adapter.setObject('enigma2.HDD2_CAPACITY', {
+					type: 'state',
+					common: {
+						type: 'string',
+						role: 'state',
+						name: 'maximal Flash Capacity (Flash 2)',
+						read:  true,
+						write: false
+					},
+					native: {}
+				});
+				adapter.setObject('enigma2.HDD2_FREE', {
+					type: 'state',
+					common: {
+						type: 'string',
+						role: 'state',
+						name: 'free Flash Capacity (Flash 2)',
+						read:  true,
+						write: false
+					},
+					native: {}
+				});
+				
+				adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
+				adapter.setState('enigma2.HDD2_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
+			} else {
+				adapter.delObject('enigma2.HDD2_CAPACITY');
+				adapter.delObject('enigma2.HDD2_FREE');
 			};
-		};
-	 	if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true)
-		{
-            adapter.log.debug("Box HDD capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0]);	
-	        adapter.log.debug("Box HDD free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0]);
-            adapter.setState('enigma2.HDD_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true});
-			adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true});	
-            adapter.log.debug("Box HDD2 capacity: " + xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0]);	
-	        adapter.log.debug("Box HDD2 free: " +xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0]);
-            adapter.setState('enigma2.HDD2_CAPACITY', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true});
-	        adapter.setState('enigma2.HDD2_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});	
-		};
-
-
+		} else {
+			adapter.delObject('enigma2.HDD2_CAPACITY');
+			adapter.delObject('enigma2.HDD2_FREE');
+			adapter.delObject('enigma2.HDD_CAPACITY');
+			adapter.delObject('enigma2.HDD_FREE');
+		}
+		
             break;
-        case "KEY":
         case "VOLUME_UP":
         case "VOLUME_DOWN":
         case "LEFT":
@@ -359,21 +743,14 @@ function checkStatus()
         if (isAlive) {
 			adapter.log.debug("enigma2 Verbunden!");
 			adapter.setState('enigma2-CONNECTION', true, true );
-		//    getResponse ("MESSAGEANSWER", 1, "/web/messageanswer?getanswer=now", evaluateCommandResponse);
-        //    getResponse ("GETSTANDBY", 1, "/web/powerstate", evaluateCommandResponse);
-        //    getResponse ("GETINFO", 1, "/web/about", evaluateCommandResponse);
-        //    getResponse ("GETVOLUME", 1, "/web/vol", evaluateCommandResponse);
-		//    getResponse ("GETCURRENT", 1, "/web/getcurrent", evaluateCommandResponse);
-		//    getResponse ("DEVICEINFO", 1, "/web/deviceinfo", evaluateCommandResponse);
-			getResponse('MESSAGEANSWER', deviceId, PATH_MESSAGEANSWER,  evaluateCommandResponse);
-			getResponse('DEVICEINFO', deviceId, PATH_DEVICEINFO,  evaluateCommandResponse);
 			getResponse('GETSTANDBY', deviceId, PATH_POWERSTATE,  evaluateCommandResponse);
+			getResponse('MESSAGEANSWER', deviceId, PATH_MESSAGEANSWER,  evaluateCommandResponse);
             getResponse('GETINFO',    deviceId, PATH_ABOUT,       evaluateCommandResponse);
             getResponse('GETVOLUME',  deviceId, PATH_VOLUME,      evaluateCommandResponse);
             getResponse('GETCURRENT', deviceId, PATH_GET_CURRENT, evaluateCommandResponse)
         } else {
-            		adapter.log.debug("enigma2: " + adapter.config.IPAddress + " ist nicht erreichbar!");
-			adapter.setState('enigma2-CONNECTION', false, false );
+            		adapter.log.debug("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
+			adapter.setState('enigma2-CONNECTION', false, true );
 			// Werte aus Adapter löschen
 			adapter.setState('enigma2.BOX_IP', "" );
 			adapter.setState('enigma2.CHANNEL', "" );
@@ -398,6 +775,14 @@ function checkStatus()
     });
 }
 
+function checkStatusHDD() 
+{
+    ping.sys.probe(adapter.config.IPAddress, function(isAlive){
+        if (isAlive) {
+			getResponse('DEVICEINFO_HDD', deviceId, PATH_DEVICEINFO,  evaluateCommandResponse);
+        }
+    });
+}
 
 function main() {
 // adapter.config:
@@ -406,39 +791,6 @@ function main() {
     adapter.log.debug('config Username: ' + adapter.config.Username);
     adapter.log.debug('config Password'+ adapter.config.Password);
 
-//#################### Alexa #################################################
-/*if (adapter.config.alexa === 'true' || adapter.config.alexa === true){
-	
-	//STANDBY
-    adapter.setObject('Alexa.MUTED', {
-        type: 'state',
-        common: {
-            type: 'boolean',
-            role: 'switch',
-			desc: 'Alexa Comando',
-			def: false,
-			read:  true,
-            write: true
-        },
-        native: {}
-    });
-	//STANDBY
-	adapter.setObject('Alexa.STANDBY', {
-        type: 'state',
-        common: {
-            type: 'boolean',
-            role: 'switch',
-			desc: 'Alexa Comando',
-			def: false,
-			read:  true,
-            write: true
-        },
-        native: {}
-    });	
-};*/	
-
-
-//++++++++ Message +++++++++++++
 
     adapter.setObject('Message.Text', {
         type: 'state',
@@ -647,54 +999,21 @@ adapter.setState('enigma2-CONNECTION', false, true );
         },
         native: {}
     });
-if (adapter.config.internalharddisk === 'true' || adapter.config.internalharddisk === true){
-    adapter.setObject('enigma2.HDD_CAPACITY', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'state',
-			name: 'maximal Flash Capacity (Flash 1)',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
-    adapter.setObject('enigma2.HDD_FREE', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'state',
-			name: 'free Flash Capacity (Flash 1)',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
-	};
-if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk === true){
-    adapter.setObject('enigma2.HDD2_CAPACITY', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'state',
-			name: 'maximal Flash Capacity (Flash 2)',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
-    adapter.setObject('enigma2.HDD2_FREE', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'state',
-			name: 'free Flash Capacity (Flash 2)',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
-	};
+
+    // in this example all states changes inside the adapters namespace are subscribed
+    adapter.subscribeStates('*');
+	
+
+    //Check ever 3 secs
+    adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
+    setInterval(checkStatus,adapter.config.PollingInterval);
+	setInterval(checkStatusHDD,30000);
+}
+
+
+
+function main2() {
+
 	    adapter.setObject('enigma2.MODEL', {
         type: 'state',
         common: {
@@ -745,13 +1064,1364 @@ if (adapter.config.secondharddisk === 'true' || adapter.config.secondharddisk ==
 	
 	
     //Check ever 3 secs
-    adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
-    setInterval(checkStatus,adapter.config.PollingInterval);
+   // adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
+    //setInterval(checkStatus,adapter.config.PollingInterval);
+	getResponse('DEVICEINFO', deviceId, PATH_DEVICEINFO,  evaluateCommandResponse);
 }
 
 
+
+
+
+function checkTimer()
+{ 	
+getResponse('TIMERLIST', deviceId, PATH_TIMERLIST, TimerSearch);	
+adapter.log.debug("suche nach Timer");
+}
+
+function timer() {
+
+	//Check ever 10 secs
+    //setInterval(checkTimer,15000);
+	setInterval(checkTimer,adapter.config.TimerCheck);
+	adapter.log.info("starting Timercheck every " + adapter.config.TimerCheck + " ms");
+}
+
+
+
+
+//############################################   TIMER   ####################################################
+
+function TimerSearch (command, deviceId, xml) {
+	//var bool;
+    switch (command.toUpperCase())
+    {
+        case "TIMERLIST":
+	if(xml.e2timerlist.e2timer !== undefined)
+	{
+//+++++++++++++++++  Timer0 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer0';
+var TIMER_NUMBER	= '0';
+//var TIMER_NUMBER	= (xml.e2timerlist.e2timer[0].e2name);
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					/*states: {
+					'False': 'keine Wiederholung',
+					0: 'keine Wiederholung',
+					1: 'Mo',
+					2: 'Di',
+					4: 'Mi',
+					8: 'Do',
+					16: 'Fr',
+					32: 'Sa',
+					64: 'So'
+					},*/
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 	Timer_Toggle	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+			
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer0 ENDE ++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++  Timer1 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer1';
+var TIMER_NUMBER	= '1';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer1 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer2 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer2';
+var TIMER_NUMBER	= '2';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer2 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer3 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer3';
+var TIMER_NUMBER	= '3';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer3 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer4 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer4';
+var TIMER_NUMBER	= '4';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer4 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer5 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer5';
+var TIMER_NUMBER	= '5';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer5 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+		
+//+++++++++++++++++  Timer6 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer6';
+var TIMER_NUMBER	= '6';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer 6 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer7 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer7';
+var TIMER_NUMBER	= '7';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer 7 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//+++++++++++++++++  Timer8 +++++++++++++++++++++++++++++++++++++++++++++++++
+var TIMER_NAME	= 'Timer8';
+var TIMER_NUMBER	= '8';
+		if(xml.e2timerlist.e2timer[TIMER_NUMBER] !== undefined)
+		{	
+//++++++++++++++++++ Objekte erstellen ++++++++++++++++++++++++++++++++++++++
+			adapter.setObject('Timer.' + TIMER_NAME + '.Event-Name', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'Sendung Name',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+				type: 'state',
+				common: {
+					type: 'string',
+					role: 'state',
+					name: 'TV Sender',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Disabled', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					states: {
+					0: 'Timer aktiviert',
+					1: 'Timer deaktiviert'
+					},
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Repeated', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Wiederholung',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Start', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_End', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_servicereference', {
+				type: 'state',
+				common: {
+					type: 'number',
+					role: 'state',
+					name: 'Timer Aktivität',
+					read:  true,
+					write: false
+				},
+				native: {}
+			});
+			//++BUTTON++ 		
+			adapter.setObject('Timer.' + TIMER_NAME + '.Delete', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer Delete',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});	
+			adapter.setObject('Timer.' + TIMER_NAME + '.Timer_Toggle', {
+				type: 'state',
+				common: {
+					type: 'boolean',
+					role: 'button',
+					name: 'Timer ON/OFF',
+					read:  false,
+					write: true
+				},
+				native: {}
+			});
+//+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
+			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_End', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timeend[0], ack: true});
+			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_Start', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2timebegin[0], ack: true});
+			 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} else {
+			//adapter.log.info("keine timer");
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_End');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Start');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Delete');
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_Toggle');
+			};	
+//+++++++++++++++++  Timer8 ENDE ++++++++++++++++++++++++++++++++++++++++++++++++++
+						
+//+++++++++++++++KEINE TIMER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	} else {
+			adapter.log.info("keine timer");
+			 adapter.delObject('Timer.Timer0.Event-Name');
+			 adapter.delObject('Timer.Timer0.Sender');	
+			 adapter.delObject('Timer.Timer0.Disabled');
+			 adapter.delObject('Timer.Timer0.Repeated');
+			 adapter.delObject('Timer.Timer0.Timer_servicereference');
+			 adapter.delObject('Timer.Timer0.Timer_End');
+			 adapter.delObject('Timer.Timer0.Timer_Start');
+			 adapter.delObject('Timer.Timer0.Delete');
+			 adapter.delObject('Timer.Timer0.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer1.Event-Name');
+			 adapter.delObject('Timer.Timer1.Sender');
+			 adapter.delObject('Timer.Timer1.Disabled');
+			 adapter.delObject('Timer.Timer1.Repeated');
+			 adapter.delObject('Timer.Timer1.Timer_servicereference');
+			 adapter.delObject('Timer.Timer1.Timer_End');
+			 adapter.delObject('Timer.Timer1.Timer_Start');
+			 adapter.delObject('Timer.Timer1.Delete');
+			 adapter.delObject('Timer.Timer1.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer2.Event-Name');
+			 adapter.delObject('Timer.Timer2.Sender');	
+			 adapter.delObject('Timer.Timer2.Disabled');
+			 adapter.delObject('Timer.Timer2.Repeated');
+			 adapter.delObject('Timer.Timer2.Timer_servicereference');
+			 adapter.delObject('Timer.Timer2.Timer_End');
+			 adapter.delObject('Timer.Timer2.Timer_Start');
+			 adapter.delObject('Timer.Timer2.Delete');
+			 adapter.delObject('Timer.Timer2.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer3.Event-Name');
+			 adapter.delObject('Timer.Timer3.Sender');	
+			 adapter.delObject('Timer.Timer3.Disabled');
+			 adapter.delObject('Timer.Timer3.Repeated');
+			 adapter.delObject('Timer.Timer3.Timer_servicereference');
+			 adapter.delObject('Timer.Timer3.Timer_End');
+			 adapter.delObject('Timer.Timer3.Timer_Start');
+			 adapter.delObject('Timer.Timer3.Delete');
+			 adapter.delObject('Timer.Timer3.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer4.Event-Name');
+			 adapter.delObject('Timer.Timer4.Sender');	
+			 adapter.delObject('Timer.Timer4.Disabled');
+			 adapter.delObject('Timer.Timer4.Repeated');
+			 adapter.delObject('Timer.Timer4.Timer_servicereference');
+			 adapter.delObject('Timer.Timer4.Timer_End');
+			 adapter.delObject('Timer.Timer4.Timer_Start');
+			 adapter.delObject('Timer.Timer4.Delete');
+			 adapter.delObject('Timer.Timer4.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer5.Event-Name');
+			 adapter.delObject('Timer.Timer5.Sender');	
+			 adapter.delObject('Timer.Timer5.Disabled');
+			 adapter.delObject('Timer.Timer5.Repeated');
+			 adapter.delObject('Timer.Timer5.Timer_servicereference');
+			 adapter.delObject('Timer.Timer5.Timer_End');
+			 adapter.delObject('Timer.Timer5.Timer_Start');
+			 adapter.delObject('Timer.Timer5.Delete');
+			 adapter.delObject('Timer.Timer5.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer6.Event-Name');
+			 adapter.delObject('Timer.Timer6.Sender');	
+			 adapter.delObject('Timer.Timer6.Disabled');
+			 adapter.delObject('Timer.Timer6.Repeated');
+			 adapter.delObject('Timer.Timer6.Timer_servicereference');
+			 adapter.delObject('Timer.Timer6.Timer_End');
+			 adapter.delObject('Timer.Timer6.Timer_Start');
+			 adapter.delObject('Timer.Timer6.Delete');
+			 adapter.delObject('Timer.Timer6.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer7.Event-Name');
+			 adapter.delObject('Timer.Timer7.Sender');	
+			 adapter.delObject('Timer.Timer7.Disabled');
+			 adapter.delObject('Timer.Timer7.Repeated');
+			 adapter.delObject('Timer.Timer7.Timer_servicereference');
+			 adapter.delObject('Timer.Timer7.Timer_End');
+			 adapter.delObject('Timer.Timer7.Timer_Start');
+			 adapter.delObject('Timer.Timer7.Delete');
+			 adapter.delObject('Timer.Timer7.Timer_Toggle');
+			 
+			 adapter.delObject('Timer.Timer8.Event-Name');
+			 adapter.delObject('Timer.Timer8.Sender');	
+			 adapter.delObject('Timer.Timer8.Disabled');
+			 adapter.delObject('Timer.Timer8.Repeated');
+			 adapter.delObject('Timer.Timer8.Timer_servicereference');
+			 adapter.delObject('Timer.Timer8.Timer_End');
+			 adapter.delObject('Timer.Timer8.Timer_Start');	
+			 adapter.delObject('Timer.Timer8.Delete');
+			 adapter.delObject('Timer.Timer8.Timer_Toggle');
+		};
+			break;
+
+        default:
+            adapter.log.info("received unknown TimerSearch '"+command+"' @ TimerSearch");
+    }
+}		
+
+
+
+
 function deleteObject () {
-//old only in V1.0.0
+//old only in V1.1.0
 adapter.delObject('command.Button-Config.USER');
 adapter.delObject('command.Button-Config.PW');
 adapter.delObject('command.Button-Config.Webif');
@@ -765,30 +2435,7 @@ adapter.delObject('command.PLAY');
 adapter.delObject('command.PAUSE');
 adapter.delObject('Alexa.MUTED');
 adapter.delObject('Alexa.STANDBY');	
-	
-//################### Alexa del ###########################
 
-/*if (adapter.config.alexa === 'false' || adapter.config.alexa === false){
-	
-adapter.delObject('Alexa.MUTED');
-adapter.delObject('Alexa.STANDBY');
-//adapter.log.info("lösche enigma2 Alexa Button");
-}
-else {
-//adapter.log.info("erstelle enigma2 Alexa Button");
-};*/
-//################### HDD1 del ###########################
-if (adapter.config.internalharddisk === 'false' || adapter.config.internalharddisk === false){
-
-adapter.delObject('enigma2.HDD_CAPACITY');
-adapter.delObject('enigma2.HDD_FREE');
-};
-//################### HDD2 del ###########################
-if (adapter.config.secondharddisk === 'false' || adapter.config.secondharddisk === false){
-
-adapter.delObject('enigma2.HDD2_CAPACITY');
-adapter.delObject('enigma2.HDD2_FREE');
-};
 
 }
 
