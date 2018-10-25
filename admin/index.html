@@ -36,8 +36,8 @@
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
-	//Alexa
-		"alexa":                    {"en": "Alexa devices", "de": "Alexa Gräte", "ru": ""},
+	//TimerCheck
+		"TimerCheck":                    {"en": "Timer Check", "de": "Timer Check", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -132,21 +132,18 @@
             </select></td>
         </tr>		
     </table>
-    <h4 class="translate">HDD Settings</h4>
-    <h5 class="translate">Important! otherwise the adapter ejects errors</h5>
+    <h4 class="translate">TimerCheck</h4>
     <table>
-        <tr>
-            <td><label class="translate" for="internalharddisk">internal hard disk</label></td>
-            <td colspan="2"><select id="internalharddisk" class="value">
-                <option value="false" class="translate">no</option>			
-                <option value="true" class="translate">Yes</option>
-            </select></td>
-        </tr>
 		<tr>
-            <td><label class="translate" for="secondharddisk">second hard disk</label></td>
-            <td colspan="2"><select id="secondharddisk" class="value">
-                <option value="false" class="translate">no</option>			
-                <option value="true" class="translate">Yes</option>
+            <td><label class="translate" for="TimerCheck">TimerCheck</label></td>
+            <td colspan="10"><select id="TimerCheck" class="value">
+                <option value="20000" class="translate">20 sec.</option>
+				<option value="30000" class="translate">30 sec.</option>
+				<option value="60000" class="translate">60 sec.</option>
+				<option value="120000" class="translate">2 min</option>
+				<option value="300000" class="translate">5 min</option>
+				<option value="600000" class="translate">10 min</option>
+				<option value="1800000" class="translate">30 min</option>
             </select></td>
         </tr>
     </table>
@@ -156,10 +153,8 @@
 	    messagetype = Number from 0 to 3, 0= Yes/No, 1= Info, 2=Message, 3=Attention<br />
 	    timeout = Can be empty or the Number of seconds the Message should disappear after.<br />
 	</p>
-    <table><tr>
-        <td><img src="beispiel.png"/></td>
-    </tr></table>
-	
+    <table>
+	</table>
 </div>
 
 </html>
