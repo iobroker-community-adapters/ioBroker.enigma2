@@ -23,8 +23,8 @@
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
-	//Alexa
-		"alexa":                    {"en": "Alexa devices", "de": "Alexa Gräte", "ru": ""},
+	//TimerCheck
+		"TimerCheck":               {"en": "Timer Check", "de": "Timer Prüfung", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -55,8 +55,7 @@
         // Signal to admin, that no changes yet
         onChange(false);
     }
-		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
-		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
+		if (settings.TimerCheck === undefined) settings.TimerCheck = 180000;
 		
 		
     // ... and the function save has to exist.
@@ -179,30 +178,19 @@
 <!-- #################################-->	
 				<div class="row">
                     <div class="col s12">
-                        <p class="translate title">internal hard disk</p>
-
+                        <p class="translate title">TimerCheck</p>
 								<div class="row">
 									<div class="input-field col s12 m2 l3">
-										<select  class="value" id="internalharddisk">
-											<option value="false" class="translate">no</option>
-											<option value="true" class="translate">Yes</option>
+										<select  class="value" id="TimerCheck">
+											<option value="10000" class="translate">10 sec.</option>
+											<option value="30000" class="translate">30 sec.</option>
+											<option value="60000" class="translate">60 sec.</option>
+											<option value="120000" class="translate">2 min</option>
+											<option value="300000" class="translate">5 min</option>
+											<option value="600000" class="translate">10 min</option>
+											<option value="1800000" class="translate">30 min</option>
 										</select>
-											<label class="translate" for="internalharddisk">internal hard disk</label>
-									</div>
-								</div>
-					</div>
-				</div>
-				<div class="row">
-                    <div class="col s12">
-                        <p class="translate title">second hard disk</p>
-
-								<div class="row">
-									<div class="input-field col s12 m2 l3">
-										<select  class="value" id="secondharddisk">
-											<option value="false" class="translate">no</option>
-											<option value="true" class="translate">Yes</option>
-										</select>
-											<label class="translate" for="secondharddisk">second hard disk</label>
+											<label class="translate" for="TimerCheck">TimerCheck</label>
 									</div>
 								</div>
 					</div>
