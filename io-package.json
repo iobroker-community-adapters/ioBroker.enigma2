@@ -28,6 +28,15 @@
     ],
     "instanceObjects": [
 	    {
+            "_id": "",
+            "type": "meta",
+            "common": {
+                "name": "Enigma2 Adapter",
+                "type": "meta.user"
+            },
+            "native": {}
+        },
+	    {
             "_id":  "enigma2",
             "type": "channel",
             "common": {
