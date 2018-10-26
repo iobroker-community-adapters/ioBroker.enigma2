@@ -56,9 +56,30 @@ ioBroker enigma2 Adapter
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
  
- 
+ ## Timer
+- Timer.Delete
+- Timer.Disabled
+- Timer.Event-Name
+- Timer.Repeated
+- Timer.Station
+- Timer.Timer_End
+- Timer.Timer_Start
+- Timer.Timer_Toggle
+- Timer.Timer_servicereference
+- Timer.Update
+
  
 ## Version
+
+
+### 1.1.0 (2018-10-26)
+* (Matten-Matten)      add Timer, max 8 Timer
+* (Matten-Matten)      add manually updating Timer states
+* (Matten-Matten)      optimizations 
+* (Matten-Matten)      auto Check HDD (max.2 HDD)
+* (Matten-Matten)      add manually updating Enigma2 states
+* (Matten-Matten)      read the device information only at the adapter start
+* (Matten-Matten)      fixed hard disk HDD) update every 30 sec.
 
 ### 1.0.0 (2018-10-23)
 * (Matten-Matten)      add command.REMOTE-CONTROL
