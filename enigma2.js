@@ -1000,6 +1000,17 @@ adapter.setState('enigma2-CONNECTION', false, true );
         native: {}
     });
 
+			adapter.setObject('enigma2.EVENTREMAINING', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'media.duration',
+			name: 'EVENT REMAINING',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
 	
@@ -1058,6 +1069,7 @@ function main2() {
         },
         native: {}
     });
+	
 
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
@@ -1117,7 +1129,7 @@ var TIMER_NUMBER	= '0';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1225,7 +1237,7 @@ var TIMER_NUMBER	= '0';
 			
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1235,7 +1247,7 @@ var TIMER_NUMBER	= '0';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -1262,7 +1274,7 @@ var TIMER_NUMBER	= '1';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1358,7 +1370,7 @@ var TIMER_NUMBER	= '1';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1368,7 +1380,7 @@ var TIMER_NUMBER	= '1';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -1396,7 +1408,7 @@ var TIMER_NUMBER	= '2';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1492,7 +1504,7 @@ var TIMER_NUMBER	= '2';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1530,7 +1542,7 @@ var TIMER_NUMBER	= '3';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1626,7 +1638,7 @@ var TIMER_NUMBER	= '3';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1636,7 +1648,7 @@ var TIMER_NUMBER	= '3';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -1664,7 +1676,7 @@ var TIMER_NUMBER	= '4';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1760,7 +1772,7 @@ var TIMER_NUMBER	= '4';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1770,7 +1782,7 @@ var TIMER_NUMBER	= '4';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -1798,7 +1810,7 @@ var TIMER_NUMBER	= '5';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -1894,7 +1906,7 @@ var TIMER_NUMBER	= '5';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -1904,7 +1916,7 @@ var TIMER_NUMBER	= '5';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -1932,7 +1944,7 @@ var TIMER_NUMBER	= '6';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -2028,7 +2040,7 @@ var TIMER_NUMBER	= '6';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -2038,7 +2050,7 @@ var TIMER_NUMBER	= '6';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -2066,7 +2078,7 @@ var TIMER_NUMBER	= '7';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -2162,7 +2174,7 @@ var TIMER_NUMBER	= '7';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -2172,7 +2184,7 @@ var TIMER_NUMBER	= '7';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -2200,7 +2212,7 @@ var TIMER_NUMBER	= '8';
 				},
 				native: {}
 			});
-			adapter.setObject('Timer.' + TIMER_NAME + '.Sender', {
+			adapter.setObject('Timer.' + TIMER_NAME + '.Station', {
 				type: 'state',
 				common: {
 					type: 'string',
@@ -2296,7 +2308,7 @@ var TIMER_NUMBER	= '8';
 			});
 //+++++++++++++++ Timer X auslesen +++++++++++++++++++++++++++++++++++++++++++
 			 adapter.setState('Timer.' + TIMER_NAME + '.Event-Name', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2name[0], ack: true});
-             adapter.setState('Timer.' + TIMER_NAME + '.Sender', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
+             adapter.setState('Timer.' + TIMER_NAME + '.Station', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicename[0], ack: true});
              adapter.setState('Timer.' + TIMER_NAME + '.Disabled', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2disabled[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Repeated', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2repeated[0], ack: true});
 			 adapter.setState('Timer.' + TIMER_NAME + '.Timer_servicereference', {val: xml.e2timerlist.e2timer[TIMER_NUMBER].e2servicereference[0], ack: true});
@@ -2306,7 +2318,7 @@ var TIMER_NUMBER	= '8';
 		} else {
 			//adapter.log.info("keine timer");
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Event-Name');
-			 adapter.delObject('Timer.' + TIMER_NAME + '.Sender');	
+			 adapter.delObject('Timer.' + TIMER_NAME + '.Station');	
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Disabled');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Repeated');
 			 adapter.delObject('Timer.' + TIMER_NAME + '.Timer_servicereference');
@@ -2321,7 +2333,7 @@ var TIMER_NUMBER	= '8';
 	} else {
 			adapter.log.info("keine timer");
 			 adapter.delObject('Timer.Timer0.Event-Name');
-			 adapter.delObject('Timer.Timer0.Sender');	
+			 adapter.delObject('Timer.Timer0.Station');	
 			 adapter.delObject('Timer.Timer0.Disabled');
 			 adapter.delObject('Timer.Timer0.Repeated');
 			 adapter.delObject('Timer.Timer0.Timer_servicereference');
@@ -2331,7 +2343,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer0.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer1.Event-Name');
-			 adapter.delObject('Timer.Timer1.Sender');
+			 adapter.delObject('Timer.Timer1.Station');
 			 adapter.delObject('Timer.Timer1.Disabled');
 			 adapter.delObject('Timer.Timer1.Repeated');
 			 adapter.delObject('Timer.Timer1.Timer_servicereference');
@@ -2341,7 +2353,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer1.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer2.Event-Name');
-			 adapter.delObject('Timer.Timer2.Sender');	
+			 adapter.delObject('Timer.Timer2.Station');	
 			 adapter.delObject('Timer.Timer2.Disabled');
 			 adapter.delObject('Timer.Timer2.Repeated');
 			 adapter.delObject('Timer.Timer2.Timer_servicereference');
@@ -2351,7 +2363,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer2.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer3.Event-Name');
-			 adapter.delObject('Timer.Timer3.Sender');	
+			 adapter.delObject('Timer.Timer3.Station');	
 			 adapter.delObject('Timer.Timer3.Disabled');
 			 adapter.delObject('Timer.Timer3.Repeated');
 			 adapter.delObject('Timer.Timer3.Timer_servicereference');
@@ -2361,7 +2373,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer3.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer4.Event-Name');
-			 adapter.delObject('Timer.Timer4.Sender');	
+			 adapter.delObject('Timer.Timer4.Station');	
 			 adapter.delObject('Timer.Timer4.Disabled');
 			 adapter.delObject('Timer.Timer4.Repeated');
 			 adapter.delObject('Timer.Timer4.Timer_servicereference');
@@ -2371,7 +2383,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer4.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer5.Event-Name');
-			 adapter.delObject('Timer.Timer5.Sender');	
+			 adapter.delObject('Timer.Timer5.Station');	
 			 adapter.delObject('Timer.Timer5.Disabled');
 			 adapter.delObject('Timer.Timer5.Repeated');
 			 adapter.delObject('Timer.Timer5.Timer_servicereference');
@@ -2381,7 +2393,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer5.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer6.Event-Name');
-			 adapter.delObject('Timer.Timer6.Sender');	
+			 adapter.delObject('Timer.Timer6.Station');	
 			 adapter.delObject('Timer.Timer6.Disabled');
 			 adapter.delObject('Timer.Timer6.Repeated');
 			 adapter.delObject('Timer.Timer6.Timer_servicereference');
@@ -2391,7 +2403,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer6.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer7.Event-Name');
-			 adapter.delObject('Timer.Timer7.Sender');	
+			 adapter.delObject('Timer.Timer7.Station');	
 			 adapter.delObject('Timer.Timer7.Disabled');
 			 adapter.delObject('Timer.Timer7.Repeated');
 			 adapter.delObject('Timer.Timer7.Timer_servicereference');
@@ -2401,7 +2413,7 @@ var TIMER_NUMBER	= '8';
 			 adapter.delObject('Timer.Timer7.Timer_Toggle');
 			 
 			 adapter.delObject('Timer.Timer8.Event-Name');
-			 adapter.delObject('Timer.Timer8.Sender');	
+			 adapter.delObject('Timer.Timer8.Station');	
 			 adapter.delObject('Timer.Timer8.Disabled');
 			 adapter.delObject('Timer.Timer8.Repeated');
 			 adapter.delObject('Timer.Timer8.Timer_servicereference');
@@ -2421,7 +2433,7 @@ var TIMER_NUMBER	= '8';
 
 
 function deleteObject () {
-//old only in V1.1.0
+//old only in V1.0.0
 adapter.delObject('command.Button-Config.USER');
 adapter.delObject('command.Button-Config.PW');
 adapter.delObject('command.Button-Config.Webif');
