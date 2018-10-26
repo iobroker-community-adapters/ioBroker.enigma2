@@ -27,6 +27,38 @@
 
     ],
     "instanceObjects": [
+	    {
+            "_id":  "enigma2",
+            "type": "channel",
+            "common": {
+                "name": "Enigma2 Status Information"
+            },
+            "native": {}
+        },
+		{
+            "_id":  "command",
+            "type": "channel",
+            "common": {
+                "name": "Enigma2 Device Commands"
+            },
+            "native": {}
+        },
+		{
+            "_id":  "Timer",
+            "type": "channel",
+            "common": {
+                "name": "Enigma2 Timer"
+            },
+            "native": {}
+        },
+		{
+            "_id":  "Message",
+            "type": "channel",
+            "common": {
+                "name": "Messages on Screen"
+            },
+            "native": {}
+        },
 		{
             "_id":  "enigma2.Update",
             "type": "state",
