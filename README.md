@@ -79,7 +79,7 @@ ioBroker enigma2 Adapter
 * (Matten-Matten)      auto Check HDD (max.2 HDD)
 * (Matten-Matten)      add manually updating Enigma2 states
 * (Matten-Matten)      read the device information only at the adapter start
-* (Matten-Matten)      fixed hard disk HDD) update every 30 sec.
+* (Matten-Matten)      fixed hard disk (HDD) update Time every 30 sec.
 
 ### 1.0.0 (2018-10-23)
 * (Matten-Matten)      add command.REMOTE-CONTROL
