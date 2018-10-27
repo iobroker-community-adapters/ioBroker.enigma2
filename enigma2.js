@@ -138,7 +138,7 @@ adapter.on('stateChange', function (id, state) {
                     });
                 });
             });
-        }/* else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
+        /*} else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
             adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
                 var T_sRef  = state.val;
                 adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
