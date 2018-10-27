@@ -57,14 +57,12 @@ ioBroker enigma2 Adapter
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
  
  ## Timer
-- Timer.Delete
 - Timer.Disabled
 - Timer.Event-Name
 - Timer.Repeated
 - Timer.Station
 - Timer.Timer_End
 - Timer.Timer_Start
-- Timer.Timer_Toggle
 - Timer.Timer_servicereference
 - Timer.Update
 
