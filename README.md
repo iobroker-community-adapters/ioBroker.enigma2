@@ -71,6 +71,8 @@ ioBroker enigma2 Adapter
  
 ## Version
 
+### 1.1.1 (2018-10-26)
+* (NightWatcher)      CodeCleaning
 
 ### 1.1.0 (2018-10-26)
 * (Matten-Matten)      add Timer, max 8 Timer
