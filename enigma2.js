@@ -69,7 +69,7 @@ adapter.on('stateChange', function (id, state) {
         }
 
         if (commands[name]) {
-            getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + commands[name], function (error, command, deviceId, xml) {
+            getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + commands[name] + '&rcu=advanced', function (error, command, deviceId, xml) {
                 if (error) {
                     //adapter.log.error('Cannot send command "' + name + '": ' + error);
                 }
@@ -110,7 +110,7 @@ adapter.on('stateChange', function (id, state) {
             });
         } else if (id === adapter.namespace + '.command.REMOTE-CONTROL') {
             adapter.log.debug('Its our Command: ' + state.val);
-            getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + state.val , function (error, command, deviceId, xml) {
+            getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + state.val + '&rcu=advanced' , function (error, command, deviceId, xml) {
                 if (!error) {
                     adapter.setState('command.REMOTE-CONTROL', state.val, true);
                 } else {
