@@ -138,7 +138,7 @@ adapter.on('stateChange', function (id, state) {
                     });
                 });
             });
-        } else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
+        }/* else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
             adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
                 var T_sRef  = state.val;
                 adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
@@ -453,7 +453,7 @@ adapter.on('stateChange', function (id, state) {
                         });
                     });
                 });
-            });
+            });*/
         };
     }
 
@@ -1167,7 +1167,7 @@ function TimerSearch (command, deviceId, xml) {
 						native: {}
 					});
 					//++BUTTON++ 	Timer_Toggle
-					adapter.setObject('Timer.' + i + '.Delete', {
+					/*adapter.setObject('Timer.' + i + '.Delete', {
 						type: 'state',
 						common: {
 							type: 'boolean',
@@ -1188,7 +1188,7 @@ function TimerSearch (command, deviceId, xml) {
 							write: true
 						},
 						native: {}
-					});
+					});*/
 
 					adapter.setState('Timer.' + i + '.Event-Name', {val: xml.e2timerlist.e2timer[i].e2name[0], ack: true});
 					adapter.setState('Timer.' + i + '.Station', {val: xml.e2timerlist.e2timer[i].e2servicename[0], ack: true});
@@ -1207,7 +1207,7 @@ function TimerSearch (command, deviceId, xml) {
 }
 
 function deleteObject () {
-//old only in V1.0.0
+//old only in V1.1.1
 	adapter.delObject('command.Button-Config.USER');
 	adapter.delObject('command.Button-Config.PW');
 	adapter.delObject('command.Button-Config.Webif');
