@@ -76,9 +76,10 @@ adapter.on('stateChange', function (id, state) {
             });
         } else
         if (id === adapter.namespace + '.Timer.Update') {
-			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
+            getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
             adapter.log.debug("Timer manuell aktualisiert");
             //adapter.setState('Timer.Update', {val: state.val, ack: true});
+
         } else
         if (id === adapter.namespace + '.enigma2.Update') {
             getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
@@ -119,35 +120,37 @@ adapter.on('stateChange', function (id, state) {
             });
         } else if (id === adapter.namespace + '.Message.Text') {
             adapter.log.debug('Info message: ' + state.val);
-            var PATH_MESSAGE_TEXT  = state.val;
+            var MESSAGE_TEXT  = state.val;
 
             adapter.getState('Message.Type', function(err, state) {
                 adapter.log.debug('Info Message Type: ' + state.val);
-                var PATH_MESSAGE_TYPE  = state.val;
+                var MESSAGE_TYPE  = state.val;
 
                 adapter.getState('Message.Timeout', function(err, state) {
                     adapter.log.debug('Info Message Type: ' + state.val);
-                    var PATH_MESSAGE_TIMEOUT  = state.val;
+                    var MESSAGE_TIMEOUT  = state.val;
 
-                    getResponse('NONE', deviceId, PATH['MESSAGE'] + encodeURIComponent(PATH_MESSAGE_TEXT) + '&type=' + PATH_MESSAGE_TYPE + '&timeout=' + PATH_MESSAGE_TIMEOUT, function (error, command, deviceId, xml) {
+                    getResponse('NONE', deviceId, PATH['MESSAGE'] + encodeURIComponent(MESSAGE_TEXT) + '&type=' + MESSAGE_TYPE + '&timeout=' + MESSAGE_TIMEOUT, function (error, command, deviceId, xml) {
                         if (!error) {
-                            adapter.setState('Message.Text', PATH['MESSAGE_TEXT'], true);
+                            adapter.setState('Message.Text', MESSAGE_TEXT, true);
                         } else {
-                            adapter.setState('Message.Text', {val: PATH['MESSAGE_TEXT'], ack: true});
+                            adapter.setState('Message.Text', {val: MESSAGE_TEXT, ack: true});
                         }
                     });
                 });
             });
-        /*} else if (id === adapter.namespace + '.Timer.Timer0.Timer_Toggle') {
-            adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
+		} else if (parts[1] === 'Timer' && name === 'Timer_Toggle') {
+			var timerID = parts[2];
+			
+			adapter.getState('Timer.'+timerID+'.Timer_servicereference', function(err, state) {
                 var T_sRef  = state.val;
-                adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
+                adapter.getState('Timer.'+timerID+'.Timer_Start', function(err, state) {
                     var T_begin  = state.val;
-                    adapter.getState('Timer.Timer0.Timer_End', function(err, state) {
+                    adapter.getState('Timer.'+timerID+'.Timer_End', function(err, state) {
                         var T_end  = state.val;
                         getResponse('NONE', deviceId, PATH['TIMER_TOGGLE'] + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
                             if (!error) {
-                                adapter.setState('Timer.Timer0.Timer_Toggle', state.val, true);
+                                adapter.setState('Timer.'+timerID+'.Timer_Toggle', state.val, true);
                             } else {
                                 getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
                             }
@@ -155,305 +158,26 @@ adapter.on('stateChange', function (id, state) {
                     });
                 });
             });
-        } else if (id === adapter.namespace + '.Timer.Timer1.Timer_Toggle') {
-            adapter.getState('Timer.Timer1.Timer_servicereference', function(err, state) {
+		} else if (parts[1] === 'Timer' && name === 'Delete') {
+			var timerID = parts[2];
+			
+			adapter.getState('Timer.'+timerID+'.Timer_servicereference', function(err, state) {
                 var T_sRef  = state.val;
-                adapter.getState('Timer.Timer1.Timer_Start', function(err, state) {
+                adapter.getState('Timer.'+timerID+'.Timer_Start', function(err, state) {
                     var T_begin  = state.val;
-                    adapter.getState('Timer.Timer1.Timer_End', function(err, state) {
+                    adapter.getState('Timer.'+timerID+'.Timer_End', function(err, state) {
                         var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer1.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer2.Timer_Toggle') {
-            adapter.getState('Timer.Timer2.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer2.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer2.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer2.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer3.Timer_Toggle') {
-            adapter.getState('Timer.Timer3.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer3.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer3.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer3.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer4.Timer_Toggle') {
-            adapter.getState('Timer.Timer4.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer4.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer4.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer4.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer5.Timer_Toggle') {
-            adapter.getState('Timer.Timer5.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer5.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer5.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer5.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer6.Timer_Toggle') {
-            adapter.getState('Timer.Timer6.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer6.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer6.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer6.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer7.Timer_Toggle') {
-            adapter.getState('Timer.Timer7.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer7.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer7.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer7.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer8.Timer_Toggle') {
-            adapter.getState('Timer.Timer8.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer8.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer8.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_TIMER_TOGGLE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer8.Timer_Toggle', state.val, true);
-                            } else {
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer0.Delete') {
-            adapter.getState('Timer.Timer0.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer0.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer0.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer0.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer0.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer1.Delete') {
-            adapter.getState('Timer.Timer1.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer1.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer1.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-						//getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
                         getResponse('NONE', deviceId, PATH['DELETE'] + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
                             if (!error) {
-                                adapter.setState('Timer.Timer1.Delete', state.val, true);
+                                adapter.setState('Timer.'+timerID+'.Delete', state.val, true);
                             } else {
-                                adapter.setState('Timer.Timer1.Delete', {val: state.val, ack: true});
+                                adapter.setState('Timer.'+timerID+'.Delete', {val: state.val, ack: true});
                                 getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
                             }
                         });
                     });
                 });
             });
-        } else if (id === adapter.namespace + '.Timer.Timer2.Delete') {
-            adapter.getState('Timer.Timer2.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer2.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer2.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer2.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer2.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer3.Delete') {
-            adapter.getState('Timer.Timer3.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer3.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer3.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer3.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer3.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer4.Delete') {
-            adapter.getState('Timer.Timer4.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer4.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer4.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer4.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer4.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer5.Delete') {
-            adapter.getState('Timer.Timer5.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer5.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer5.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer5.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer5.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer6.Delete') {
-            adapter.getState('Timer.Timer6.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer6.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer6.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer6.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer6.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer7.Delete') {
-            adapter.getState('Timer.Timer7.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer7.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer7.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer7.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer7.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });
-        } else if (id === adapter.namespace + '.Timer.Timer8.Delete') {
-            adapter.getState('Timer.Timer8.Timer_servicereference', function(err, state) {
-                var T_sRef  = state.val;
-                adapter.getState('Timer.Timer8.Timer_Start', function(err, state) {
-                    var T_begin  = state.val;
-                    adapter.getState('Timer.Timer8.Timer_End', function(err, state) {
-                        var T_end  = state.val;
-                        getResponse('NONE', deviceId, PATH_DELETE + T_sRef + '&begin=' + T_begin + '&end=' + T_end, function (error, command, deviceId, xml) {
-                            if (!error) {
-                                adapter.setState('Timer.Timer8.Delete', state.val, true);
-                            } else {
-                                adapter.setState('Timer.Timer8.Delete', {val: state.val, ack: true});
-                                getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
-                            }
-                        });
-                    });
-                });
-            });*/
         };
     }
 
@@ -492,23 +216,42 @@ function getResponse (command, deviceId, path, callback){
     var req = http.get(options, function(res) {
         const { statusCode } = res;
         var pageData = "";
-        res.setEncoding('utf8');
+		
+		if(command === 'PICON')
+		{
+			res.setEncoding('base64');
 
-        if (statusCode == 200) {
-            setStatus(true);
-			adapter.log.debug("mit Box Verbunden!");
-        }
-        res.on('data', function (chunk) {
-            pageData += chunk;
-        });
-        res.on('end', function () {
-            var parser = new xml2js.Parser();
-            parser.parseString(pageData, function (err, result) {
-                if (callback) {
-                    callback (command, 1, result);
-                }
-            });
-        });
+			var pageData = "data:" + res.headers["content-type"] + ";base64,";
+		}
+		else
+		{
+			res.setEncoding('utf8');
+
+			if (statusCode == 200) {
+				setStatus(true);
+			}
+		}
+			
+		res.on('data', function (chunk) {
+			pageData += chunk
+		});
+		res.on('end', function () {
+			if(command !== 'PICON')
+			{
+				var parser = new xml2js.Parser();
+				parser.parseString(pageData, function (err, result) {
+					if (callback) {
+						callback (command, 1, result);
+					}
+				});
+			}
+			else
+			{
+				if (callback) {
+					callback (command, (statusCode == '200' && pageData.length > 0 ? true : false), pageData);
+				}
+			}
+		});
     });
     req.on('error', function(e) {
         setStatus(false);
@@ -517,12 +260,13 @@ function getResponse (command, deviceId, path, callback){
     });
 }
 
-function Boolean(string){
-    var cleanedString = string[0].replace(/(\t\n|\n|\t)/gm,"");
-    switch(cleanedString.toLowerCase()){
-        case "true": case "yes": case "1": return true;
-        default: return false;
-    }
+function setPIcon(command, exists, base64)
+{
+	if(exists)
+	{		
+		adapter.log.debug("Box Sender picon: " + base64);			
+		adapter.setState('enigma2.CHANNEL_PICON', {val: base64, ack: true});
+	}
 }
 
 function evaluateCommandResponse (command, deviceId, xml) {
@@ -573,6 +317,12 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.MUTED', {val: Boolean(xml.e2volume.e2ismuted), ack: true});
 			break;
         case "GETCURRENT":
+			// Check Sender Picon
+			var ext = 'png';
+			var picon = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').replace(/_$/, '');
+			
+			getResponse('PICON', deviceId, "/picon/" +picon +"."+ext, setPIcon);
+		
             adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
             adapter.setState('enigma2.EVENTDURATION', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]), ack: true});
             adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
@@ -702,13 +452,14 @@ function setStatus(status)
             getResponse('MESSAGEANSWER', 	deviceId, PATH['MESSAGEANSWER'],  	evaluateCommandResponse);
             getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
             getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
-            getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
+            getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse)
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
-            // Werte aus Adapter löschen
+            // Werte aus Adapter loeschen
             adapter.setState('enigma2.BOX_IP', "" );
             adapter.setState('enigma2.CHANNEL', "" );
+            adapter.setState('enigma2.CHANNEL_PICON', "" );
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "" );
             adapter.setState('enigma2.EVENTDESCRIPTION', "" );
             adapter.setState('enigma2.EVENTDURATION', "" );
@@ -889,6 +640,17 @@ function main() {
         },
         native: {}
     });
+    adapter.setObject('enigma2.CHANNEL_PICON', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+			name: 'Servicereference Picon',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
 	adapter.setObject('enigma2.PROGRAMM', {
         type: 'state',
         common: {
@@ -962,9 +724,6 @@ function main() {
 
     //Check ever 3 secs
     adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
-	
-	//setInterval(setStatus,adapter.config.PollingInterval);
-	
     setInterval(function() {
         getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
 		
@@ -1051,8 +810,9 @@ function checkTimer()
 
 function timer()
 {
-	//Check ever 10 secs
-    //setInterval(checkTimer,15000);
+	// Initial einmal Starten, dann per setInterval
+	checkTimer();
+	
 	setInterval(checkTimer,adapter.config.TimerCheck);
 	adapter.log.info("starting Timercheck every " + adapter.config.TimerCheck + " ms");
 }
@@ -1207,7 +967,7 @@ function TimerSearch (command, deviceId, xml) {
 }
 
 function deleteObject () {
-//old only in V1.1.1
+//old only in V1.0.0
 	adapter.delObject('command.Button-Config.USER');
 	adapter.delObject('command.Button-Config.PW');
 	adapter.delObject('command.Button-Config.Webif');
