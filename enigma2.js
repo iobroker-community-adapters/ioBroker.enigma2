@@ -810,8 +810,9 @@ function checkTimer()
 
 function timer()
 {
-	//Check ever 10 secs
-    //setInterval(checkTimer,15000);
+	// Initial einmal Starten, dann per setInterval
+	checkTimer();
+	
 	setInterval(checkTimer,adapter.config.TimerCheck);
 	adapter.log.info("starting Timercheck every " + adapter.config.TimerCheck + " ms");
 }
