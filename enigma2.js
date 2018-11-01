@@ -46,8 +46,6 @@ var commands = {
 	RADIO:			385,
 	REC:			167,
 	RIGHT:			106,
-//    VOLUME_UP:    CMD_VOLUME_UP,
-//    VOLUME_DOWN:  CMD_VOLUME_DOWN,
 	STANDBY_TOGGLE:	116,
 	STOP:			128,
 	TV:				377,
@@ -195,7 +193,7 @@ function getResponse (command, deviceId, path, callback){
     var options = {
         host:				adapter.config.IPAddress,
         port:				adapter.config.Port,
-		TimerCheck:			adapter.config.TimerCheck,
+	TimerCheck:			adapter.config.TimerCheck,
         path:				path,
         method:				'GET'
     };
@@ -213,7 +211,7 @@ function getResponse (command, deviceId, path, callback){
         }
     }
 
-    var req = http.get(options, function(res) {
+     var req = http.get(options, function(res) {
         const { statusCode } = res;
         var pageData = "";
 		
@@ -260,13 +258,12 @@ function getResponse (command, deviceId, path, callback){
     });
 }
 
-function setPIcon(command, exists, base64)
-{
-	if(exists)
-	{		
-		adapter.log.debug("Box Sender picon: " + base64);			
-		adapter.setState('enigma2.CHANNEL_PICON', {val: base64, ack: true});
-	}
+function parseBool(string){
+    var cleanedString = string[0].replace(/(\t\n|\n|\t)/gm,"");
+    switch(cleanedString.toLowerCase()){
+        case "true": case "yes": case "1": return true;
+        default: return false;
+    }
 }
 
 function evaluateCommandResponse (command, deviceId, xml) {
@@ -302,26 +299,27 @@ function evaluateCommandResponse (command, deviceId, xml) {
         case 'STANDBY_TOGGLE':
             break;
         case "GETSTANDBY":
-            adapter.log.debug("Box Standby: " + Boolean(xml.e2powerstate.e2instandby));
-            adapter.setState('enigma2.STANDBY', {val: Boolean(xml.e2powerstate.e2instandby), ack: true});
+            adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
+            adapter.setState('enigma2.STANDBY', {val: parseBool(xml.e2powerstate.e2instandby), ack: true});
             break;
         case "GETVOLUME":
 			if (!xml.e2volume || !xml.e2volume.e2current) {
                 adapter.log.error('No e2volume found');
                 return;
             }
-            bool = Boolean(xml.e2volume.e2ismuted);
+            bool = parseBool(xml.e2volume.e2ismuted);
             adapter.log.debug("Box Volume:" + parseInt(xml.e2volume.e2current[0]));
             adapter.setState('enigma2.VOLUME', {val: parseInt(xml.e2volume.e2current[0]), ack: true});
-            adapter.log.debug("Box Muted:" + Boolean(xml.e2volume.e2ismuted));
-            adapter.setState('enigma2.MUTED', {val: Boolean(xml.e2volume.e2ismuted), ack: true});
+            adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
+            adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
+			break;
 			break;
         case "GETCURRENT":
 			// Check Sender Picon
-			var ext = 'png';
-			var picon = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').replace(/_$/, '');
+			//var ext = 'png';
+			//var picon = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').replace(/_$/, '');
 			
-			getResponse('PICON', deviceId, "/picon/" +picon +"."+ext, setPIcon);
+			//getResponse('PICON', deviceId, "/picon/" +picon +"."+ext, setPIcon);
 		
             adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
             adapter.setState('enigma2.EVENTDURATION', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]), ack: true});
@@ -448,16 +446,16 @@ function setStatus(status)
         if (isConnected) {
             adapter.log.info("enigma2 Verbunden!");
             adapter.setState('enigma2-CONNECTION', true, true );
-			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
+	    getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
             getResponse('MESSAGEANSWER', 	deviceId, PATH['MESSAGEANSWER'],  	evaluateCommandResponse);
             getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
             getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
-            getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse)
+            getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
             // Werte aus Adapter loeschen
-            adapter.setState('enigma2.BOX_IP', "" );
+            /*adapter.setState('enigma2.BOX_IP', "" );
             adapter.setState('enigma2.CHANNEL', "" );
             adapter.setState('enigma2.CHANNEL_PICON', "" );
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "" );
@@ -475,7 +473,7 @@ function setStatus(status)
             adapter.setState('enigma2.STANDBY', true, true );
             adapter.setState('enigma2.VOLUME', "" );
             adapter.setState('enigma2.WEB_IF_VERSION', "" );
-            adapter.setState('Message.MESSAGE_ANSWER', false, true );
+            adapter.setState('Message.MESSAGE_ANSWER', false, true );*/
         }
 	}
 }
@@ -640,7 +638,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.CHANNEL_PICON', {
+    /*adapter.setObject('enigma2.CHANNEL_PICON', {
         type: 'state',
         common: {
             type: 'string',
@@ -650,7 +648,7 @@ function main() {
             write: false
         },
         native: {}
-    });
+    });*/
 	adapter.setObject('enigma2.PROGRAMM', {
         type: 'state',
         common: {
@@ -725,8 +723,7 @@ function main() {
     //Check ever 3 secs
     adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
     setInterval(function() {
-        getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
-		
+        getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);		
 		getResponse('MESSAGEANSWER', 	deviceId, PATH['MESSAGEANSWER'],  	evaluateCommandResponse);
         getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
         getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
@@ -973,12 +970,4 @@ function deleteObject () {
 	adapter.delObject('command.Button-Config.Webif');
 	adapter.delObject('command.Button-Config.Port');
 	adapter.delObject('command.Button-Config.IP');
-	adapter.delObject('Message.Button-Send');
-	adapter.delObject('Message.MESSAGE_ANSWER');
-	adapter.delObject('Message.ANSWER_IS');
-	adapter.delObject('Message.Question_Activ');
-	adapter.delObject('command.PLAY');
-	adapter.delObject('command.PAUSE');
-	adapter.delObject('Alexa.MUTED');
-	adapter.delObject('Alexa.STANDBY');
 }
