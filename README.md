@@ -69,6 +69,9 @@ ioBroker enigma2 Adapter
  
 ## Version
 
+### 1.1.2 (2018-11-01)
+* (Matten-Matten)      Bug Fix
+
 ### 1.1.1 (2018-10-26)
 * (NightWatcher)      CodeCleaning
 
