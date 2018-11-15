@@ -29,7 +29,16 @@ var PATH = {
     DELETE:				'/web/timerdelete?sRef=',
     TIMER_TOGGLE:		'/api/timertogglestatus?sRef=',
     TIMERLIST:			'/web/timerlist',
+    MAIN_COMMAND:		'/web/powerstate?newstate=',
     IP_CHECK:			'/web/about'
+};
+
+var main_commands = {
+	DEEP_STANDBY:		1,
+	REBOOT:				2,
+	RESTART_GUI:		3,
+	WAKEUP_FROM_STANDBY:4,
+	STANDBY:			5
 };
 
 var commands = {
@@ -68,6 +77,13 @@ adapter.on('stateChange', function (id, state) {
 
         if (commands[name]) {
             getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + commands[name] + '&rcu=advanced', function (error, command, deviceId, xml) {
+                if (error) {
+                    //adapter.log.error('Cannot send command "' + name + '": ' + error);
+                }
+            });
+        } else
+	if (main_commands[name]) {
+            getResponse('NONE', deviceId, PATH['MAIN_COMMAND'] + main_commands[name], function (error, command, deviceId, xml) {
                 if (error) {
                     //adapter.log.error('Cannot send command "' + name + '": ' + error);
                 }
