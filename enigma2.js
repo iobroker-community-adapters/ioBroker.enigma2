@@ -353,7 +353,8 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.EVENTDESCRIPTION', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
 			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
-            break;
+	    adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').slice(0,-1), ack: true});
+	   break;
         case "GETINFO":
             adapter.log.debug("Box Sender: " +xml.e2abouts.e2about[0].e2servicename[0]);
             adapter.setState('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
@@ -649,6 +650,17 @@ function main() {
             type: 'string',
             role: 'state',
 			name: 'Servicereference Code',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	adapter.setObject('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'state',
+			name: 'Servicereference Name',
 			read:  true,
             write: false
         },
