@@ -52,14 +52,14 @@
             },
             "native": {}
         },
-		{
+		/*{
             "_id":  "Timer",
             "type": "channel",
             "common": {
                 "name": "Enigma2 Timer"
             },
             "native": {}
-        },
+        },*/
 		{
             "_id":  "Message",
             "type": "channel",
@@ -80,7 +80,7 @@
             },
             "native": {}
         },
-		{
+		/*{
             "_id":  "Timer.Update",
             "type": "state",
             "common": {
@@ -91,7 +91,7 @@
                 "write": true
             },
             "native": {}
-        },
+        },*/
 		{
             "_id":  "command.REMOTE-CONTROL",
             "type": "state",
