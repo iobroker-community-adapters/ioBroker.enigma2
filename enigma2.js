@@ -184,7 +184,7 @@ adapter.on('stateChange', function (id, state) {
 adapter.on('ready', function () {
     main();
 	main2();
-	timer();
+	//timer();
     deleteObject();
 });
 
