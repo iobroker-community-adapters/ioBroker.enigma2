@@ -51,6 +51,14 @@ ioBroker enigma2 Adapter
 - command.TV
 - command.UP
 
+## Command
+- main_command.DEEP_STANDBY
+- main_command.REBOOT
+- main_command.RESTART_GUI
+- main_command.STANDBY
+- main_command.WAKEUP_FROM_STANDBY
+
+
 ## Message
  - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
@@ -68,6 +76,9 @@ ioBroker enigma2 Adapter
 
  
 ## Version
+
+### 1.1.4 (2018-11-15)
+* (Matten-Matten)      add main_command
 
 ### 1.1.3 (2018-11-15)
 * (Matten-Matten)      remove Timer
