@@ -25,6 +25,8 @@
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
 	//TimerCheck
 		"TimerCheck":               {"en": "Timer Check", "de": "Timer Prüfung", "ru": ""},
+		"TimerEnabled":				{"en": "Timer Enabled", "de": "Timer Prüfung aktivieren/deaktivieren", "ru": ""},
+		"Enabled":					{"en": "Enabled", "de": "Timer Checken", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -56,6 +58,7 @@
         onChange(false);
     }
 		if (settings.TimerCheck === undefined) settings.TimerCheck = 180000;
+		//if (settings.TimerEnabled === undefined) settings.TimerCheck = false;
 		
 		
     // ... and the function save has to exist.
@@ -109,7 +112,10 @@
                     <li class="tab col s4">
                         <a href="#tab-main" class="translate">enigma2 adapter settings</a>
                     </li>
-                    <!-- Tab2 Webinterface-->
+                    <!-- Tab2 TIMER -->
+					<li class="tab col s4">
+                        <a href="#tab-timer" class="translate">TimerCheck</a>
+                    </li>
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
             </div>
@@ -123,7 +129,7 @@
 
                 <div class="row">
                     <div class="col s12">
-                        <p class="translate title">IP-PORT</p>
+                        <p class="translate title">Enigma2 IP & Port</p>
 
                         <div class="col s12">
                             <input class="value" data-crypt="1" id="IPAddress" type="IPAddress"/>
@@ -139,7 +145,7 @@
 <!-- #################################-->
 			<div class="row">
                     <div class="col s12">
-                        <p class="translate title">USER-PW</p>
+                        <p class="translate title">Enigma2 HTTP LOGIN</p>
 
                         <div class="col s12">
                             <input class="value" data-crypt="1" id="Username" type="Username"/>
@@ -175,7 +181,21 @@
 								</div>
 					</div>
 				</div>
-<!-- #################################-->	
+            </div> <!-- Ende Tab1 -->
+<!-- #################################-->
+            <div id="tab-timer" class="col s12 page">
+                <div class="row">
+                    <div class="col s12 m4 l2">
+                        <img src="enigma2.png" class="logo">
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col s4 m2 translate daemon-title">Timer</div>
+					<div class="col s4 m2">
+						<input type="checkbox" id="TimerEnabled" class="value"/>
+						<span class="translate" for="TimerEnabled">enabled</span>
+					</div>
+				</div>
 				<div class="row">
                     <div class="col s12">
                         <p class="translate title">TimerCheck</p>
@@ -195,7 +215,7 @@
 								</div>
 					</div>
 				</div>
-            </div> <!-- Ende Tab1 -->
+            </div> <!-- Ende Tab2 -->
         </div><!-- Ende row -->
     </div><!-- Ende Adapter Container -->
 </body>
