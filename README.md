@@ -56,7 +56,7 @@ ioBroker enigma2 Adapter
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
  
- ## Timer
+ ## Timer !remove!
 - Timer.Disabled
 - Timer.Event-Name
 - Timer.Repeated
@@ -68,6 +68,9 @@ ioBroker enigma2 Adapter
 
  
 ## Version
+
+### 1.1.3 (2018-11-15)
+* (Matten-Matten)      remove Timer
 
 ### 1.1.2 (2018-11-01)
 * (Matten-Matten)      Bug Fix
