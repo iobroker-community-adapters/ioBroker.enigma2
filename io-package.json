@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "1.1.3",
+        "version":                  "1.1.4",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
@@ -45,6 +45,14 @@
             "native": {}
         },
 		{
+            "_id":  "main_command",
+            "type": "channel",
+            "common": {
+                "name": "Enigma2 Main Commands"
+            },
+            "native": {}
+        },
+		{
             "_id":  "command",
             "type": "channel",
             "common": {
@@ -72,6 +80,66 @@
             },
             "native": {}
         },
+		{
+            "_id":  "main_command.DEEP_STANDBY",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "Deepstandby",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "main_command.REBOOT",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "Reboot",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "main_command.RESTART_GUI",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "Restart Enigma2 GUI",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "main_command.WAKEUP_FROM_STANDBY",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "Wakeup form Standby",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },
+		{
+            "_id":  "main_command.STANDBY",
+            "type": "state",
+            "common": {
+                "role":  "button",
+                "name":  "Standby",
+                "type":  "boolean",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
+        },	
 		{
             "_id":  "command.REMOTE-CONTROL",
             "type": "state",
