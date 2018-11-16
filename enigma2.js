@@ -95,7 +95,7 @@ adapter.on('stateChange', function (id, state) {
             //adapter.setState('Timer.Update', {val: state.val, ack: true});
 
         } else
-	//+++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++
 		if (id === adapter.namespace + '.Alexa_Command.Standby') {
 			adapter.getState('Alexa_Command.Standby', function(err, state) {
 				if (state.val === true) {
@@ -251,9 +251,9 @@ function getResponse (command, deviceId, path, callback){
     var options = {
         host:				adapter.config.IPAddress,
         port:				adapter.config.Port,
-	TimerCheck:			adapter.config.TimerCheck,
-	alexa:				adapter.config.Alexa,
+		TimerCheck:			adapter.config.TimerCheck,
         path:				path,
+		alexa:				adapter.config.Alexa,
         method:				'GET'
     };
 
