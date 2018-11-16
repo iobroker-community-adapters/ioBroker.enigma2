@@ -95,6 +95,48 @@ adapter.on('stateChange', function (id, state) {
             //adapter.setState('Timer.Update', {val: state.val, ack: true});
 
         } else
+	//+++++++++++++++++++++++++++
+		if (id === adapter.namespace + '.Alexa_Command.Standby') {
+			adapter.getState('Alexa_Command.Standby', function(err, state) {
+				if (state.val === true) {
+					getResponse('NONE', deviceId, PATH['MAIN_COMMAND'] + '4', function (error, command, deviceId, xml) {
+						if (error) {
+						//adapter.log.error('Cannot send command "' + name + '": ' + error);
+						adapter.setState('Alexa_Command.Standby', {val: state.val, ack: true});
+						}
+					});
+				} else 
+					if (state.val === false) { 
+						getResponse('NONE', deviceId, PATH['MAIN_COMMAND'] + '5', function (error, command, deviceId, xml) {
+							if (error) {
+							//adapter.log.error('Cannot send command "' + name + '": ' + error);
+							adapter.setState('Alexa_Command.Standby', {val: state.val, ack: true});
+							}
+						});
+					}
+			});
+        } else
+		if (id === adapter.namespace + '.Alexa_Command.Mute') {
+			adapter.getState('Alexa_Command.Mute', function(err, state) {
+				if (state.val === true) {
+					getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + '113', function (error, command, deviceId, xml) {
+						if (error) {
+						//adapter.log.error('Cannot send command "' + name + '": ' + error);
+						adapter.setState('Alexa_Command.Mute', {val: state.val, ack: true});
+						}
+					});
+				} else 
+					if (state.val === false) { 
+						getResponse('NONE', deviceId, PATH['REMOTE_CONTROL'] + '113', function (error, command, deviceId, xml) {
+							if (error) {
+							//adapter.log.error('Cannot send command "' + name + '": ' + error);
+							adapter.setState('Alexa_Command.Mute', {val: state.val, ack: true});
+							}
+						});
+					}
+			});
+        } else
+//+++++++++++++++++++++++++++
         if (id === adapter.namespace + '.enigma2.Update') {
             getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
             getResponse('MESSAGEANSWER', deviceId, PATH['MESSAGEANSWER'],  evaluateCommandResponse);
@@ -210,6 +252,7 @@ function getResponse (command, deviceId, path, callback){
         host:				adapter.config.IPAddress,
         port:				adapter.config.Port,
 	TimerCheck:			adapter.config.TimerCheck,
+	alexa:				adapter.config.Alexa,
         path:				path,
         method:				'GET'
     };
@@ -564,7 +607,37 @@ function main() {
         native: {}
     });
 	adapter.setState('enigma2-CONNECTION', false, true );
-
+	
+	//+++++++++++++++++++++++++ ALEXA +++++++++++++++++++++++++++++++++++++++++++
+	
+	if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
+		adapter.setObject('Alexa_Command.Standby', {
+			type: 'state',
+			common: {
+				type: 'boolean',
+				role: 'state',
+				name: 'Receiver Standby Toggle with Alexa',
+				read:  true,
+				write: true
+			},
+			native: {}
+		});
+		adapter.setObject('Alexa_Command.Mute', {
+			type: 'state',
+			common: {
+				type: 'boolean',
+				role: 'state',
+				name: 'Receiver Mute Toggle with Alexa',
+				read:  true,
+				write: true
+			},
+			native: {}
+		});
+	} else {
+		adapter.delObject('Alexa_Command.Standby');
+		adapter.delObject('Alexa_Command.Mute');
+	};
+	
 	//+++++++++++++++++++++++++ STATE +++++++++++++++++++++++++++++++++++++++++++
 	
     adapter.setObject('enigma2.VOLUME', {
