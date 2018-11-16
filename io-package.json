@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "1.1.4",
+        "version":                  "1.1.5",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
@@ -20,7 +20,8 @@
         "Port": "80",
         "Username": "root",
         "Password": "dreambox",
-		"TimerCheck": 5000,
+	"TimerCheck": 5000,
+	"Alexa": false,
         "PollingInterval": 5000
     },
     "objects": [
