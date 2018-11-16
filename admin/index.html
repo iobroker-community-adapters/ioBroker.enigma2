@@ -32,12 +32,16 @@
 		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
         "example adapter settings": {"de": "enigma2", "ru": "Пример"},
         "IPAddress":                {"en": "IP address", "de": "IP Adresse (nur http kein https)", "ru": ""},
-		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
+	"Port":                     {"en": "Port", "de": "Port", "ru": ""},
         "Username":                 {"en": "Username", "de": "Benutzername", "ru": ""},
         "Password":                 {"en": "Password", "de": "Passwort", "ru": ""},
         "PollingInterval":          {"en": "PollingInterval", "de": "Poll-Interval", "ru": ""},
 	//TimerCheck
-		"TimerCheck":                    {"en": "Timer Check", "de": "Timer Check", "ru": ""},
+	"TimerCheck":     		{"en": "Timer Check", "de": "Timer Prüfung", "ru": ""},
+	"TimerEnabled":			{"en": "Timer Enabled", "de": "Timer Prüfung aktivieren/deaktivieren", "ru": ""},
+	"Enabled":			{"en": "Enabled", "de": "Timer Checken", "ru": ""},
+	//Alexa
+	"Alexa":               		{"en": "Alexa", "de": "Alexa", "ru": ""},
 	//Network
 		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -70,8 +74,8 @@
         onChange(false);
     }
 
-		if (settings.internalharddisk === undefined) settings.internalharddisk = false;
-		if (settings.secondharddisk === undefined) settings.secondharddisk = false;
+		//if (settings.TimerCheck === undefined) settings.TimerCheck = 180000;
+		if (settings.Alexa === undefined) settings.Alexa = false;
 		
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
@@ -132,18 +136,14 @@
             </select></td>
         </tr>		
     </table>
-    <h4 class="translate">TimerCheck</h4>
+    <h4 class="translate">Alexa</h4>
     <table>
 		<tr>
-            <td><label class="translate" for="TimerCheck">TimerCheck</label></td>
-            <td colspan="10"><select id="TimerCheck" class="value">
+            <td><label class="translate" for="Alexa">Alexa</label></td>
+            <td colspan="10"><select id="Alexa" class="value">
                 <option value="20000" class="translate">20 sec.</option>
-				<option value="30000" class="translate">30 sec.</option>
-				<option value="60000" class="translate">60 sec.</option>
-				<option value="120000" class="translate">2 min</option>
-				<option value="300000" class="translate">5 min</option>
-				<option value="600000" class="translate">10 min</option>
-				<option value="1800000" class="translate">30 min</option>
+				<option value="true" class="translate">Aktiv</option>
+				<option value="false" class="translate">Deaktiv</option>
             </select></td>
         </tr>
     </table>
