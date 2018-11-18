@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "1.1.5",
+        "version":                  "1.1.6",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
@@ -140,8 +140,20 @@
                 "write": true
             },
             "native": {}
+        },
+	{
+            "_id":  "command.ZAP",
+            "type": "state",
+            "common": {
+                "role":  "state",
+                "name":  "Zap with Servicereference",
+                "type":  "string",
+                "read":  false,
+                "write": true
+            },
+            "native": {}
         },	
-		{
+	{
             "_id":  "command.REMOTE-CONTROL",
             "type": "state",
             "common": {
@@ -153,7 +165,7 @@
             },
             "native": {}
         },
-		{
+	{
             "_id":  "command.SET_VOLUME",
             "type": "state",
             "common": {
