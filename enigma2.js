@@ -20,45 +20,44 @@ var PATH = {
     MESSAGEANSWER:		'/web/messageanswer?getanswer=now',
     DEVICEINFO:			'/web/deviceinfo',
     REMOTE_CONTROL:		'/web/remotecontrol?command=',
-	VOLUME:				'/web/vol',
+    VOLUME:			'/web/vol',
     VOLUME_SET:			'/web/vol?set=set',
-    ABOUT:				'/web/about',
+    ABOUT:			'/web/about',
     GET_CURRENT:		'/web/getcurrent',
     POWERSTATE:			'/web/powerstate',
     MESSAGE:			'/web/message?text=',
-    DELETE:				'/web/timerdelete?sRef=',
+    DELETE:			'/web/timerdelete?sRef=',
     TIMER_TOGGLE:		'/api/timertogglestatus?sRef=',
     TIMERLIST:			'/web/timerlist',
     MAIN_COMMAND:		'/web/powerstate?newstate=',
-    IP_CHECK:			'/web/about'
+    IP_CHECK:			'/web/about',
+    ZAP:			'/web/zap?sRef='
 };
 
 var main_commands = {
 	DEEP_STANDBY:		1,
-	REBOOT:				2,
+	REBOOT:			2,
 	RESTART_GUI:		3,
-	WAKEUP_FROM_STANDBY:4,
-	STANDBY:			5
+	WAKEUP_FROM_STANDBY:	4,
+	STANDBY:		5
 };
 
 var commands = {
-    CHANNEL_DOWN:	403,
-    CHANNEL_UP:		402,
+	CHANNEL_DOWN:		403,
+	CHANNEL_UP:		402,
 	DOWN:			108,
-    EPG:			358,
+	EPG:			358,
 	EXIT:			174,
-	LEFT:			105,
 	MENU:			139,
-	MUTE_TOGGLE:	113,
-	OK:				352,
-    PLAY_PAUSE:		164,
+	OK:			352,
+	PLAY_PAUSE:		164,
 	RADIO:			385,
 	REC:			167,
 	RIGHT:			106,
-	STANDBY_TOGGLE:	116,
+	STANDBY_TOGGLE:		116,
 	STOP:			128,
-	TV:				377,
-	UP:				103
+	TV:			377,
+	UP:			103
 };
 
 adapter.on('stateChange', function (id, state) {
@@ -195,6 +194,18 @@ adapter.on('stateChange', function (id, state) {
                     });
                 });
             });
+	//ZAP
+		} else if (id === adapter.namespace + '.command.ZAP') {
+            adapter.log.debug('Info message: ' + state.val);
+				//var MESSAGE_TEXT  = state.val;
+                    getResponse('NONE', deviceId, PATH['ZAP'] + state.val , function (error, command, deviceId, xml) {
+                        if (!error) {
+                            adapter.setState('command.ZAP',state.val, true);
+                        } else {
+                            adapter.setState('command.ZAP', {val: state.val, ack: true});
+                        }
+                    });
+	//Timer
 		} else if (parts[1] === 'Timer' && name === 'Timer_Toggle') {
 			var timerID = parts[2];
 			
