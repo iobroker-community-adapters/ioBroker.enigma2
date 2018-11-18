@@ -50,19 +50,24 @@ ioBroker enigma2 Adapter
 - command.STOP
 - command.TV
 - command.UP
+- command.ZAP = send an invalid servicereference
 
-## Command
-- main_command.DEEP_STANDBY
-- main_command.REBOOT
-- main_command.RESTART_GUI
-- main_command.STANDBY
-- main_command.WAKEUP_FROM_STANDBY
+## Main Command
+- main_command.DEEP_STANDBY         = Deepstandby
+- main_command.REBOOT               = Reboot
+- main_command.RESTART_GUI          = Restart Enigma2 (GUI)
+- main_command.STANDBY              = Standby
+- main_command.WAKEUP_FROM_STANDBY  = Wakeup form Standby
 
 
 ## Message
  - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
+
+## Alexa_Command
+ - Alexa_Command.Mute     = Alexa Command
+ - Alexa_Command.Standby  = Alexa Command
  
  ## Timer !remove!
 - Timer.Disabled
@@ -77,7 +82,14 @@ ioBroker enigma2 Adapter
  
 ## Version
 
-### 1.1.4 (2018-11-15)
+
+### 1.1.6 (2018-11-18)
+* (Matten-Matten)      command.ZAP (send an invalid servicereference)
+
+### 1.1.5 (2018-11-17)
+* (Matten-Matten)      add Alexa_command
+
+### 1.1.4 (2018-11-16)
 * (Matten-Matten)      add main_command
 
 ### 1.1.3 (2018-11-15)
