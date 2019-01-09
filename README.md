@@ -13,6 +13,9 @@ ioBroker enigma2 Adapter
 - EVENTDESCRIPTION
 - EVENTDURATION
 - EVENTREMAINING
+- EVENT_PROGRESS_PERCENT
+- EVENT_TIME_START
+- EVENT_TIME_END
 - HDD_CAPACITY
 - HDD_FREE
 - MESSAGE_ANSWER
@@ -82,6 +85,10 @@ ioBroker enigma2 Adapter
  
 ## Version
 
+### 1.1.7 (2019-01-09)
+* (Matten-Matten)      enigma2.EVENT_PROGRESS_PERCENT
+* (Matten-Matten)      enigma2.EVENT_TIME_START
+* (Matten-Matten)      enigma2.EVENT_TIME_END
 
 ### 1.1.6 (2018-11-18)
 * (Matten-Matten)      command.ZAP (send an invalid servicereference)
