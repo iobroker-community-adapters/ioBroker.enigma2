@@ -329,7 +329,7 @@ function getResponse (command, deviceId, path, callback){
 }
 
 function parseBool(string){
-    var cleanedString = string[0].replace(/(\t\n|\n|\t)/gm,"");
+    var cleanedString = string[0].replace(/(\r|\t\n|\n|\t)/gm,"");
     switch(cleanedString.toLowerCase()){
         case "true": case "yes": case "1": return true;
         default: return false;
