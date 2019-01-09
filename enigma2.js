@@ -383,14 +383,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
 			break;
-			break;
-        case "GETCURRENT":
-			// Check Sender Picon
-			//var ext = 'png';
-			//var picon = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').replace(/_$/, '');
-			
-			//getResponse('PICON', deviceId, "/picon/" +picon +"."+ext, setPIcon);
-		
+        case "GETCURRENT":		
             adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
             adapter.setState('enigma2.EVENTDURATION', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]), ack: true});
             adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
@@ -408,7 +401,53 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
             adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
 	    adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').slice(0,-1), ack: true});
-	   break;
+	   
+			var  e2EVENTDURATION = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
+			var  e2EVENTREMAINING = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);	
+				var	Step1 = parseFloat((parseFloat(e2EVENTDURATION) - parseFloat(e2EVENTREMAINING)));
+				var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION)));
+				var Step3 = parseFloat((Math.round(Step2 * 100)));
+					//adapter.log.info(Step3);
+					adapter.setState('enigma2.EVENT_PROGRESS_PERCENT', {val: parseInt(Step3), ack: true});
+
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
+			
+			var  e2Eventstart = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventstart[0]);
+			var  e2Eventend = (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventstart[0]);
+			
+			if(e2Eventstart !== e2Eventend){
+				
+				// Create a new JavaScript Date object based on the timestamp
+				// multiplied by 1000 so that the argument is in milliseconds, not seconds.
+				var date = new Date(e2Eventstart * 1000);
+				// Hours part from the timestamp
+				var hours = date.getHours();
+				// Minutes part from the timestamp
+				var minutes = "0" + date.getMinutes();
+
+				// Will display time in 10:30 format
+				var formattedTime = hours + ':' + minutes.substr(-2);
+					adapter.setState('enigma2.EVENT_TIME_START', {val: (formattedTime), ack: true});
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				var date = new Date(e2Eventend * 1000);
+				// Hours part from the timestamp
+				var hours = date.getHours();
+				// Minutes part from the timestamp
+				var minutes = "0" + date.getMinutes();
+
+				// Will display time in 10:30 format
+				var formattedTime = hours + ':' + minutes.substr(-2);
+					adapter.setState('enigma2.EVENT_TIME_END', {val: (formattedTime), ack: true});
+					//adapter.log.info(formattedTime);
+					
+			} else {
+					adapter.setState('enigma2.EVENT_TIME_END', {val: '', ack: true});
+					adapter.setState('enigma2.EVENT_TIME_START', {val: '', ack: true});
+					};
+			
+			break;
         case "GETINFO":
             adapter.log.debug("Box Sender: " +xml.e2abouts.e2about[0].e2servicename[0]);
             adapter.setState('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
@@ -684,28 +723,6 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.EVENTDURATION', {
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'media.duration',
-			name: 'EVENT DURATION',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
-	adapter.setObject('enigma2.EVENTREMAINING', {
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'media.duration',
-			name: 'EVENT REMAINING',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });
     adapter.setObject('enigma2.STANDBY', {
         type: 'state',
         common: {
@@ -816,18 +833,67 @@ function main() {
         },
         native: {}
     });
-
-	adapter.setObject('enigma2.EVENTREMAINING', {
+	
+	adapter.setObject('enigma2.EVENTDURATION', {
         type: 'state',
         common: {
             type: 'number',
             role: 'media.duration',
-			name: 'EVENT REMAINING',
+			name: 'Event Duration',
 			read:  true,
             write: false
         },
         native: {}
     });
+
+	adapter.setObject('enigma2.EVENTREMAINING', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'media.elapsed',
+			name: 'Event Remaining',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+	adapter.setObject('enigma2.EVENT_PROGRESS_PERCENT', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'media.progress',
+			name: 'Event Progress Percent',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+	adapter.setObject('enigma2.EVENT_TIME_START', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'media.broadcastDate',
+			name: 'Event Start',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+	adapter.setObject('enigma2.EVENT_TIME_END', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'media.broadcastDate',
+			name: 'Event End',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
 	
