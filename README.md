@@ -85,6 +85,10 @@ ioBroker enigma2 Adapter
  
 ## Version
 
+### 1.1.8 (2019-01-10)
+* (Matten-Matten)      enigma2.EVENTDURATION decoded in H:M:S
+* (Matten-Matten)      enigma2.EVENTREMAINING decoded in H:M:S
+
 ### 1.1.7 (2019-01-09)
 * (Matten-Matten)      enigma2.EVENT_PROGRESS_PERCENT
 * (Matten-Matten)      enigma2.EVENT_TIME_START
