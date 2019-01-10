@@ -385,27 +385,62 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			break;
         case "GETCURRENT":		
             adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
-            adapter.setState('enigma2.EVENTDURATION', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]), ack: true});
+			var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
+            var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
+				
+				if(e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0'){
+					adapter.setState('enigma2.EVENTDURATION', {val: ''/*'0:0:0'*/, ack: true});
+				} else {
+					adapter.setState('enigma2.EVENTDURATION', {val: e2EVENTDURATION, ack: true});
+					};
+					
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
             adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
-            adapter.setState('enigma2.EVENTREMAINING', {val: parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]), ack: true});
+            //adapter.setState('enigma2.EVENTREMAINING', {val: sec2HMS(parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0])), ack: true});
+			var e2EVENTREMAINING_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);	
+			var e2EVENTREMAINING = sec2HMS(parseFloat(e2EVENTREMAINING_X));
+				
+				if(e2EVENTREMAINING === 'NaN:NaN:NaN' || e2EVENTREMAINING === '0'){
+					adapter.setState('enigma2.EVENTREMAINING', {val: ''/*'0:0:0'*/, ack: true});
+				} else {
+					adapter.setState('enigma2.EVENTREMAINING', {val: e2EVENTREMAINING, ack: true});
+					};
+					
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
             adapter.log.debug("Box Programm: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);			
             adapter.setState('enigma2.PROGRAMM', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true});
+			
 			adapter.log.debug("Box Programm_danach: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]);			
             adapter.setState('enigma2.PROGRAMM_AFTER', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0], ack: true});
+			
             adapter.log.debug("Box Programm Info: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]);			
             adapter.setState('enigma2.PROGRAMM_INFO', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0], ack: true});
+			
 			adapter.log.debug("Box Programm danach Info: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]);			
-            adapter.setState('enigma2.PROGRAMM_AFTER_INFO', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0], ack: true});			
+            adapter.setState('enigma2.PROGRAMM_AFTER_INFO', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0], ack: true});
+			
 			adapter.log.debug("Box eventdescription: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);			
             adapter.setState('enigma2.EVENTDESCRIPTION', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true});
-			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);			
-            adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
-	    adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').slice(0,-1), ack: true});
-	   
-			var  e2EVENTDURATION = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
-			var  e2EVENTREMAINING = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);	
-				var	Step1 = parseFloat((parseFloat(e2EVENTDURATION) - parseFloat(e2EVENTREMAINING)));
-				var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION)));
+			
+			adapter.log.debug("Box Sender Servicereference: " +xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
+			var e2SERVICEREFERENCE = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
+				
+				if(e2SERVICEREFERENCE === '-1:8087252:0:77132724:2:0:C:0:0:77040804:' || e2EVENTREMAINING === '0'){
+					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: '', ack: true});
+					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: '', ack: true});
+				} else {
+					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: e2SERVICEREFERENCE, ack: true});
+					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0,-1), ack: true});
+					};
+            //adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
+			//adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').slice(0,-1), ack: true});
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+				
+				var	Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
+				var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION_X)));
 				var Step3 = parseFloat((Math.round(Step2 * 100)));
 					//adapter.log.info(Step3);
 					adapter.setState('enigma2.EVENT_PROGRESS_PERCENT', {val: parseInt(Step3), ack: true});
