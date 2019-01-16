@@ -34,30 +34,32 @@ var PATH = {
     ZAP:			'/web/zap?sRef='
 };
 
-var main_commands = {
-	DEEP_STANDBY:		1,
-	REBOOT:			2,
-	RESTART_GUI:		3,
-	WAKEUP_FROM_STANDBY:	4,
-	STANDBY:		5
-};
-
 var commands = {
-	CHANNEL_DOWN:		403,
-	CHANNEL_UP:		402,
+    CHANNEL_DOWN:	403,
+    CHANNEL_UP:		402,
 	DOWN:			108,
-	EPG:			358,
+    EPG:			358,
 	EXIT:			174,
+	LEFT:			105,
 	MENU:			139,
-	OK:			352,
-	PLAY_PAUSE:		164,
+	MUTE_TOGGLE:	113,
+	OK:				352,
+    PLAY_PAUSE:		164,
 	RADIO:			385,
 	REC:			167,
 	RIGHT:			106,
-	STANDBY_TOGGLE:		116,
+	STANDBY_TOGGLE:	116,
 	STOP:			128,
-	TV:			377,
-	UP:			103
+	TV:				377,
+	UP:				103
+};
+
+var main_commands = {
+	DEEP_STANDBY:			1,
+	REBOOT:					2,
+	RESTART_GUI:			3,
+	WAKEUP_FROM_STANDBY:	4,
+	STANDBY:				5
 };
 
 adapter.on('stateChange', function (id, state) {
