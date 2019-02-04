@@ -9,10 +9,13 @@ ioBroker enigma2 Adapter
 - BOX_IP
 - NETWORK
 - CHANNEL_SERVICEREFERENCE
+- CHANNEL_SERVICEREFERENCE_NAME
 - CHANNEL
 - EVENTDESCRIPTION
 - EVENTDURATION
+- EVENTDURATION_MIN
 - EVENTREMAINING
+- EVENTREMAINING_MIN
 - EVENT_PROGRESS_PERCENT
 - EVENT_TIME_START
 - EVENT_TIME_END
@@ -73,17 +76,14 @@ ioBroker enigma2 Adapter
  - Alexa_Command.Standby  = Alexa Command
  
  ## Timer !remove!
-- Timer.Disabled
-- Timer.Event-Name
-- Timer.Repeated
-- Timer.Station
-- Timer.Timer_End
-- Timer.Timer_Start
-- Timer.Timer_servicereference
-- Timer.Update
 
  
 ## Version
+### 1.1.9 (2019-02-04)
+* (Matten-Matten)      (#14) add enigma2.EVENTDURATION_MIN in Minute
+* (Matten-Matten)      (#14) add enigma2.EVENTREMAINING_MIN in Minute
+* (Matten-Matten)      Troubleshooting in standby toggle
+* (Matten-Matten)      Troubleshooting in the "eventlist" query
 
 ### 1.1.8 (2019-01-10)
 * (Matten-Matten)      enigma2.EVENTDURATION decoded in H:M:S
