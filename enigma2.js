@@ -149,12 +149,15 @@ adapter.on('stateChange', function (id, state) {
 
         } else
         if (id === adapter.namespace + '.enigma2.STANDBY') {
-            getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
-            getResponse('NONE', deviceId, PATH['POWERSTATE'] + '?newstate=' + (state.val ? 1 : 0), function (error, command, deviceId, xml) {
+            //getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
+            //getResponse('NONE', deviceId, PATH['POWERSTATE'] + '?newstate=' + (state.val ? 1 : 0), function (error, command, deviceId, xml) {
+			getResponse('NONE', deviceId, PATH['MAIN_COMMAND'] + 0, function (error, command, deviceId, xml) {
                 if (!error) {
-                    adapter.setState('enigma2.STANDBY', state.val, true);
+			adapter.setState('enigma2.STANDBY', state.val, true);
+			getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
                 } else {
-                    adapter.setState('enigma2.STANDBY', {val: state.val, ack: true});
+			adapter.setState('enigma2.STANDBY', {val: state.val, ack: true});
+			getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
                 }
             });
         } else if (id === adapter.namespace + '.command.SET_VOLUME') {
@@ -406,10 +409,14 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
 			break;
-        case "GETCURRENT":		
-            adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
-			var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
-            var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
+        case "GETCURRENT":	
+		
+	if(xml.e2currentserviceinformation.e2eventlist[0] !== undefined){
+		
+		adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
+		var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
+			adapter.setState('enigma2.EVENTDURATION_MIN', {val: Math.round(e2EVENTDURATION_X / 60), ack: true});
+		var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
 				
 				if(e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0'){
 					adapter.setState('enigma2.EVENTDURATION', {val: ''/*'0:0:0'*/, ack: true});
@@ -421,7 +428,8 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			
             adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
             //adapter.setState('enigma2.EVENTREMAINING', {val: sec2HMS(parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0])), ack: true});
-			var e2EVENTREMAINING_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);	
+			var e2EVENTREMAINING_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);
+				adapter.setState('enigma2.EVENTREMAINING_MIN', {val: Math.round(e2EVENTREMAINING_X / 60), ack: true});
 			var e2EVENTREMAINING = sec2HMS(parseFloat(e2EVENTREMAINING_X));
 				
 				if(e2EVENTREMAINING === 'NaN:NaN:NaN' || e2EVENTREMAINING === '0'){
@@ -506,6 +514,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 					};
 			
 			break;
+	}
         case "GETINFO":
             adapter.log.debug("Box Sender: " +xml.e2abouts.e2about[0].e2servicename[0]);
             adapter.setState('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
@@ -896,8 +905,8 @@ function main() {
         type: 'state',
         common: {
             type: 'number',
-            role: 'media.duration',
-			name: 'Event Duration',
+            role: 'media.duration.text',
+			name: 'Event Duration in H:M:S',
 			read:  true,
             write: false
         },
@@ -908,8 +917,32 @@ function main() {
         type: 'state',
         common: {
             type: 'number',
+            role: 'media.elapsed.text',
+			name: 'Event Remaining in H:M:S',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+	
+		adapter.setObject('enigma2.EVENTDURATION_MIN', {
+        type: 'state',
+        common: {
+            type: 'number',
+            role: 'media.duration',
+			name: 'Event Duration in Minute',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
+
+	adapter.setObject('enigma2.EVENTREMAINING_MIN', {
+        type: 'state',
+        common: {
+            type: 'number',
             role: 'media.elapsed',
-			name: 'Event Remaining',
+			name: 'Event Remaining in Minute',
 			read:  true,
             write: false
         },
