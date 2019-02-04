@@ -1059,7 +1059,7 @@ function main2() {
     adapter.subscribeStates('*');
 
     //Check ever 3 secs
-   // adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
+   // adapter.log.info("starting Polling every " + adapter.config.PollingInterval / 1000 + " seconds");
     //setInterval(checkStatus,adapter.config.PollingInterval);
 	getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
 }
