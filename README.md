@@ -1,5 +1,5 @@
 ![Logo](admin/enigma2.png)
-ioBroker enigma2 Adapter
+# ioBroker enigma2 Adapter
 ==============
 - Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
@@ -78,7 +78,7 @@ ioBroker enigma2 Adapter
  ## Timer !remove!
 
  
-## Version
+## Changelog
 ### 1.1.9 (2019-02-04)
 * (Matten-Matten)      (#14) add enigma2.EVENTDURATION_MIN in Minute
 * (Matten-Matten)      (#14) add enigma2.EVENTREMAINING_MIN in Minute
