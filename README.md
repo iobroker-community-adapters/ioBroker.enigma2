@@ -5,7 +5,7 @@
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 
 
-## Funktionen
+### Funktionen
 - BOX_IP
 - NETWORK
 - CHANNEL_SERVICEREFERENCE
@@ -34,7 +34,7 @@
 
 - enigma2-CONNECTION
 
-## Command
+### Command
 - command.CHANNEL_DOWN
 - command.CHANNEL_UP
 - command.DOWN
@@ -58,7 +58,7 @@
 - command.UP
 - command.ZAP = send an invalid servicereference
 
-## Main Command
+### Main Command
 - main_command.DEEP_STANDBY         = Deepstandby
 - main_command.REBOOT               = Reboot
 - main_command.RESTART_GUI          = Restart Enigma2 (GUI)
@@ -66,16 +66,16 @@
 - main_command.WAKEUP_FROM_STANDBY  = Wakeup form Standby
 
 
-## Message
+### Message
  - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
 
-## Alexa_Command
+### Alexa_Command
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
  
- ## Timer !remove!
+#### Timer !remove!
 
  
 ## Changelog
