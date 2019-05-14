@@ -397,6 +397,15 @@ function evaluateCommandResponse (command, deviceId, xml) {
         case "GETSTANDBY":
             adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
             adapter.setState('enigma2.STANDBY', {val: parseBool(xml.e2powerstate.e2instandby), ack: true});
+	    //Alexa_Command.Standby
+	    if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
+	    var alexastby = parseBool(xml.e2powerstate.e2instandby);
+		if(alexastby === false || alexastby === "false"){
+			adapter.setState('Alexa_Command.Standby', {val: true, ack: true});
+		} else if(alexastby === true || alexastby === "true"){
+			adapter.setState('Alexa_Command.Standby', {val: false, ack: true});
+		}
+	    }
             break;
         case "GETVOLUME":
 			if (!xml.e2volume || !xml.e2volume.e2current) {
@@ -408,7 +417,16 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.setState('enigma2.VOLUME', {val: parseInt(xml.e2volume.e2current[0]), ack: true});
             adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
-			break;
+	    //Alexa_Command.Mute
+	    if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
+	    var alexaMute = parseBool(xml.e2volume.e2ismuted);		
+		if(alexaMute === false || alexaMute === "false"){
+			adapter.setState('Alexa_Command.Mute', {val: false, ack: true});
+		} else if(alexaMute === true || alexaMute === "true"){
+			adapter.setState('Alexa_Command.Mute', {val: true, ack: true});
+		}
+	    }
+		break;
         case "GETCURRENT":	
 		
 	if(xml.e2currentserviceinformation.e2eventlist[0] !== undefined){
@@ -470,11 +488,18 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 				
-				var	Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
+				var Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
 				var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION_X)));
 				var Step3 = parseFloat((Math.round(Step2 * 100)));
 					//adapter.log.info(Step3);
 					adapter.setState('enigma2.EVENT_PROGRESS_PERCENT', {val: parseInt(Step3), ack: true});
+				//EVENT_TIME_PASSED //NaN:NaN:NaN
+				var Step1_1 = sec2HMS(parseInt(Step1));
+					if(Step1_1 === 'NaN:NaN:NaN'){
+						adapter.setState('enigma2.EVENT_TIME_PASSED', {val: "", ack: true});
+					} else {
+						adapter.setState('enigma2.EVENT_TIME_PASSED', {val: sec2HMS(parseInt(Step1)), ack: true});
+					};
 
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
 			
