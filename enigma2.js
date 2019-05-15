@@ -985,6 +985,18 @@ function main() {
         },
         native: {}
     });
+    
+	adapter.setObject('enigma2.EVENT_TIME_PASSED', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'media.broadcastDate',
+			name: 'Event Time Passed',
+			read:  true,
+            write: false
+        },
+        native: {}
+    });
 	
 	adapter.setObject('enigma2.EVENT_TIME_START', {
         type: 'state',
