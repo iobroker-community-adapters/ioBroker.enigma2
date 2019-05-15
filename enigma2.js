@@ -421,9 +421,9 @@ function evaluateCommandResponse (command, deviceId, xml) {
 	    if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
 	    var alexaMute = parseBool(xml.e2volume.e2ismuted);		
 		if(alexaMute === false || alexaMute === "false"){
-			adapter.setState('Alexa_Command.Mute', {val: false, ack: true});
-		} else if(alexaMute === true || alexaMute === "true"){
 			adapter.setState('Alexa_Command.Mute', {val: true, ack: true});
+		} else if(alexaMute === true || alexaMute === "true"){
+			adapter.setState('Alexa_Command.Mute', {val: false, ack: true});
 		}
 	    }
 		break;
