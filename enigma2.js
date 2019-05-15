@@ -758,7 +758,7 @@ function main() {
 			common: {
 				type: 'boolean',
 				role: 'state',
-				name: 'Receiver Standby Toggle with Alexa',
+				name: 'Receiver Standby Toggle with Alexa (true=Receiver ON / false=Receiver OFF)',
 				read:  true,
 				write: true
 			},
@@ -769,7 +769,7 @@ function main() {
 			common: {
 				type: 'boolean',
 				role: 'state',
-				name: 'Receiver Mute Toggle with Alexa',
+				name: 'Receiver Mute Toggle with Alexa (true=volume ON / false=Volume OFF)',
 				read:  true,
 				write: true
 			},
