@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "1.2.0",
+        "version":                  "1.2.1",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 		"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
