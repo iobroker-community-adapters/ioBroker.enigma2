@@ -1,7 +1,7 @@
 {
   "name": "iobroker.enigma2",
   "description": "enigma2 adapter für VU+;Dreambox;EDISON...",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": {
     "name": "Matten-Matten",
     "email": "matten-matten@web.de"
