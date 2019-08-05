@@ -653,7 +653,7 @@ try {
 				adapter.delObject('enigma2.isRecording');
 			} else {
 				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
-				adapter.setObject('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'Connection to Receiver', read:  true, write: false }, native: {} });
+				adapter.setObject('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
 				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
 			}
 	} else {
