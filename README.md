@@ -84,7 +84,7 @@
  
 ## Changelog
 ### 1.2.1 (2019-08-05)
-* (Matten-Matten)       add: `.enigma2.isRecording`
+* (Matten-Matten)       add: `.enigma2.isRecording` (#12)
 
 ### 1.2.0 (2019-05-14)
 * (Matten-Matten)      (#17) `.Alexa_Command.Mute` & `.Alexa_Command.Standby` now with status feedback
