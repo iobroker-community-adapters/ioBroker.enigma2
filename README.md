@@ -32,7 +32,9 @@
 - STANDBY
 - VOLUME
 - WEB_IF_VERSION
+- isRecording
 
+### main
 - enigma2-CONNECTION
 
 ### Command
@@ -81,6 +83,9 @@
 ==============
  
 ## Changelog
+### 1.2.1 (2019-08-05)
+* (Matten-Matten)       add: `.enigma2.isRecording`
+
 ### 1.2.0 (2019-05-14)
 * (Matten-Matten)      (#17) `.Alexa_Command.Mute` & `.Alexa_Command.Standby` now with status feedback
 * (Matten-Matten)       add: `.enigma2.EVENT_TIME_PASSED`
