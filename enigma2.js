@@ -31,7 +31,8 @@ var PATH = {
     TIMERLIST:			'/web/timerlist',
     MAIN_COMMAND:		'/web/powerstate?newstate=',
     IP_CHECK:			'/web/about',
-    ZAP:			'/web/zap?sRef='
+    ZAP:			'/web/zap?sRef=',
+    API:			'/api/statusinfo'
 };
 
 var commands = {
@@ -144,6 +145,7 @@ adapter.on('stateChange', function (id, state) {
             getResponse('GETINFO',    deviceId, PATH['ABOUT'],       evaluateCommandResponse);
             getResponse('GETVOLUME',  deviceId, PATH['VOLUME'],      evaluateCommandResponse);
             getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
+	    getResponse('STATUSINFO', deviceId, PATH['API'], 	     APIstatusinfo);
             adapter.log.debug("E2 States manuell aktualisiert");
             adapter.setState('enigma2.Update', {val: state.val, ack: true});
 
@@ -640,6 +642,28 @@ function evaluateCommandResponse (command, deviceId, xml) {
     }
 }
 
+function APIstatusinfo () {
+var etwas, result;
+try {
+  require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['API'], function (error, response, result) {
+	if (!error) { 
+		etwas = result.slice(((result.indexOf('"isRecording": ') + 1) - 1), result.indexOf('", "currservice_description":') + 1);
+			if(etwas === '' || etwas === undefined){
+				adapter.log.debug("isRecording: undefined");
+				adapter.delObject('enigma2.isRecording');
+			} else {
+				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
+				adapter.setObject('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'Connection to Receiver', read:  true, write: false }, native: {} });
+				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
+			}
+	} else {
+		adapter.log.debug("isRecording: error");
+		adapter.delObject('enigma2.isRecording');
+	}
+  }).on("error", function (e) {console.error(e);});
+} catch (e) { console.error(e); }
+}
+
 function setStatus(status)
 {
 	if(status != isConnected)
@@ -653,6 +677,7 @@ function setStatus(status)
             getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
             getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
             getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
+	    getResponse('STATUSINFO', 		deviceId, PATH['API'], 			APIstatusinfo);
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
@@ -1034,6 +1059,7 @@ function main() {
         getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
         getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
         getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
+	getResponse('STATUSINFO', 		deviceId, PATH['API'], 			APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
     setInterval(function() {
