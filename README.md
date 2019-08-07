@@ -87,7 +87,7 @@
 * (Matten-Matten)       add: `.enigma2.isRecording` ([#12](https://github.com/Matten-Matten/ioBroker.enigma2/issues/12))
 
 ### 1.2.0 (2019-05-14)
-* (Matten-Matten)      (#17) `.Alexa_Command.Mute` & `.Alexa_Command.Standby` now with status feedback
+* (Matten-Matten)      ([#17](https://github.com/Matten-Matten/ioBroker.enigma2/issues/17)) `.Alexa_Command.Mute` & `.Alexa_Command.Standby` now with status feedback
 * (Matten-Matten)       add: `.enigma2.EVENT_TIME_PASSED`
 
 ### 1.1.9 (2019-02-04)
