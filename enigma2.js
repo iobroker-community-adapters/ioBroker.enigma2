@@ -17,50 +17,51 @@ var isConnected      	= null;
 var deviceId         	= 1;
 
 var PATH = {
-    MESSAGEANSWER:		'/web/messageanswer?getanswer=now',
-    DEVICEINFO:			'/web/deviceinfo',
-    REMOTE_CONTROL:		'/web/remotecontrol?command=',
-    VOLUME:			'/web/vol',
-    VOLUME_SET:			'/web/vol?set=set',
-    ABOUT:			'/web/about',
-    GET_CURRENT:		'/web/getcurrent',
-    POWERSTATE:			'/web/powerstate',
-    MESSAGE:			'/web/message?text=',
-    DELETE:			'/web/timerdelete?sRef=',
-    TIMER_TOGGLE:		'/api/timertogglestatus?sRef=',
-    TIMERLIST:			'/web/timerlist',
-    MAIN_COMMAND:		'/web/powerstate?newstate=',
-    IP_CHECK:			'/web/about',
-    ZAP:			'/web/zap?sRef=',
-    API:			'/api/statusinfo'
+	MESSAGEANSWER:		'/web/messageanswer?getanswer=now',
+	DEVICEINFO:		'/web/deviceinfo',
+	REMOTE_CONTROL:		'/web/remotecontrol?command=',
+	VOLUME:			'/web/vol',
+	VOLUME_SET:		'/web/vol?set=set',
+	ABOUT:			'/web/about',
+	GET_CURRENT:		'/web/getcurrent',
+	POWERSTATE:		'/web/powerstate',
+	MESSAGE:		'/web/message?text=',
+	DELETE:			'/web/timerdelete?sRef=',
+	TIMER_TOGGLE:		'/api/timertogglestatus?sRef=',
+	TIMERLIST:		'/web/timerlist',
+	MAIN_COMMAND:		'/web/powerstate?newstate=',
+	IP_CHECK:		'/web/about',
+	ZAP:			'/web/zap?sRef=',
+	ISRECORD:		'/web/timerlist',
+	API:			'/api/statusinfo'
 };
 
 var commands = {
-    CHANNEL_DOWN:	403,
-    CHANNEL_UP:		402,
+	CHANNEL_DOWN:		403,
+	CHANNEL_UP:		402,
 	DOWN:			108,
-    EPG:			358,
+	EPG:			358,
 	EXIT:			174,
 	LEFT:			105,
 	MENU:			139,
-	MUTE_TOGGLE:	113,
-	OK:				352,
-    PLAY_PAUSE:		164,
+	MUTE_TOGGLE:		113,
+	OK:			352,
+	PLAY_PAUSE:		164,
 	RADIO:			385,
 	REC:			167,
 	RIGHT:			106,
-	STANDBY_TOGGLE:	116,
+	STANDBY_TOGGLE:		116,
 	STOP:			128,
-	TV:				377,
-	UP:				103
+	TV:			377,
+	UP:			103
 };
 
 var main_commands = {
-	DEEP_STANDBY:			1,
-	REBOOT:					2,
-	RESTART_GUI:			3,
+	DEEP_STANDBY:		1,
+	REBOOT:			2,
+	RESTART_GUI:		3,
 	WAKEUP_FROM_STANDBY:	4,
-	STANDBY:				5
+	STANDBY:		5
 };
 
 adapter.on('stateChange', function (id, state) {
@@ -138,21 +139,19 @@ adapter.on('stateChange', function (id, state) {
 					}
 			});
         } else
-//+++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++ enigma2.Update
         if (id === adapter.namespace + '.enigma2.Update') {
-            getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
-            getResponse('MESSAGEANSWER', deviceId, PATH['MESSAGEANSWER'],  evaluateCommandResponse);
-            getResponse('GETINFO',    deviceId, PATH['ABOUT'],       evaluateCommandResponse);
-            getResponse('GETVOLUME',  deviceId, PATH['VOLUME'],      evaluateCommandResponse);
-            getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
-	    getResponse('STATUSINFO', deviceId, PATH['API'], 	     APIstatusinfo);
-            adapter.log.debug("E2 States manuell aktualisiert");
-            adapter.setState('enigma2.Update', {val: state.val, ack: true});
-
+			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
+			getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
+			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
+			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
+			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		evaluateCommandResponse);
+			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
+			adapter.log.debug("E2 States manuell aktualisiert");
+			adapter.setState('enigma2.Update', {val: state.val, ack: true});
         } else
         if (id === adapter.namespace + '.enigma2.STANDBY') {
-            //getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'],  evaluateCommandResponse);
-            //getResponse('NONE', deviceId, PATH['POWERSTATE'] + '?newstate=' + (state.val ? 1 : 0), function (error, command, deviceId, xml) {
 			getResponse('NONE', deviceId, PATH['MAIN_COMMAND'] + 0, function (error, command, deviceId, xml) {
                 if (!error) {
 			adapter.setState('enigma2.STANDBY', state.val, true);
@@ -267,12 +266,12 @@ adapter.on('ready', function () {
 function getResponse (command, deviceId, path, callback){
    // var device = dreamSettings.boxes[deviceId];
     var options = {
-        host:				adapter.config.IPAddress,
-        port:				adapter.config.Port,
-		TimerCheck:			adapter.config.TimerCheck,
-        path:				path,
-		alexa:				adapter.config.Alexa,
-        method:				'GET'
+	    host:		adapter.config.IPAddress,
+	    port:		adapter.config.Port,
+	    TimerCheck:		adapter.config.TimerCheck,
+	    path:		path,
+	    alexa:		adapter.config.Alexa,
+	    method:		'GET'
     };
 
     adapter.log.debug("creating request for command '"+command+"' (deviceId: "+deviceId+", host: "+options.host+", port: "+options.port+", path: '"+options.path+"')");
@@ -373,29 +372,29 @@ function evaluateCommandResponse (command, deviceId, xml) {
 	
     switch (command.toUpperCase())
     {
-		case "MESSAGE":
-		case "MESSAGETEXT":
-		case "MESSAGEANSWER":
- 			adapter.log.debug("message answer: " +xml.e2simplexmlresult.e2statetext[0]);			
-            adapter.setState('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
-            break;			
+	case "MESSAGE":
+	case "MESSAGETEXT":
+	case "MESSAGEANSWER":
+		adapter.log.debug("message answer: " +xml.e2simplexmlresult.e2statetext[0]);			
+		adapter.setState('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
+		break;			
         case "RESTART":
         case "REBOOT":
         case "DEEPSTANDBY":
-            //setState(boxId, "");
-            break;
+		//setState(boxId, "");
+		break;
         case "MUTE":
         case "UNMUTE":
         case "MUTE_TOGGLE":
         case "VOLUME":
         case "SET_VOLUME":
-			adapter.setState('enigma2.COMMAND', {val: '', ack: true});		
-            break;
+		adapter.setState('enigma2.COMMAND', {val: '', ack: true});		
+		break;
         case "WAKEUP":
         case "STANDBY":
         case "OFF":
         case 'STANDBY_TOGGLE':
-            break;
+		break;
         case "GETSTANDBY":
             adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
             adapter.setState('enigma2.STANDBY', {val: parseBool(xml.e2powerstate.e2instandby), ack: true});
@@ -548,6 +547,22 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			//adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
 			//adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
             break;
+		case "ISRECORD":
+			//adapter.log.debug("is Recording: " + xml.e2timerlist.e2timer);
+			if(xml.e2timerlist.e2timer !== undefined){
+				adapter.log.debug("is Recording: " +xml.e2timerlist.e2timer[0].e2state[0]);
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				if(xml.e2timerlist.e2timer[0].e2state[0] === 2 || xml.e2timerlist.e2timer[0].e2state[0] === '2'){
+					adapter.setState('enigma2.isRecording', {val: true, ack: true});
+				} else {
+					adapter.setState('enigma2.isRecording', {val: false, ack: true});	
+				}
+			} else {
+				//adapter.delObject('enigma2.isRecording');
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				adapter.setState('enigma2.isRecording', {val: false, ack: true});
+			}
+            break;
         case "DEVICEINFO":
             adapter.setState('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
             adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
@@ -557,7 +572,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 		case "DEVICEINFO_HDD":
 			if(xml.e2deviceinfo.e2hdds[0].e2hdd !== undefined){
 			
-			    adapter.setObject('enigma2.HDD_CAPACITY', {
+			    adapter.setObjectNotExists('enigma2.HDD_CAPACITY', {
 					type: 'state',
 					common: {
 						type: 'string',
@@ -568,7 +583,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 					},
 					native: {}
 				});
-				adapter.setObject('enigma2.HDD_FREE', {
+				adapter.setObjectNotExists('enigma2.HDD_FREE', {
 					type: 'state',
 					common: {
 						type: 'string',
@@ -584,7 +599,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 				adapter.setState('enigma2.HDD_FREE', {val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true});
 				if(xml.e2deviceinfo.e2hdds[0].e2hdd[1] !== undefined){
 				
-					adapter.setObject('enigma2.HDD2_CAPACITY', {
+					adapter.setObjectNotExists('enigma2.HDD2_CAPACITY', {
 						type: 'state',
 						common: {
 							type: 'string',
@@ -595,7 +610,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('enigma2.HDD2_FREE', {
+					adapter.setObjectNotExists('enigma2.HDD2_FREE', {
 						type: 'state',
 						common: {
 							type: 'string',
@@ -653,7 +668,7 @@ try {
 				adapter.delObject('enigma2.isRecording');
 			} else {
 				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
-				adapter.setObject('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
 				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
 			}
 	} else {
@@ -670,14 +685,15 @@ function setStatus(status)
 	{
         isConnected = status;
         if (isConnected) {
-            adapter.log.info("enigma2 Verbunden!");
-            adapter.setState('enigma2-CONNECTION', true, true );
-	    getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
-            getResponse('MESSAGEANSWER', 	deviceId, PATH['MESSAGEANSWER'],  	evaluateCommandResponse);
-            getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
-            getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
-            getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
-	    getResponse('STATUSINFO', 		deviceId, PATH['API'], 			APIstatusinfo);
+			adapter.log.info("enigma2 Verbunden!");
+			adapter.setState('enigma2-CONNECTION', true, true );
+			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
+			getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
+			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
+			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
+			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		evaluateCommandResponse);
+			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
@@ -706,14 +722,14 @@ function setStatus(status)
 }
 
 function main() {
-// adapter.config:
-    adapter.log.debug('config IPAddress: ' + adapter.config.IPAddress);
+	// adapter.config:
+	adapter.log.debug('config IPAddress: ' + adapter.config.IPAddress);
 	adapter.log.debug('config Port: ' + adapter.config.Port);
-    adapter.log.debug('config Username: ' + adapter.config.Username);
-    adapter.log.debug('config Password'+ adapter.config.Password);
+	adapter.log.debug('config Username: ' + adapter.config.Username);
+	adapter.log.debug('config Password'+ adapter.config.Password);
 
 
-    adapter.setObject('Message.Text', {
+    adapter.setObjectNotExists('Message.Text', {
         type: 'state',
         common: {
             type: 'string',
@@ -726,7 +742,7 @@ function main() {
         native: {}
     });
 		
-    adapter.setObject('Message.Type', {
+    adapter.setObjectNotExists('Message.Type', {
         type: 'state',
         common: {
             type: 'number',
@@ -748,7 +764,7 @@ function main() {
     });
 	adapter.setState('Message.Type', 1, true );
 
-	adapter.setObject('Message.Timeout', {
+	adapter.setObjectNotExists('Message.Timeout', {
         type: 'state',
         common: {
             type: 'number',
@@ -762,7 +778,8 @@ function main() {
 	adapter.setState('Message.Timeout', 15, true );
 
 	//+++++++++ Verbindung +++++++++++++++++++++
-    adapter.setObject('enigma2-CONNECTION', {
+	
+    adapter.setObjectNotExists('enigma2-CONNECTION', {
         type: 'state',
         common: {
             type: 'boolean',
@@ -778,7 +795,7 @@ function main() {
 	//+++++++++++++++++++++++++ ALEXA +++++++++++++++++++++++++++++++++++++++++++
 	
 	if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
-		adapter.setObject('Alexa_Command.Standby', {
+		adapter.setObjectNotExists('Alexa_Command.Standby', {
 			type: 'state',
 			common: {
 				type: 'boolean',
@@ -789,7 +806,7 @@ function main() {
 			},
 			native: {}
 		});
-		adapter.setObject('Alexa_Command.Mute', {
+		adapter.setObjectNotExists('Alexa_Command.Mute', {
 			type: 'state',
 			common: {
 				type: 'boolean',
@@ -807,7 +824,7 @@ function main() {
 	
 	//+++++++++++++++++++++++++ STATE +++++++++++++++++++++++++++++++++++++++++++
 	
-    adapter.setObject('enigma2.VOLUME', {
+    adapter.setObjectNotExists('enigma2.VOLUME', {
         type: 'state',
         common: {
             type: 'number',
@@ -818,7 +835,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.MESSAGE_ANSWER', {
+    adapter.setObjectNotExists('enigma2.MESSAGE_ANSWER', {
         type: 'state',
         common: {
             type: 'integer',
@@ -829,7 +846,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.MUTED', {
+    adapter.setObjectNotExists('enigma2.MUTED', {
         type: 'state',
         common: {
             type: 'boolean',
@@ -840,7 +857,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.STANDBY', {
+    adapter.setObjectNotExists('enigma2.STANDBY', {
         type: 'state',
         common: {
             type: 'boolean',
@@ -851,7 +868,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.CHANNEL', {
+    adapter.setObjectNotExists('enigma2.CHANNEL', {
         type: 'state',
         common: {
             type: 'string',
@@ -862,7 +879,7 @@ function main() {
         },
         native: {}
     });
-    adapter.setObject('enigma2.CHANNEL_SERVICEREFERENCE', {
+    adapter.setObjectNotExists('enigma2.CHANNEL_SERVICEREFERENCE', {
         type: 'state',
         common: {
             type: 'string',
@@ -873,7 +890,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {
+	adapter.setObjectNotExists('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {
         type: 'state',
         common: {
             type: 'string',
@@ -884,7 +901,7 @@ function main() {
         },
         native: {}
     });
-    /*adapter.setObject('enigma2.CHANNEL_PICON', {
+    /*adapter.setObjectNotExists('enigma2.CHANNEL_PICON', {
         type: 'state',
         common: {
             type: 'string',
@@ -895,7 +912,7 @@ function main() {
         },
         native: {}
     });*/
-	adapter.setObject('enigma2.PROGRAMM', {
+	adapter.setObjectNotExists('enigma2.PROGRAMM', {
         type: 'state',
         common: {
             type: 'string',
@@ -906,7 +923,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.PROGRAMM_INFO', {
+	adapter.setObjectNotExists('enigma2.PROGRAMM_INFO', {
         type: 'state',
         common: {
             type: 'string',
@@ -917,7 +934,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.PROGRAMM_AFTER', {
+	adapter.setObjectNotExists('enigma2.PROGRAMM_AFTER', {
         type: 'state',
         common: {
             type: 'string',
@@ -928,7 +945,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.PROGRAMM_AFTER_INFO', {
+	adapter.setObjectNotExists('enigma2.PROGRAMM_AFTER_INFO', {
         type: 'state',
         common: {
             type: 'string',
@@ -939,7 +956,7 @@ function main() {
         },
         native: {}
     });	
-	adapter.setObject('enigma2.EVENTDESCRIPTION', {
+	adapter.setObjectNotExists('enigma2.EVENTDESCRIPTION', {
         type: 'state',
         common: {
             type: 'string',
@@ -951,7 +968,7 @@ function main() {
         native: {}
     });
 	
-	adapter.setObject('enigma2.EVENTDURATION', {
+	adapter.setObjectNotExists('enigma2.EVENTDURATION', {
         type: 'state',
         common: {
             type: 'number',
@@ -963,7 +980,7 @@ function main() {
         native: {}
     });
 
-	adapter.setObject('enigma2.EVENTREMAINING', {
+	adapter.setObjectNotExists('enigma2.EVENTREMAINING', {
         type: 'state',
         common: {
             type: 'number',
@@ -975,7 +992,7 @@ function main() {
         native: {}
     });
 	
-		adapter.setObject('enigma2.EVENTDURATION_MIN', {
+	adapter.setObjectNotExists('enigma2.EVENTDURATION_MIN', {
         type: 'state',
         common: {
             type: 'number',
@@ -987,7 +1004,7 @@ function main() {
         native: {}
     });
 
-	adapter.setObject('enigma2.EVENTREMAINING_MIN', {
+	adapter.setObjectNotExists('enigma2.EVENTREMAINING_MIN', {
         type: 'state',
         common: {
             type: 'number',
@@ -999,7 +1016,7 @@ function main() {
         native: {}
     });
 	
-	adapter.setObject('enigma2.EVENT_PROGRESS_PERCENT', {
+	adapter.setObjectNotExists('enigma2.EVENT_PROGRESS_PERCENT', {
         type: 'state',
         common: {
             type: 'number',
@@ -1011,7 +1028,7 @@ function main() {
         native: {}
     });
     
-	adapter.setObject('enigma2.EVENT_TIME_PASSED', {
+	adapter.setObjectNotExists('enigma2.EVENT_TIME_PASSED', {
         type: 'state',
         common: {
             type: 'string',
@@ -1023,7 +1040,7 @@ function main() {
         native: {}
     });
 	
-	adapter.setObject('enigma2.EVENT_TIME_START', {
+	adapter.setObjectNotExists('enigma2.EVENT_TIME_START', {
         type: 'state',
         common: {
             type: 'string',
@@ -1035,7 +1052,7 @@ function main() {
         native: {}
     });
 	
-	adapter.setObject('enigma2.EVENT_TIME_END', {
+	adapter.setObjectNotExists('enigma2.EVENT_TIME_END', {
         type: 'state',
         common: {
             type: 'string',
@@ -1054,17 +1071,18 @@ function main() {
     //Check ever 3 secs
     adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
     setInterval(function() {
-        getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);		
-		getResponse('MESSAGEANSWER', 	deviceId, PATH['MESSAGEANSWER'],  	evaluateCommandResponse);
-        getResponse('GETINFO',    		deviceId, PATH['ABOUT'],       		evaluateCommandResponse);
-        getResponse('GETVOLUME',  		deviceId, PATH['VOLUME'],      		evaluateCommandResponse);
-        getResponse('GETCURRENT', 		deviceId, PATH['GET_CURRENT'], 		evaluateCommandResponse);
-	getResponse('STATUSINFO', 		deviceId, PATH['API'], 			APIstatusinfo);
+		getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);		
+		getResponse('MESSAGEANSWER',	deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+		getResponse('GETINFO',			deviceId, PATH['ABOUT'],			evaluateCommandResponse);
+		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
+		getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
+		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],			evaluateCommandResponse);
+		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
     setInterval(function() {
         if (isConnected) {
-            getResponse('DEVICEINFO_HDD', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
+			getResponse('DEVICEINFO_HDD',	deviceId, PATH['DEVICEINFO'],	evaluateCommandResponse);
         }
 	}, 30000);
 }
@@ -1073,7 +1091,7 @@ function main() {
 
 function main2() {
 
-	adapter.setObject('enigma2.MODEL', {
+	adapter.setObjectNotExists('enigma2.MODEL', {
         type: 'state',
         common: {
             type: 'string',
@@ -1084,7 +1102,7 @@ function main2() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.WEB_IF_VERSION', {
+	adapter.setObjectNotExists('enigma2.WEB_IF_VERSION', {
         type: 'state',
         common: {
             type: 'string',
@@ -1095,7 +1113,7 @@ function main2() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.NETWORK', {
+	adapter.setObjectNotExists('enigma2.NETWORK', {
         type: 'state',
         common: {
             type: 'string',
@@ -1106,7 +1124,7 @@ function main2() {
         },
         native: {}
     });
-	adapter.setObject('enigma2.BOX_IP', {
+	adapter.setObjectNotExists('enigma2.BOX_IP', {
         type: 'state',
         common: {
             type: 'string',
@@ -1162,7 +1180,7 @@ function TimerSearch (command, deviceId, xml) {
 			{
 				for (var i = 0; i < xml.e2timerlist.e2timer.length; i++)
 				{
-					adapter.setObject('Timer.' + i + '.Event-Name', {
+					adapter.setObjectNotExists('Timer.' + i + '.Event-Name', {
 						type: 'state',
 						common: {
 							type: 'string',
@@ -1173,7 +1191,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Station', {
+					adapter.setObjectNotExists('Timer.' + i + '.Station', {
 						type: 'state',
 						common: {
 							type: 'string',
@@ -1184,7 +1202,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Disabled', {
+					adapter.setObjectNotExists('Timer.' + i + '.Disabled', {
 						type: 'state',
 						common: {
 							type: 'number',
@@ -1199,7 +1217,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Repeated', {
+					adapter.setObjectNotExists('Timer.' + i + '.Repeated', {
 						type: 'state',
 						common: {
 							type: 'number',
@@ -1221,7 +1239,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Timer_Start', {
+					adapter.setObjectNotExists('Timer.' + i + '.Timer_Start', {
 						type: 'state',
 						common: {
 							type: 'number',
@@ -1232,7 +1250,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Timer_End', {
+					adapter.setObjectNotExists('Timer.' + i + '.Timer_End', {
 						type: 'state',
 						common: {
 							type: 'number',
@@ -1244,7 +1262,7 @@ function TimerSearch (command, deviceId, xml) {
 						native: {}
 					});
 
-					adapter.setObject('Timer.' + i + '.Timer_servicereference', {
+					adapter.setObjectNotExists('Timer.' + i + '.Timer_servicereference', {
 						type: 'state',
 						common: {
 							type: 'number',
@@ -1256,7 +1274,7 @@ function TimerSearch (command, deviceId, xml) {
 						native: {}
 					});
 					//++BUTTON++ 	Timer_Toggle
-					/*adapter.setObject('Timer.' + i + '.Delete', {
+					/*adapter.setObjectNotExists('Timer.' + i + '.Delete', {
 						type: 'state',
 						common: {
 							type: 'boolean',
@@ -1267,7 +1285,7 @@ function TimerSearch (command, deviceId, xml) {
 						},
 						native: {}
 					});
-					adapter.setObject('Timer.' + i + '.Timer_Toggle', {
+					adapter.setObjectNotExists('Timer.' + i + '.Timer_Toggle', {
 						type: 'state',
 						common: {
 							type: 'boolean',
