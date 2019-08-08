@@ -146,7 +146,7 @@ adapter.on('stateChange', function (id, state) {
 			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
-			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		evaluateCommandResponse);
+			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		ISRECORD);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
 			adapter.log.debug("E2 States manuell aktualisiert");
 			adapter.setState('enigma2.Update', {val: state.val, ack: true});
@@ -547,22 +547,6 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			//adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
 			//adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
             break;
-		case "ISRECORD":
-			//adapter.log.debug("is Recording: " + xml.e2timerlist.e2timer);
-			if(xml.e2timerlist.e2timer !== undefined){
-				adapter.log.debug("is Recording: " +xml.e2timerlist.e2timer[0].e2state[0]);
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				if(xml.e2timerlist.e2timer[0].e2state[0] === 2 || xml.e2timerlist.e2timer[0].e2state[0] === '2'){
-					adapter.setState('enigma2.isRecording', {val: true, ack: true});
-				} else {
-					adapter.setState('enigma2.isRecording', {val: false, ack: true});	
-				}
-			} else {
-				//adapter.delObject('enigma2.isRecording');
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				adapter.setState('enigma2.isRecording', {val: false, ack: true});
-			}
-            break;
         case "DEVICEINFO":
             adapter.setState('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
             adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
@@ -657,26 +641,19 @@ function evaluateCommandResponse (command, deviceId, xml) {
     }
 }
 
-function APIstatusinfo () {
-var etwas, result;
-try {
-  require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['API'], function (error, response, result) {
-	if (!error) { 
-		etwas = result.slice(((result.indexOf('"isRecording": ') + 1) - 1), result.indexOf('", "currservice_description":') + 1);
-			if(etwas === '' || etwas === undefined){
-				adapter.log.debug("isRecording: undefined");
-				adapter.delObject('enigma2.isRecording');
+function ISRECORD () {
+	var result;
+	try {
+		require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
+			if (result.indexOf('<e2state>2</e2state>') != -1) {
+				adapter.setState('enigma2.isRecording', {val: true, ack: true});
+				adapter.log.info("is Recording: true");
 			} else {
-				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
+				adapter.setState('enigma2.isRecording', {val: false, ack: true});
+				adapter.log.info("is Recording: false");		
 			}
-	} else {
-		adapter.log.debug("isRecording: error");
-		adapter.delObject('enigma2.isRecording');
-	}
-  }).on("error", function (e) {console.error(e);});
-} catch (e) { console.error(e); }
+		}).on("error", function (e) {console.error(e);});
+	} catch (e) { console.error(e); }
 }
 
 function setStatus(status)
@@ -692,31 +669,11 @@ function setStatus(status)
 			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
-			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		evaluateCommandResponse);
+			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		ISRECORD);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
-            // Werte aus Adapter loeschen
-            /*adapter.setState('enigma2.BOX_IP', "" );
-            adapter.setState('enigma2.CHANNEL', "" );
-            adapter.setState('enigma2.CHANNEL_PICON', "" );
-            adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "" );
-            adapter.setState('enigma2.EVENTDESCRIPTION', "" );
-            adapter.setState('enigma2.EVENTDURATION', "" );
-            adapter.setState('enigma2.EVENTREMAINING', "" );
-            adapter.setState('enigma2.MESSAGE_ANSWER', "" );
-            adapter.setState('enigma2.MODEL', "" );
-            adapter.setState('enigma2.MUTED', "" );
-            adapter.setState('enigma2.NETWORK', "" );
-            adapter.setState('enigma2.PROGRAMM', "" );
-            adapter.setState('enigma2.PROGRAMM_AFTER', "" );
-            adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "" );
-            adapter.setState('enigma2.PROGRAMM_INFO', "" );
-            adapter.setState('enigma2.STANDBY', true, true );
-            adapter.setState('enigma2.VOLUME', "" );
-            adapter.setState('enigma2.WEB_IF_VERSION', "" );
-            adapter.setState('Message.MESSAGE_ANSWER', false, true );*/
         }
 	}
 }
@@ -1072,17 +1029,17 @@ function main() {
     adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
     setInterval(function() {
 		getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);		
-		getResponse('MESSAGEANSWER',	deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
-		getResponse('GETINFO',			deviceId, PATH['ABOUT'],			evaluateCommandResponse);
-		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
+		getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+		getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
+		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
 		getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
-		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],			evaluateCommandResponse);
-		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
+		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		ISRECORD);
+		//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
     setInterval(function() {
         if (isConnected) {
-			getResponse('DEVICEINFO_HDD',	deviceId, PATH['DEVICEINFO'],	evaluateCommandResponse);
+		getResponse('DEVICEINFO_HDD',		deviceId, PATH['DEVICEINFO'],		evaluateCommandResponse);
         }
 	}, 30000);
 }
