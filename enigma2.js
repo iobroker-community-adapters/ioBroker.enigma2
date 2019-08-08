@@ -647,10 +647,10 @@ function ISRECORD () {
 		require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
 			if (result.indexOf('<e2state>2</e2state>') != -1) {
 				adapter.setState('enigma2.isRecording', {val: true, ack: true});
-				adapter.log.info("is Recording: true");
+				adapter.log.debug("is Recording: true");
 			} else {
 				adapter.setState('enigma2.isRecording', {val: false, ack: true});
-				adapter.log.info("is Recording: false");		
+				adapter.log.debug("is Recording: false");		
 			}
 		}).on("error", function (e) {console.error(e);});
 	} catch (e) { console.error(e); }
