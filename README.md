@@ -83,6 +83,9 @@
 ==============
  
 ## Changelog
+### 1.2.2 (2019-08-08)
+* (Matten-Matten)       correction in `.enigma2.isRecording` check
+
 ### 1.2.1 (2019-08-07)
 * (Matten-Matten)       add: `.enigma2.isRecording` ([#12](https://github.com/Matten-Matten/ioBroker.enigma2/issues/12))
 
