@@ -1092,6 +1092,17 @@ function main2() {
         },
         native: {}
     });
+	adapter.setObjectNotExists('enigma2.isRecording', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+            name: 'Receiver is Recording',
+            read:  true,
+            write: false
+        },
+        native: {}
+    });
 
     // in this example all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
