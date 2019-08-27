@@ -674,6 +674,7 @@ function setStatus(status)
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
+	    adapter.setState('enigma2.isRecording', false, true );
         }
 	}
 }
