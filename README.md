@@ -83,7 +83,10 @@
 ==============
  
 ## Changelog
-### 1.2.2 (2019-08-08)
+### 1.2.3 (2019-09-15)
+* (Matten-Matten)       authentication correction in `.enigma2.isRecording` check
+* (Matten-Matten)       correction in `.enigma2.isRecording` check after shutdown
+
 * (Matten-Matten)       correction in `.enigma2.isRecording` check
 
 ### 1.2.1 (2019-08-07)
