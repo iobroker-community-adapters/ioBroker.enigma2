@@ -5,7 +5,7 @@
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 
 ## Forum
-https://forum.iobroker.net/topic/1450/problem-dream-btw-enigma2-adapter/737
+https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 
 
 ### Funktionen
