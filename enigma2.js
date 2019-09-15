@@ -141,13 +141,13 @@ adapter.on('stateChange', function (id, state) {
         } else
 //+++++++++++++++++++++++++++ enigma2.Update
         if (id === adapter.namespace + '.enigma2.Update') {
-			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
-			getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
-			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
-			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
-			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
-			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		ISRECORD);
-			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
+			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],			evaluateCommandResponse);
+			getResponse('MESSAGEANSWER',	deviceId, PATH['MESSAGEANSWER'],		evaluateCommandResponse);
+			getResponse('GETINFO',			deviceId, PATH['ABOUT'],				evaluateCommandResponse);
+			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],				evaluateCommandResponse);
+			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],			evaluateCommandResponse);
+			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],				ISRECORD);
+			//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 			adapter.log.debug("E2 States manuell aktualisiert");
 			adapter.setState('enigma2.Update', {val: state.val, ack: true});
         } else
@@ -268,7 +268,7 @@ function getResponse (command, deviceId, path, callback){
     var options = {
 	    host:		adapter.config.IPAddress,
 	    port:		adapter.config.Port,
-	    TimerCheck:		adapter.config.TimerCheck,
+	    TimerCheck:	adapter.config.TimerCheck,
 	    path:		path,
 	    alexa:		adapter.config.Alexa,
 	    method:		'GET'
@@ -282,8 +282,10 @@ function getResponse (command, deviceId, path, callback){
                 'Authorization': 'Basic ' + new Buffer(adapter.config.Username + ':' + adapter.config.Password).toString('base64')
             }
             adapter.log.debug("using authorization with user '"+adapter.config.Username+"'");
+			//adapter.log.info("using authorization with user '"+adapter.config.Username+"'");
         } else {
             adapter.log.debug("using no authorization");
+			//adapter.log.info("using no authorization");
         }
     }
 
@@ -330,6 +332,8 @@ function getResponse (command, deviceId, path, callback){
     req.on('error', function(e) {
         setStatus(false);
         adapter.log.debug("received error: "+e.message+" Box eventuell nicht erreichbar?");
+		adapter.setState('enigma2.isRecording', false, true);
+		//adapter.log.info("received error: "+e.message+" Box eventuell nicht erreichbar?");
 		return;
     });
 }
@@ -372,23 +376,23 @@ function evaluateCommandResponse (command, deviceId, xml) {
 	
     switch (command.toUpperCase())
     {
-	case "MESSAGE":
-	case "MESSAGETEXT":
-	case "MESSAGEANSWER":
-		adapter.log.debug("message answer: " +xml.e2simplexmlresult.e2statetext[0]);			
-		adapter.setState('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
+		case "MESSAGE":
+		case "MESSAGETEXT":
+		case "MESSAGEANSWER":
+			adapter.log.debug("message answer: " +xml.e2simplexmlresult.e2statetext[0]);			
+			adapter.setState('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
 		break;			
         case "RESTART":
         case "REBOOT":
         case "DEEPSTANDBY":
-		//setState(boxId, "");
+			//setState(boxId, "");
 		break;
         case "MUTE":
         case "UNMUTE":
         case "MUTE_TOGGLE":
         case "VOLUME":
         case "SET_VOLUME":
-		adapter.setState('enigma2.COMMAND', {val: '', ack: true});		
+			adapter.setState('enigma2.COMMAND', {val: '', ack: true});		
 		break;
         case "WAKEUP":
         case "STANDBY":
@@ -399,15 +403,15 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
             adapter.setState('enigma2.STANDBY', {val: parseBool(xml.e2powerstate.e2instandby), ack: true});
 	    //Alexa_Command.Standby
-	    if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
-	    var alexastby = parseBool(xml.e2powerstate.e2instandby);
-		if(alexastby === false || alexastby === "false"){
-			adapter.setState('Alexa_Command.Standby', {val: true, ack: true});
-		} else if(alexastby === true || alexastby === "true"){
-			adapter.setState('Alexa_Command.Standby', {val: false, ack: true});
-		}
-	    }
-            break;
+			if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
+				var alexastby = parseBool(xml.e2powerstate.e2instandby);
+				if(alexastby === false || alexastby === "false"){
+					adapter.setState('Alexa_Command.Standby', {val: true, ack: true});
+				} else if(alexastby === true || alexastby === "true"){
+					adapter.setState('Alexa_Command.Standby', {val: false, ack: true});
+				}
+			}
+		break;
         case "GETVOLUME":
 			if (!xml.e2volume || !xml.e2volume.e2current) {
                 adapter.log.error('No e2volume found');
@@ -419,23 +423,21 @@ function evaluateCommandResponse (command, deviceId, xml) {
             adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
             adapter.setState('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
 	    //Alexa_Command.Mute
-	    if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
-	    var alexaMute = parseBool(xml.e2volume.e2ismuted);		
-		if(alexaMute === false || alexaMute === "false"){
-			adapter.setState('Alexa_Command.Mute', {val: true, ack: true});
-		} else if(alexaMute === true || alexaMute === "true"){
-			adapter.setState('Alexa_Command.Mute', {val: false, ack: true});
-		}
-	    }
+			if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true){
+				var alexaMute = parseBool(xml.e2volume.e2ismuted);		
+				if(alexaMute === false || alexaMute === "false"){
+					adapter.setState('Alexa_Command.Mute', {val: true, ack: true});
+				} else if(alexaMute === true || alexaMute === "true"){
+					adapter.setState('Alexa_Command.Mute', {val: false, ack: true});
+				}
+			}
 		break;
         case "GETCURRENT":	
-		
-	if(xml.e2currentserviceinformation.e2eventlist[0] !== undefined){
-		
-		adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
-		var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
+		if(xml.e2currentserviceinformation.e2eventlist[0] !== undefined){
+				adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
+			var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
 			adapter.setState('enigma2.EVENTDURATION_MIN', {val: Math.round(e2EVENTDURATION_X / 60), ack: true});
-		var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
+			var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
 				
 				if(e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0'){
 					adapter.setState('enigma2.EVENTDURATION', {val: ''/*'0:0:0'*/, ack: true});
@@ -547,6 +549,22 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			//adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
 			//adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
             break;
+		/*case "ISRECORD":
+			//adapter.log.debug("is Recording: " + xml.e2timerlist.e2timer);
+			if(xml.e2timerlist.e2timer !== undefined){
+				adapter.log.debug("is Recording: " +xml.e2timerlist.e2timer[0].e2state[0]);
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				if(xml.e2timerlist.e2timer[0].e2state[0] === 2 || xml.e2timerlist.e2timer[0].e2state[0] === '2'){
+					adapter.setState('enigma2.isRecording', {val: true, ack: true});
+				} else {
+					adapter.setState('enigma2.isRecording', {val: false, ack: true});	
+				}
+			} else {
+				//adapter.delObject('enigma2.isRecording');
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				adapter.setState('enigma2.isRecording', {val: false, ack: true});
+			}
+            break;*/
         case "DEVICEINFO":
             adapter.setState('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
             adapter.setState('enigma2.NETWORK', {val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true});
@@ -641,10 +659,33 @@ function evaluateCommandResponse (command, deviceId, xml) {
     }
 }
 
+/*function APIstatusinfo () {
+var etwas, result;
+try {
+  require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['API'], function (error, response, result) {
+	if (!error) { 
+		etwas = result.slice(((result.indexOf('"isRecording": ') + 1) - 1), result.indexOf('", "currservice_description":') + 1);
+			if(etwas === '' || etwas === undefined){
+				adapter.log.debug("isRecording: undefined");
+				adapter.delObject('enigma2.isRecording');
+			} else {
+				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
+				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
+				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
+			}
+	} else {
+		adapter.log.debug("isRecording: error");
+		adapter.delObject('enigma2.isRecording');
+	}
+  }).on("error", function (e) {console.error(e);});
+} catch (e) { console.error(e); }
+}*/
 function ISRECORD () {
 	var result;
 	try {
-		require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
+		require("request")('http://' + adapter.config.Username + ':' + adapter.config.Password + '@' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
+		//getResponse('ISRECORD', deviceId, PATH['ISRECORD'], TimerSearch);	
+		if(result !== undefined){
 			if (result.indexOf('<e2state>2</e2state>') != -1) {
 				adapter.setState('enigma2.isRecording', {val: true, ack: true});
 				adapter.log.debug("is Recording: true");
@@ -652,6 +693,7 @@ function ISRECORD () {
 				adapter.setState('enigma2.isRecording', {val: false, ack: true});
 				adapter.log.debug("is Recording: false");		
 			}
+		}
 		}).on("error", function (e) {console.error(e);});
 	} catch (e) { console.error(e); }
 }
@@ -665,16 +707,37 @@ function setStatus(status)
 			adapter.log.info("enigma2 Verbunden!");
 			adapter.setState('enigma2-CONNECTION', true, true );
 			getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);
-			getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
-			getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
-			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
+			getResponse('MESSAGEANSWER',	deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+			getResponse('GETINFO',			deviceId, PATH['ABOUT'],			evaluateCommandResponse);
+			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
 			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		ISRECORD);
-			//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
+			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
+			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
         } else {
             adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
             adapter.setState('enigma2-CONNECTION', false, true );
-	    adapter.setState('enigma2.isRecording', false, true );
+			adapter.setState('enigma2.isRecording', false, true);
+            // Werte aus Adapter loeschen
+            adapter.setState('enigma2.BOX_IP', "" );
+            adapter.setState('enigma2.CHANNEL', "" );
+            adapter.setState('enigma2.CHANNEL_PICON', "" );
+            adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "" );
+            adapter.setState('enigma2.EVENTDESCRIPTION', "" );
+            adapter.setState('enigma2.EVENTDURATION', "" );
+            adapter.setState('enigma2.EVENTREMAINING', "" );
+            adapter.setState('enigma2.MESSAGE_ANSWER', "" );
+            adapter.setState('enigma2.MODEL', "" );
+            adapter.setState('enigma2.MUTED', "" );
+            adapter.setState('enigma2.NETWORK', "" );
+            adapter.setState('enigma2.PROGRAMM', "" );
+            adapter.setState('enigma2.PROGRAMM_AFTER', "" );
+            adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "" );
+            adapter.setState('enigma2.PROGRAMM_INFO', "" );
+            adapter.setState('enigma2.STANDBY', true, true );
+            adapter.setState('enigma2.VOLUME', "" );
+            adapter.setState('enigma2.WEB_IF_VERSION', "" );
+            adapter.setState('Message.MESSAGE_ANSWER', false, true );
         }
 	}
 }
@@ -1030,17 +1093,17 @@ function main() {
     adapter.log.info("starting Polling every " + adapter.config.PollingInterval + " ms");
     setInterval(function() {
 		getResponse('GETSTANDBY',		deviceId, PATH['POWERSTATE'],		evaluateCommandResponse);		
-		getResponse('MESSAGEANSWER',		deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
-		getResponse('GETINFO',			deviceId, PATH['ABOUT'],		evaluateCommandResponse);
-		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],		evaluateCommandResponse);
+		getResponse('MESSAGEANSWER',	deviceId, PATH['MESSAGEANSWER'],	evaluateCommandResponse);
+		getResponse('GETINFO',			deviceId, PATH['ABOUT'],			evaluateCommandResponse);
+		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 		getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
-		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],		ISRECORD);
-		//getResponse('STATUSINFO',		deviceId, PATH['API'],			APIstatusinfo);
+		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],			ISRECORD);
+		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
     setInterval(function() {
         if (isConnected) {
-		getResponse('DEVICEINFO_HDD',		deviceId, PATH['DEVICEINFO'],		evaluateCommandResponse);
+			getResponse('DEVICEINFO_HDD',	deviceId, PATH['DEVICEINFO'],	evaluateCommandResponse);
         }
 	}, 30000);
 }
@@ -1111,7 +1174,7 @@ function main2() {
     //Check ever 3 secs
    // adapter.log.info("starting Polling every " + adapter.config.PollingInterval / 1000 + " seconds");
     //setInterval(checkStatus,adapter.config.PollingInterval);
-	getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
+	//getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
 }
 
 
@@ -1280,13 +1343,4 @@ function TimerSearch (command, deviceId, xml) {
         default:
             adapter.log.info("received unknown TimerSearch '"+command+"' @ TimerSearch");
     }
-}
-
-function deleteObject () {
-//old only in V1.0.0
-	adapter.delObject('command.Button-Config.USER');
-	adapter.delObject('command.Button-Config.PW');
-	adapter.delObject('command.Button-Config.Webif');
-	adapter.delObject('command.Button-Config.Port');
-	adapter.delObject('command.Button-Config.IP');
 }
