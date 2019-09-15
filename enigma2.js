@@ -260,7 +260,7 @@ adapter.on('ready', function () {
     main();
 	main2();
 	//timer();
-    deleteObject();
+    //deleteObject();
 });
 
 function getResponse (command, deviceId, path, callback){
