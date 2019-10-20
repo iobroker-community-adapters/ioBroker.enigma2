@@ -89,6 +89,10 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 ==============
  
 ## Changelog
+
+### 1.2.4 (2019-10-20)
+* (Matten-Matten)       add: `.enigma2.Timer_is_set` ([#23](https://github.com/Matten-Matten/ioBroker.enigma2/issues/23))
+
 ### 1.2.3 (2019-09-15)
 * (Matten-Matten)       authentication correction in `.enigma2.isRecording` check
 * (Matten-Matten)       correction in `.enigma2.isRecording` check after shutdown
