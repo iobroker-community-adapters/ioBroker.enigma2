@@ -693,6 +693,17 @@ function ISRECORD () {
 				adapter.setState('enigma2.isRecording', {val: false, ack: true});
 				adapter.log.debug("is Recording: false");		
 			}
+			// Timer is set
+			if (result.indexOf('<e2state>2</e2state>') != -1) {
+				adapter.setState('enigma2.Timer_is_set', {val: true, ack: true});
+				adapter.log.debug("Timer is set: true");
+			} else if (result.indexOf('<e2state>0</e2state>') != -1) {
+				adapter.setState('enigma2.Timer_is_set', {val: true, ack: true});
+				adapter.log.debug("Timer is set: true");
+			} else {
+				adapter.setState('enigma2.Timer_is_set', {val: false, ack: true});
+				adapter.log.debug("Timer is set: false");		
+			}
 		}
 		}).on("error", function (e) {console.error(e);});
 	} catch (e) { console.error(e); }
@@ -1162,6 +1173,17 @@ function main2() {
             type: 'boolean',
             role: 'state',
             name: 'Receiver is Recording',
+            read:  true,
+            write: false
+        },
+        native: {}
+    });
+	adapter.setObjectNotExists('enigma2.Timer_is_set', {
+        type: 'state',
+        common: {
+            type: 'boolean',
+            role: 'state',
+            name: 'min 1 Timer is set',
             read:  true,
             write: false
         },
