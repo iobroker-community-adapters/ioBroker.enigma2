@@ -39,6 +39,7 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 - VOLUME
 - WEB_IF_VERSION
 - isRecording
+- Timer_is_set
 
 ### main
 - enigma2-CONNECTION
