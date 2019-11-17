@@ -147,8 +147,6 @@ adapter.on('stateChange', function (id, state) {
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],				evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],			evaluateCommandResponse);
 			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],				ISRECORD);
-			getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
-
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 			adapter.log.debug("E2 States manuell aktualisiert");
 			adapter.setState('enigma2.Update', {val: state.val, ack: true});
@@ -655,6 +653,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
         case "BOUQUET_DOWN":
         case "INFO":
         case "MENU":
+
 		case "TIMERLIST":
 			let result = [];
 
@@ -693,7 +692,6 @@ function evaluateCommandResponse (command, deviceId, xml) {
 				});
 			}
 			break;
-
         default:
             adapter.log.info("received unknown command '"+command+"' @ evaluateCommandResponse");
     }
@@ -763,7 +761,6 @@ function setStatus(status)
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
 			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		ISRECORD);
-			getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
         } else {
@@ -1150,7 +1147,6 @@ function main() {
 		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 		getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
 		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],			ISRECORD);
-		getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
@@ -1227,17 +1223,6 @@ function main2() {
             role: 'state',
             name: 'min 1 Timer is set',
             read:  true,
-            write: false
-        },
-        native: {}
-	});
-	adapter.setObjectNotExists('enigma2.Timer_list', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'info',
-			name: 'Timer List',
-			read:  true,
             write: false
         },
         native: {}
