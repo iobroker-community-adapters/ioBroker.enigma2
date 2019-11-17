@@ -682,11 +682,15 @@ function evaluateCommandResponse (command, deviceId, xml) {
 
 				adapter.getState('enigma2.Timer_list', function(err, state) {
 					// only update if we have new timer	
-					if ((state !== undefined || state !== null) && result !== state.val || state === null || state === undefined){
-						adapter.setState('enigma2.Timer_list', result, true);
-						adapter.log.debug("timer_list updated");
+					if (state && state.val !== null){
+						if (result !== state.val){
+							adapter.setState('enigma2.Timer_list', result, true);
+							adapter.log.debug("timer_list updated");
+						} else {
+							adapter.log.debug("no new timer found -> timer_list need no update");
+						}
 					} else {
-						adapter.log.debug("no new timer found -> timer_list need no update");
+						adapter.setState('enigma2.Timer_list', result, true);
 					}
 				});
 			}
