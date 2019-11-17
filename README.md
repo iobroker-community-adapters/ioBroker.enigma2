@@ -40,6 +40,7 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 - WEB_IF_VERSION
 - isRecording
 - Timer_is_set
+- Timer_list
 
 ### main
 - enigma2-CONNECTION
@@ -85,11 +86,13 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
  
-#### Timer !remove!
 
 ==============
  
 ## Changelog
+
+### 1.2.5 (2019-11-17)
+* (Scrounger)            add: `.enigma2.Timer_list` (Merge pull request [#28](https://github.com/Matten-Matten/ioBroker.enigma2/issues/28))
 
 ### 1.2.4 (2019-10-20)
 * (Matten-Matten)       add: `.enigma2.Timer_is_set` ([#23](https://github.com/Matten-Matten/ioBroker.enigma2/issues/23))
