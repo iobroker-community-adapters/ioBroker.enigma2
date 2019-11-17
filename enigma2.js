@@ -657,31 +657,34 @@ function evaluateCommandResponse (command, deviceId, xml) {
         case "MENU":
 		case "TIMERLIST":
 			let result = [];
-			let timerList = xml.e2timerlist.e2timer;
 
-			timerList.forEach(function (timerItem) {
-				result.push(
-					{
-						title: timerItem["e2name"].toString(), 
-						channel: timerItem["e2servicename"].toString(), 
-						serviceRef: timerItem["e2servicereference"].toString(), 
-						serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0,-1),
-						starTime: timerItem["e2timebegin"].toString(),
-						endTime: timerItem["e2timeend"].toString(),
-						duration: timerItem["e2duration"].toString(),
-						subtitle: timerItem["e2description"].toString(),
-						description: timerItem["e2descriptionextended"].toString(),
-					}
-				)
-			});
+			if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
+				let timerList = xml.e2timerlist.e2timer;
 
-			if (result && result.length > 0) {
+				timerList.forEach(function (timerItem) {
+					result.push(
+						{
+							title: timerItem["e2name"].toString(), 
+							channel: timerItem["e2servicename"].toString(), 
+							serviceRef: timerItem["e2servicereference"].toString(), 
+							serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0,-1),
+							starTime: timerItem["e2timebegin"].toString(),
+							endTime: timerItem["e2timeend"].toString(),
+							duration: timerItem["e2duration"].toString(),
+							subtitle: timerItem["e2description"].toString(),
+							description: timerItem["e2descriptionextended"].toString(),
+						}
+					)
+				});
+
 				// only update if we have a result -> keep on data if box is in deepStandby
 				result = JSON.stringify(result);
 
 				adapter.getState('enigma2.Timer_list', function(err, state) {
-					// only update if we have new timer					
-					if (result !== state.val){
+					// only update if we have new timer	
+					adapter.log.warn(state);
+
+					if ((state !== undefined || state !== null) && result !== state.val || state === null || state === undefined){
 						adapter.setState('enigma2.Timer_list', result, true);
 						adapter.log.debug("timer_list updated");
 					} else {
@@ -690,7 +693,7 @@ function evaluateCommandResponse (command, deviceId, xml) {
 				});
 			}
 			break;
-			
+
         default:
             adapter.log.info("received unknown command '"+command+"' @ evaluateCommandResponse");
     }
