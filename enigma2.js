@@ -147,6 +147,8 @@ adapter.on('stateChange', function (id, state) {
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],				evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],			evaluateCommandResponse);
 			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],				ISRECORD);
+			getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
+
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 			adapter.log.debug("E2 States manuell aktualisiert");
 			adapter.setState('enigma2.Update', {val: state.val, ack: true});
@@ -653,7 +655,47 @@ function evaluateCommandResponse (command, deviceId, xml) {
         case "BOUQUET_DOWN":
         case "INFO":
         case "MENU":
-            //setState(boxId, "");
+		case "TIMERLIST":
+			let result = [];
+
+			if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
+				let timerList = xml.e2timerlist.e2timer;
+
+				timerList.forEach(function (timerItem) {
+					result.push(
+						{
+							title: timerItem["e2name"].toString(), 
+							channel: timerItem["e2servicename"].toString(), 
+							serviceRef: timerItem["e2servicereference"].toString(), 
+							serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0,-1),
+							starTime: timerItem["e2timebegin"].toString(),
+							endTime: timerItem["e2timeend"].toString(),
+							duration: timerItem["e2duration"].toString(),
+							subtitle: timerItem["e2description"].toString(),
+							description: timerItem["e2descriptionextended"].toString(),
+						}
+					)
+				});
+
+				// only update if we have a result -> keep on data if box is in deepStandby
+				result = JSON.stringify(result);
+
+				adapter.getState('enigma2.Timer_list', function(err, state) {
+					// only update if we have new timer	
+					if (state && state.val !== null){
+						if (result !== state.val){
+							adapter.setState('enigma2.Timer_list', result, true);
+							adapter.log.debug("timer_list updated");
+						} else {
+							adapter.log.debug("no new timer found -> timer_list need no update");
+						}
+					} else {
+						adapter.setState('enigma2.Timer_list', result, true);
+					}
+				});
+			}
+			break;
+
         default:
             adapter.log.info("received unknown command '"+command+"' @ evaluateCommandResponse");
     }
@@ -723,6 +765,7 @@ function setStatus(status)
 			getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 			getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
 			getResponse('ISRECORD',			deviceId, PATH['ISRECORD'], 		ISRECORD);
+			getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
         } else {
@@ -1109,6 +1152,7 @@ function main() {
 		getResponse('GETVOLUME',		deviceId, PATH['VOLUME'],			evaluateCommandResponse);
 		getResponse('GETCURRENT',		deviceId, PATH['GET_CURRENT'],		evaluateCommandResponse);
 		getResponse('ISRECORD',			deviceId, PATH['ISRECORD'],			ISRECORD);
+		getResponse('TIMERLIST',		deviceId, PATH['TIMERLIST'],		evaluateCommandResponse);
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
@@ -1185,6 +1229,17 @@ function main2() {
             role: 'state',
             name: 'min 1 Timer is set',
             read:  true,
+            write: false
+        },
+        native: {}
+	});
+	adapter.setObjectNotExists('enigma2.Timer_list', {
+        type: 'state',
+        common: {
+            type: 'string',
+            role: 'info',
+			name: 'Timer List',
+			read:  true,
             write: false
         },
         native: {}
