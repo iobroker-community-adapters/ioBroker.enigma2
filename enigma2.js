@@ -682,8 +682,6 @@ function evaluateCommandResponse (command, deviceId, xml) {
 
 				adapter.getState('enigma2.Timer_list', function(err, state) {
 					// only update if we have new timer	
-					adapter.log.warn(state);
-
 					if ((state !== undefined || state !== null) && result !== state.val || state === null || state === undefined){
 						adapter.setState('enigma2.Timer_list', result, true);
 						adapter.log.debug("timer_list updated");
