@@ -660,8 +660,6 @@ function evaluateCommandResponse (command, deviceId, xml) {
 			let timerList = xml.e2timerlist.e2timer;
 
 			timerList.forEach(function (timerItem) {
-				adapter.log.info(JSON.stringify(timerItem));
-
 				result.push(
 					{
 						title: timerItem["e2name"].toString(), 
@@ -691,9 +689,8 @@ function evaluateCommandResponse (command, deviceId, xml) {
 					}
 				});
 			}
-
 			break;
-            //setState(boxId, "");
+			
         default:
             adapter.log.info("received unknown command '"+command+"' @ evaluateCommandResponse");
     }
