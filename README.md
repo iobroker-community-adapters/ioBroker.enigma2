@@ -7,6 +7,10 @@
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 - (DE)(Adapter läuft nur auf einem Host! bei einer Client Installation gib's aktuell noch probleme.)
 
+
+## Installation:
+Installation requires nodejs v8 at minimum
+
 ## Forum
 https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 
