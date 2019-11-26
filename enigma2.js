@@ -326,7 +326,6 @@ function getResponse(command, deviceId, path, callback) {
 		res.on('data', function (chunk) {
 			pageData += chunk
 		});
-		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 		res.on('end', function () {
 			if (command !== 'PICON') {
 				if (path.includes('/api/')) {
@@ -360,7 +359,6 @@ function getResponse(command, deviceId, path, callback) {
 				}
 			}
 		});
-		}
 	});
 	req.on('error', function (e) {
 		setStatus(false);
