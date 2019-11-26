@@ -333,7 +333,7 @@ function getResponse(command, deviceId, path, callback) {
 						if (callback) {
 							callback(command, 1, parser);
 						}
-					} catch (e) {
+					} catch (err) {
 						adapter.log.error(`[getResponse] error: ${err.message}`);
 						adapter.log.error("[getResponse] stack: " + err.stack);
 						
