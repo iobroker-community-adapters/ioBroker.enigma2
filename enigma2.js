@@ -717,9 +717,13 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				if (xml && xml.e2locations && xml.e2locations.e2location) {
 					let state = await adapter.getStateAsync('enigma2.Movie_list');
 
-					let updateInterval = 300;
-					if (state === null || state.val === null || state.ts === null || (new Date().getTime() - state.ts) > updateInterval * 1000) {
+					let updateInterval = 300;		// in seconds
+					if (state === null || state.val === null || state.ts === null || new Date().getTime() - state.ts > updateInterval * 1000) {
 						// get movie data only, if state has no data or timestamp is older than 'updateInterval'
+						if (state !== null && state.val !== null) {
+							// set current data to set timestamp to prevent multiple calls
+							adapter.setState('enigma2.Movie_list', state.val, true);
+						}
 
 						adapter.log.info("updating movie list");
 						let movieList = [];
