@@ -30,16 +30,16 @@
 	//Alexa
 		"Alexa":               		{"en": "Alexa,YAHKA extension", "de": "Alexa,YAHKA Erweiterung", "ru": ""},
 	//Network
-		"internal hard disk":         {"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
-		"second hard disk":           {"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
-		"webif":          			  {"en": "Dream Webinterface", "de": "Webinterface", "ru": ""},
-		"Dream Webinterface":         {"en": "Dream Webinterface", "de": "Dream Webinterface", "ru": ""},
-		"Open Webinterface":          {"en": "Open Webinterface", "de": "Open Webinterface", "ru": ""},
-		"buttonscript":				  {"en": "button script", "de": "Button Script", "ru": ""},
-		"HDD Settings":               {"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
+		"internal hard disk":		{"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
+		"second hard disk":			{"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
+		"Webinterface":				{"en": "Webinterface", "de": "Webinterface", "ru": ""},
+		"Dream-Webinterface":		{"en": "Dream Webinterface", "de": "Dream Webinterface", "ru": ""},
+		"OpenWebif":				{"en": "Open Webinterface", "de": "Open Webinterface", "ru": ""},
+		"Webinterface Version":		{"en": "Webinterface Version", "de": "Webinterface Version", "ru": ""},
+		"HDD Settings":				{"en": "HDD Settings", "de": "Festplatten Einstellung", "ru": ""},
 		"Important! otherwise the adapter ejects errors": {"en": "Important! otherwise the adapter ejects errors.", "de": "Wichtig! da der Adapter sonst Fehler auswirft.", "ru": ""},
-		"Yes":                           {"en": "Yes", "de": "JA", "ru": ""},
-		"no":                            {"en": "no", "de": "NEIN", "ru": ""},		
+		"Yes":						{"en": "Yes", "de": "JA", "ru": ""},
+		"no":						{"en": "no", "de": "NEIN", "ru": ""},		
         "on save adapter restarts with new config immediately": {
             "de": "Beim Speichern der Einstellungen wird der Adapter sofort neu gestartet.",
             "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
@@ -61,6 +61,7 @@
     }
 		if (settings.TimerCheck === undefined) settings.TimerCheck = 180000;
 		if (settings.Alexa === undefined) settings.Alexa = false;
+		if (settings.Webinterface === undefined) settings.Webinterface = true;
 		
 		
     // ... and the function save has to exist.
@@ -163,6 +164,21 @@
                         </div>
                     </div>
             </div>
+<!-- #################################-->				
+			<div class="row">
+                    <div class="col s12">
+                        <p class="translate title">Webinterface Version</p>
+								<div class="row">
+									<div class="input-field col s12 m2 l3">
+										<select  class="value" id="Webinterface">
+											<option value="true" class="translate">OpenWebif</option>
+											<option value="false" class="translate">Dream-Webinterface</option>
+										</select>
+											<label class="translate" for="Webinterface">Webinterface</label>
+									</div>
+								</div>
+					</div>
+				</div>			
 <!-- #################################-->	
 				<div class="row">
                     <div class="col s12">
