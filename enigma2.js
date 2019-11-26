@@ -34,7 +34,8 @@ var PATH = {
 	IP_CHECK: '/web/about',
 	ZAP: '/web/zap?sRef=',
 	ISRECORD: '/web/timerlist',
-	API: '/api/statusinfo'
+	API: '/api/statusinfo',
+	GETLOCATIONS: '/web/getlocations'
 };
 
 var commands = {
@@ -266,6 +267,16 @@ adapter.on('ready', function () {
 	//deleteObject();
 });
 
+async function getResponseAsync(deviceId, path) {
+	let command = 'NONE';
+
+	return new Promise((resolve, reject) => {
+		getResponse(command, deviceId, path, function (command, deviceId, xml) {
+			resolve(xml);
+		});
+	});
+}
+
 function getResponse(command, deviceId, path, callback) {
 	// var device = dreamSettings.boxes[deviceId];
 	var options = {
@@ -314,12 +325,21 @@ function getResponse(command, deviceId, path, callback) {
 		});
 		res.on('end', function () {
 			if (command !== 'PICON') {
-				var parser = new xml2js.Parser();
-				parser.parseString(pageData, function (err, result) {
+				if (path.includes('/api/')) {
+					// using JSON API
+					let parser = JSON.parse(pageData);
 					if (callback) {
-						callback(command, 1, result);
+						callback(command, 1, parser);
 					}
-				});
+				} else {
+					// using XML API
+					var parser = new xml2js.Parser();
+					parser.parseString(pageData, function (err, result) {
+						if (callback) {
+							callback(command, 1, result);
+						}
+					});
+				}
 			}
 			else {
 				if (callback) {
@@ -366,7 +386,7 @@ function sec2HMS(sec) {
 }
 
 
-function evaluateCommandResponse(command, deviceId, xml) {
+async function evaluateCommandResponse(command, deviceId, xml) {
 	adapter.log.debug("evaluating response for command '" + command + "': " + JSON.stringify(xml));
 
 	//var id = parseInt(deviceId.substring(1));
@@ -691,7 +711,6 @@ function evaluateCommandResponse(command, deviceId, xml) {
 				});
 			}
 			break;
-
 		default:
 			adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
 	}
