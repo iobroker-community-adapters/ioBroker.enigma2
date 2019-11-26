@@ -151,7 +151,7 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 								if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+									getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 								}
 								//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 								adapter.log.debug("E2 States manuell aktualisiert");
@@ -327,39 +327,39 @@ function getResponse(command, deviceId, path, callback) {
 			pageData += chunk
 		});
 		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-		res.on('end', function () {
-			if (command !== 'PICON') {
-				if (path.includes('/api/')) {
-					// using JSON API
-					try {
-						let parser = JSON.parse(pageData);
-						if (callback) {
-							callback(command, 1, parser);
+			res.on('end', function () {
+				if (command !== 'PICON') {
+					if (path.includes('/api/')) {
+						// using JSON API
+						try {
+							let parser = JSON.parse(pageData);
+							if (callback) {
+								callback(command, 1, parser);
+							}
+						} catch (err) {
+							adapter.log.error(`[getResponse] error: ${err.message}`);
+							adapter.log.error("[getResponse] stack: " + err.stack);
+
+							if (callback) {
+								callback(command, 1, null);
+							}
 						}
-					} catch (err) {
-						adapter.log.error(`[getResponse] error: ${err.message}`);
-						adapter.log.error("[getResponse] stack: " + err.stack);
-						
-						if (callback) {
-							callback(command, 1, null);
-						}
-					}					
-				} else {
-					// using XML API
-					var parser = new xml2js.Parser();
-					parser.parseString(pageData, function (err, result) {
-						if (callback) {
-							callback(command, 1, result);
-						}
-					});
+					} else {
+						// using XML API
+						var parser = new xml2js.Parser();
+						parser.parseString(pageData, function (err, result) {
+							if (callback) {
+								callback(command, 1, result);
+							}
+						});
+					}
 				}
-			}
-			else {
-				if (callback) {
-					callback(command, (statusCode == '200' && pageData.length > 0 ? true : false), pageData);
+				else {
+					if (callback) {
+						callback(command, (statusCode == '200' && pageData.length > 0 ? true : false), pageData);
+					}
 				}
-			}
-		});
+			});
 		}
 	});
 	req.on('error', function (e) {
@@ -726,7 +726,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 			}
 			break;
 		case "GETMOVIELIST":
-		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+
 			try {
 				if (xml && xml.e2locations && xml.e2locations.e2location) {
 					let state = await adapter.getStateAsync('enigma2.Movie_list');
@@ -768,7 +768,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
 				adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
 			}
-		}
+
 			break;
 		default:
 			adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
@@ -800,18 +800,23 @@ try {
 async function getAllMovies(directory, movieList) {
 	adapter.log.debug('get movies from directory: ' + directory);
 	try {
-		let result = await getResponseAsync(deviceId, `/api/movielist?dirname=${directory}`);
+		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+			// openwebif api
+			let result = await getResponseAsync(deviceId, `/api/movielist?dirname=${encodeURI(directory)}`);
 
-		if (result) {
-			if (result.movies && result.movies.length > 0) {
-				movieList.push(...result.movies);
-			}
+			if (result) {
+				if (result.movies && result.movies.length > 0) {
+					movieList.push(...result.movies);
+				}
 
-			if (result.bookmarks && result.bookmarks.length > 0) {
-				for (var subDir of result.bookmarks) {
-					await getAllMovies(directory + encodeURI(subDir) + '/', movieList);
+				if (result.bookmarks && result.bookmarks.length > 0) {
+					for (var subDir of result.bookmarks) {
+						await getAllMovies(directory + subDir + '/', movieList);
+					}
 				}
 			}
+		} else {
+			// TODO: dream api
 		}
 	} catch (err) {
 		adapter.log.error(`[getAllMovies] dir: ${directory}, error: ${err.message}`);
@@ -862,7 +867,7 @@ function setStatus(status) {
 			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 			if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+				getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 			}
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
@@ -1252,7 +1257,7 @@ function main() {
 		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-		getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 		}
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
@@ -1345,21 +1350,21 @@ function main2() {
 		},
 		native: {}
 	});
-if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-	adapter.setObjectNotExists('enigma2.Movie_list', {
-		type: 'state',
-		common: {
-			type: 'string',
-			role: 'info',
-			name: 'Movie List',
-			read: true,
-			write: false
-		},
-		native: {}
-	});
-} else {
-adapter.delObject('enigma2.Movie_list');
-}
+	if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+		adapter.setObjectNotExists('enigma2.Movie_list', {
+			type: 'state',
+			common: {
+				type: 'string',
+				role: 'info',
+				name: 'Movie List',
+				read: true,
+				write: false
+			},
+			native: {}
+		});
+	} else {
+		adapter.delObject('enigma2.Movie_list');
+	}
 	// in this example all states changes inside the adapters namespace are subscribed
 	adapter.subscribeStates('*');
 
