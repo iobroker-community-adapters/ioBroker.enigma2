@@ -150,8 +150,9 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+								if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-
+								}
 								//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 								adapter.log.debug("E2 States manuell aktualisiert");
 								adapter.setState('enigma2.Update', { val: state.val, ack: true });
@@ -860,7 +861,9 @@ function setStatus(status) {
 			getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+			if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+			}
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
 		} else {
@@ -1248,7 +1251,9 @@ function main() {
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 		getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+		}
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
@@ -1352,6 +1357,8 @@ if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === tr
 		},
 		native: {}
 	});
+} else {
+adapter.delObject('enigma2.Movie_list');
 }
 	// in this example all states changes inside the adapters namespace are subscribed
 	adapter.subscribeStates('*');
