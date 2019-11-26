@@ -328,10 +328,19 @@ function getResponse(command, deviceId, path, callback) {
 			if (command !== 'PICON') {
 				if (path.includes('/api/')) {
 					// using JSON API
-					let parser = JSON.parse(pageData);
-					if (callback) {
-						callback(command, 1, parser);
-					}
+					try {
+						let parser = JSON.parse(pageData);
+						if (callback) {
+							callback(command, 1, parser);
+						}
+					} catch (e) {
+						adapter.log.error(`[getResponse] error: ${err.message}`);
+						adapter.log.error("[getResponse] stack: " + err.stack);
+						
+						if (callback) {
+							callback(command, 1, null);
+						}
+					}					
 				} else {
 					// using XML API
 					var parser = new xml2js.Parser();
