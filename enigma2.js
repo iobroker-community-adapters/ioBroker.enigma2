@@ -284,6 +284,7 @@ function getResponse(command, deviceId, path, callback) {
 		host: adapter.config.IPAddress,
 		port: adapter.config.Port,
 		TimerCheck: adapter.config.TimerCheck,
+		Webinterface: adapter.config.Webinterface,
 		path: path,
 		alexa: adapter.config.Alexa,
 		method: 'GET'
@@ -324,6 +325,7 @@ function getResponse(command, deviceId, path, callback) {
 		res.on('data', function (chunk) {
 			pageData += chunk
 		});
+		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 		res.on('end', function () {
 			if (command !== 'PICON') {
 				if (path.includes('/api/')) {
@@ -357,6 +359,7 @@ function getResponse(command, deviceId, path, callback) {
 				}
 			}
 		});
+		}
 	});
 	req.on('error', function (e) {
 		setStatus(false);
@@ -722,6 +725,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 			}
 			break;
 		case "GETMOVIELIST":
+		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 			try {
 				if (xml && xml.e2locations && xml.e2locations.e2location) {
 					let state = await adapter.getStateAsync('enigma2.Movie_list');
@@ -763,7 +767,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
 				adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
 			}
-
+		}
 			break;
 		default:
 			adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
@@ -1336,6 +1340,7 @@ function main2() {
 		},
 		native: {}
 	});
+if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 	adapter.setObjectNotExists('enigma2.Movie_list', {
 		type: 'state',
 		common: {
@@ -1347,7 +1352,7 @@ function main2() {
 		},
 		native: {}
 	});
-
+}
 	// in this example all states changes inside the adapters namespace are subscribed
 	adapter.subscribeStates('*');
 
