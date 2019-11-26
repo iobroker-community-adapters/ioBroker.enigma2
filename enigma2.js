@@ -150,6 +150,7 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 
 								//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 								adapter.log.debug("E2 States manuell aktualisiert");
@@ -711,6 +712,46 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				});
 			}
 			break;
+		case "GETMOVIELIST":
+			try {
+				if (xml && xml.e2locations && xml.e2locations.e2location) {
+					let state = await adapter.getStateAsync('enigma2.Movie_list');
+
+					let updateInterval = 300;
+					if (state === null || state.val === null || state.ts === null || (new Date().getTime() - state.ts) > updateInterval * 1000) {
+						// get movie data only, if state has no data or timestamp is older than 'updateInterval'
+
+						adapter.log.info("updating movie list");
+						let movieList = [];
+						let movieDirs = xml.e2locations.e2location;
+
+						for (var dir of movieDirs) {
+							// iterate through media directories
+							await getAllMovies(dir, movieList);
+						}
+
+						movieList.sort(function (a, b) {
+							// sort recording time desc
+							return b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1;
+						});
+
+						movieList = JSON.stringify(movieList);
+
+						if (state && state.val !== null) {
+							adapter.setState('enigma2.Movie_list', movieList, true);
+							adapter.log.debug("movie_list updated");
+						} else {
+							adapter.setState('enigma2.Movie_list', movieList, true);
+						}
+					}
+				}
+
+			} catch (err) {
+				adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
+				adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
+			}
+
+			break;
 		default:
 			adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
 	}
@@ -737,6 +778,29 @@ try {
   }).on("error", function (e) {console.error(e);});
 } catch (e) { console.error(e); }
 }*/
+
+async function getAllMovies(directory, movieList) {
+	adapter.log.debug('get movies from directory: ' + directory);
+	try {
+		let result = await getResponseAsync(deviceId, `/api/movielist?dirname=${directory}`);
+
+		if (result) {
+			if (result.movies && result.movies.length > 0) {
+				movieList.push(...result.movies);
+			}
+
+			if (result.bookmarks && result.bookmarks.length > 0) {
+				for (var subDir of result.bookmarks) {
+					await getAllMovies(directory + encodeURI(subDir) + '/', movieList);
+				}
+			}
+		}
+	} catch (err) {
+		adapter.log.error(`[getAllMovies] dir: ${directory}, error: ${err.message}`);
+		adapter.log.error("[getAllMovies] stack: " + err.stack);
+	}
+}
+
 function ISRECORD() {
 	var result;
 	try {
@@ -779,6 +843,7 @@ function setStatus(status) {
 			getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
 		} else {
@@ -1166,6 +1231,7 @@ function main() {
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
+		getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
@@ -1252,6 +1318,17 @@ function main2() {
 			type: 'string',
 			role: 'info',
 			name: 'Timer List',
+			read: true,
+			write: false
+		},
+		native: {}
+	});
+	adapter.setObjectNotExists('enigma2.Movie_list', {
+		type: 'state',
+		common: {
+			type: 'string',
+			role: 'info',
+			name: 'Movie List',
 			read: true,
 			write: false
 		},
