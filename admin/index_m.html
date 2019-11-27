@@ -16,7 +16,7 @@
 
     // Dictionary (systemDictionary is global variable from adapter-settings.js)
     systemDictionary = {
-		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellunen", "ru": "Пример"},
+		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellungen", "ru": "Пример"},
         "example adapter settings": {"de": "enigma2", "ru": "Пример"},
         "IPAddress":                {"en": "IP address", "de": "IP Adresse (nur http kein https)", "ru": ""},
 		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
@@ -110,33 +110,31 @@
 
 <body>
     <div class="m adapter-container" id="settings">
+	    <nav class="nav-extended">
+				<div class="row navbar-fixed">
+                    <div class="col">
+                        <img src="enigma2.png" class="zlogo left" height="100px">
+                    </div>
+					<div class="col">
+                        <h3 class="translate center-align">enigma2 adapter settings</h3>
+                    </div>
+                </div>
         <div class="row">
             <div class="col s12">
                 <!-- Tabs definieren -->
-                <ul class="tabs">
+                <ul class="tabs tabs-transparent">
                     <!-- Tab1 Login + Intervalle-->
-                    <li class="tab col s6">
-                        <a href="#tab-main" class="translate">enigma2 adapter settings</a>
-                    </li>
+                    <li class="tab col s6"><a href="#tab-main" class="translate">enigma2 adapter settings</a></li>
                     <!-- Tab2 TIMER -->
-<!--					<li class="tab col s4">
-                        <a href="#tab-timer" class="translate">TimerCheck</a>
-                    </li>
-		    <!-- Tab3 Alexa -->
-					<li class="tab col s6">
-                        <a href="#tab-Alexa" class="translate">Alexa</a>
-                    </li>
+<!--					<li class="tab col s4"><a href="#tab-timer" class="translate">TimerCheck</a></li>
+					<!-- Tab3 Alexa -->
+					<li class="tab col s6"><a href="#tab-Alexa" class="translate">Alexa</a></li>
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
             </div>
+	</nav>
 <!-- #################################-->
             <div id="tab-main" class="col s12 page">
-                <div class="row">
-                    <div class="col s12 m4 l2">
-                        <img src="enigma2.png" class="logo">
-                    </div>
-                </div>
-
                 <div class="row">
                     <div class="col s12">
                         <p class="translate title">Enigma2 IP & Port</p>
@@ -182,7 +180,8 @@
 								</div>
 					</div>
 					<div class="tab col s12">
-                        <p class="translate title">Important</p>
+                <!--        <p class="translate title">Important</p> -->	
+				<!--		<label class="translate" for="Important-des">Important-des</label> -->	
 						<h5><span class="translate">Important-des</span></h5>
 					</div>
 				</div>			
