@@ -150,9 +150,7 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
-								if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-									getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-								}
+								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 								//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 								adapter.log.debug("E2 States manuell aktualisiert");
 								adapter.setState('enigma2.Update', { val: state.val, ack: true });
@@ -326,41 +324,39 @@ function getResponse(command, deviceId, path, callback) {
 		res.on('data', function (chunk) {
 			pageData += chunk
 		});
-		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-			res.on('end', function () {
-				if (command !== 'PICON') {
-					if (path.includes('/api/')) {
-						// using JSON API
-						try {
-							let parser = JSON.parse(pageData);
-							if (callback) {
-								callback(command, 1, parser);
-							}
-						} catch (err) {
-							adapter.log.error(`[getResponse] error: ${err.message}`);
-							adapter.log.error("[getResponse] stack: " + err.stack);
-
-							if (callback) {
-								callback(command, 1, null);
-							}
+		res.on('end', function () {
+			if (command !== 'PICON') {
+				if (path.includes('/api/')) {
+					// using JSON API
+					try {
+						let parser = JSON.parse(pageData);
+						if (callback) {
+							callback(command, 1, parser);
 						}
-					} else {
-						// using XML API
-						var parser = new xml2js.Parser();
-						parser.parseString(pageData, function (err, result) {
-							if (callback) {
-								callback(command, 1, result);
-							}
-						});
+					} catch (err) {
+						adapter.log.error(`[getResponse] error: ${err.message}`);
+						adapter.log.error("[getResponse] stack: " + err.stack);
+
+						if (callback) {
+							callback(command, 1, null);
+						}
 					}
+				} else {
+					// using XML API
+					var parser = new xml2js.Parser();
+					parser.parseString(pageData, function (err, result) {
+						if (callback) {
+							callback(command, 1, result);
+						}
+					});
 				}
-				else {
-					if (callback) {
-						callback(command, (statusCode == '200' && pageData.length > 0 ? true : false), pageData);
-					}
+			}
+			else {
+				if (callback) {
+					callback(command, (statusCode == '200' && pageData.length > 0 ? true : false), pageData);
 				}
-			});
-		}
+			}
+		});
 	});
 	req.on('error', function (e) {
 		setStatus(false);
@@ -726,44 +722,40 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 			}
 			break;
 		case "GETMOVIELIST":
-
 			try {
 				if (xml && xml.e2locations && xml.e2locations.e2location) {
+					adapter.log.info("updating movie list");
+
+					let movieList = [];
+					let movieDirs = xml.e2locations.e2location;
+
+					for (var dir of movieDirs) {
+						// iterate through media directories
+						await getAllMovies(dir, movieList);
+					}
+
+					movieList.sort(function (a, b) {
+						// sort recording time desc
+						return b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1;
+					});
+
+					movieList = JSON.stringify(movieList);
+
 					let state = await adapter.getStateAsync('enigma2.Movie_list');
 
-					let updateInterval = 300;		// in seconds
-					if (state === null || state.val === null || state.ts === null || new Date().getTime() - state.ts > updateInterval * 1000) {
-						// get movie data only, if state has no data or timestamp is older than 'updateInterval'
-						if (state !== null && state.val !== null) {
-							// set current data to set timestamp to prevent multiple calls
-							adapter.setState('enigma2.Movie_list', state.val, true);
-						}
-
-						adapter.log.info("updating movie list");
-						let movieList = [];
-						let movieDirs = xml.e2locations.e2location;
-
-						for (var dir of movieDirs) {
-							// iterate through media directories
-							await getAllMovies(dir, movieList);
-						}
-
-						movieList.sort(function (a, b) {
-							// sort recording time desc
-							return b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1;
-						});
-
-						movieList = JSON.stringify(movieList);
-
-						if (state && state.val !== null) {
+					// only update if we have new movies	
+					if (state && state.val !== null) {
+						if (movieList !== state.val) {
 							adapter.setState('enigma2.Movie_list', movieList, true);
-							adapter.log.debug("movie_list updated");
+							adapter.log.info("movie list updated");
 						} else {
-							adapter.setState('enigma2.Movie_list', movieList, true);
+							adapter.log.info("no new movies found -> movies list is up to date");
 						}
+					} else {
+						adapter.setState('enigma2.Movie_list', movieList, true);
+						adapter.log.info("movie list updated");
 					}
 				}
-
 			} catch (err) {
 				adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
 				adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
@@ -866,9 +858,7 @@ function setStatus(status) {
 			getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
-			if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-				getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-			}
+			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
 		} else {
@@ -1256,9 +1246,6 @@ function main() {
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
-		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-		}
 		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
@@ -1267,6 +1254,12 @@ function main() {
 			getResponse('DEVICEINFO_HDD', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
 		}
 	}, 30000);
+
+	setInterval(function () {
+		if (isConnected) {
+			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
+		}
+	}, 300000);
 }
 
 
@@ -1350,21 +1343,18 @@ function main2() {
 		},
 		native: {}
 	});
-	if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-		adapter.setObjectNotExists('enigma2.Movie_list', {
-			type: 'state',
-			common: {
-				type: 'string',
-				role: 'info',
-				name: 'Movie List',
-				read: true,
-				write: false
-			},
-			native: {}
-		});
-	} else {
-		adapter.delObject('enigma2.Movie_list');
-	}
+	adapter.setObjectNotExists('enigma2.Movie_list', {
+		type: 'state',
+		common: {
+			type: 'string',
+			role: 'info',
+			name: 'Movie List',
+			read: true,
+			write: false
+		},
+		native: {}
+	});
+
 	// in this example all states changes inside the adapters namespace are subscribed
 	adapter.subscribeStates('*');
 
