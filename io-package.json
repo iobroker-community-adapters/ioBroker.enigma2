@@ -8,6 +8,8 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "enigma2.png",
+	"messagebox": true,
+    	"subscribe": "messagebox",
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/ioBroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
         "nondeletable":             true,
