@@ -24,6 +24,7 @@
         "Password": "dreambox",
 	"TimerCheck": 5000,
 	"Alexa": false,
+        "Webinterface": true,
         "PollingInterval": 5000
     },
     "objects": [
