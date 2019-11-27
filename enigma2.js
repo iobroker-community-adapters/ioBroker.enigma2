@@ -68,23 +68,36 @@ var main_commands = {
 };
 
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
+/*adapter.on('message', function (obj) {
+	if (obj !== null && obj !== undefined) {
+		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
+		var message_split = (JSON.stringify(obj.message)).split(":");
+	
+		var MESSAGE_TIMEOUT = message_split[0].replace(/"/g, '').slice(1);
+		adapter.log.debug('enigma2 message Timeout: ' + message_split[0].replace(/"/g, '').slice(1));
+		adapter.setState('Message.Timeout', { val: MESSAGE_TIMEOUT, ack: true });
+	
+		var MESSAGE_TYPE = (JSON.stringify(obj.command)).replace(/"/g, '');
+		adapter.log.debug('enigma2 command Message Type: ' + MESSAGE_TYPE);
+		adapter.setState('Message.Type', { val: MESSAGE_TYPE, ack: true });
+	
+		var MESSAGE_TEXT = message_split[1].replace(/"/g, '').slice(0, -1);
+		adapter.log.debug('enigma2 message Text: ' + message_split[1].replace(/"/g, '').slice(0, -1));
+		adapter.setState('Message.Text', { val: MESSAGE_TEXT, ack: false });	
+	}
+});
+*/
 adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
-    	adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
-	var message_split = (JSON.stringify(obj.message)).split(":");
+
+		adapter.log.debug('enigma2 message Timeout: ' + obj.timeout);
+		adapter.setState('Message.Timeout', { val: obj.timeout, ack: true });
 	
-	var MESSAGE_TIMEOUT = message_split[0].replace(/"/g, '').slice(1);
-	adapter.log.debug('enigma2 message Timeout: ' + message_split[0].replace(/"/g, '').slice(1));
-	adapter.setState('Message.Timeout', { val: MESSAGE_TIMEOUT, ack: true });
+		adapter.log.debug('enigma2 command Message Type: ' + obj.msgType);
+		adapter.setState('Message.Type', { val: obj.msgType, ack: true });
 	
-	var MESSAGE_TYPE = (JSON.stringify(obj.command)).replace(/"/g, '');/*.slice(0, -1), encodeURIComponent(MESSAGE_TEXT)*/
-	adapter.log.debug('enigma2 command Message Type: ' + MESSAGE_TYPE);
-	adapter.setState('Message.Type', { val: MESSAGE_TYPE, ack: true });
-	
-	var MESSAGE_TEXT = message_split[1].replace(/"/g, '').slice(0, -1);
-	adapter.log.debug('enigma2 message Text: ' + message_split[1].replace(/"/g, '').slice(0, -1));
-	adapter.setState('Message.Text', { val: MESSAGE_TEXT, ack: false });
-		
+		adapter.log.debug('enigma2 message Text: ' + obj.message);
+		adapter.setState('Message.Text', { val: obj.message, ack: false });	
 	}
 });
 
