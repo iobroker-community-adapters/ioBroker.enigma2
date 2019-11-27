@@ -35,7 +35,8 @@ var PATH = {
 	ZAP: '/web/zap?sRef=',
 	ISRECORD: '/web/timerlist',
 	API: '/api/statusinfo',
-	GETLOCATIONS: '/web/getlocations'
+	GETLOCATIONS: '/web/getlocations',
+	GETALLSERVICES: '/web/getallservices'
 };
 
 var commands = {
@@ -706,17 +707,18 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				// only update if we have a result -> keep on data if box is in deepStandby
 				result = JSON.stringify(result);
 
-				adapter.getState('enigma2.Timer_list', function (err, state) {
+				adapter.getState('enigma2.TIMER_LIST', function (err, state) {
 					// only update if we have new timer	
 					if (state && state.val !== null) {
 						if (result !== state.val) {
-							adapter.setState('enigma2.Timer_list', result, true);
-							adapter.log.debug("timer_list updated");
+							adapter.setState('enigma2.TIMER_LIST', result, true);
+							adapter.log.debug("timer list updated");
 						} else {
-							adapter.log.debug("no new timer found -> timer_list need no update");
+							adapter.log.debug("no new timer found -> timer list is up to date");
 						}
 					} else {
-						adapter.setState('enigma2.Timer_list', result, true);
+						adapter.setState('enigma2.TIMER_LIST', result, true);
+						adapter.log.debug("timer list updated");
 					}
 				});
 			}
@@ -724,14 +726,30 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "GETMOVIELIST":
 			try {
 				if (xml && xml.e2locations && xml.e2locations.e2location) {
-					adapter.log.info("updating movie list");
+					adapter.log.debug("updating movie list");
 
 					let movieList = [];
 					let movieDirs = xml.e2locations.e2location;
+					let allServices = await getResponseAsync(deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)					
+
+					let servicesList = [];
+					if (allServices && allServices.e2servicelistrecursive && allServices.e2servicelistrecursive.e2bouquet) {
+						// prepare serviceList
+						for (var bouquet of allServices.e2servicelistrecursive.e2bouquet) {
+							if (bouquet && bouquet.e2servicelist) {
+								for (var service of bouquet.e2servicelist) {
+									servicesList.push(...service.e2service)
+								}
+							}
+						}
+
+						//remove duplicates
+						servicesList = servicesList.filter(obj => !servicesList[obj.e2servicereference] && (servicesList[obj.e2servicereference] = true));
+					}
 
 					for (var dir of movieDirs) {
 						// iterate through media directories
-						await getAllMovies(dir, movieList);
+						await getAllMovies(dir, movieList, servicesList);
 					}
 
 					movieList.sort(function (a, b) {
@@ -741,19 +759,19 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
 					movieList = JSON.stringify(movieList);
 
-					let state = await adapter.getStateAsync('enigma2.Movie_list');
+					let state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
 
 					// only update if we have new movies	
 					if (state && state.val !== null) {
 						if (movieList !== state.val) {
-							adapter.setState('enigma2.Movie_list', movieList, true);
-							adapter.log.info("movie list updated");
+							adapter.setState('enigma2.MOVIE_LIST', movieList, true);
+							adapter.log.debug("movie list updated");
 						} else {
-							adapter.log.info("no new movies found -> movies list is up to date");
+							adapter.log.debug("no new movies found -> movies list is up to date");
 						}
 					} else {
-						adapter.setState('enigma2.Movie_list', movieList, true);
-						adapter.log.info("movie list updated");
+						adapter.setState('enigma2.MOVIE_LIST', movieList, true);
+						adapter.log.debug("movie list updated");
 					}
 				}
 			} catch (err) {
@@ -789,8 +807,9 @@ try {
 } catch (e) { console.error(e); }
 }*/
 
-async function getAllMovies(directory, movieList) {
+async function getAllMovies(directory, movieList, servicesList) {
 	adapter.log.debug('get movies from directory: ' + directory);
+
 	try {
 		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
 			// openwebif api
@@ -798,12 +817,22 @@ async function getAllMovies(directory, movieList) {
 
 			if (result) {
 				if (result.movies && result.movies.length > 0) {
-					movieList.push(...result.movies);
+					for (var movie of result.movies) {
+						var service = servicesList.filter(obj => {
+							return obj.e2servicename.toString() === movie.servicename.toString();
+						});
+
+						if (service && service[0]) {
+							movie.service = service[0].e2servicereference.toString();
+							movie.serviceRefName = service[0].e2servicereference.toString().replace(/:/g, '_').slice(0, -1);
+						}
+						movieList.push(movie);
+					}
 				}
 
 				if (result.bookmarks && result.bookmarks.length > 0) {
 					for (var subDir of result.bookmarks) {
-						await getAllMovies(directory + subDir + '/', movieList);
+						await getAllMovies(directory + subDir + '/', movieList, servicesList);
 					}
 				}
 			}
@@ -1332,7 +1361,7 @@ function main2() {
 		},
 		native: {}
 	});
-	adapter.setObjectNotExists('enigma2.Timer_list', {
+	adapter.setObjectNotExists('enigma2.TIMER_LIST', {
 		type: 'state',
 		common: {
 			type: 'string',
@@ -1343,7 +1372,7 @@ function main2() {
 		},
 		native: {}
 	});
-	adapter.setObjectNotExists('enigma2.Movie_list', {
+	adapter.setObjectNotExists('enigma2.MOVIE_LIST', {
 		type: 'state',
 		common: {
 			type: 'string',
