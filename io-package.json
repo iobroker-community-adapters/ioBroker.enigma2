@@ -12,7 +12,7 @@
     	"subscribe": "messagebox",
         "extIcon":                  "https://raw.githubusercontent.com/Matten-Matten/ioBroker.enigma2/master/admin/enigma2.png",
         "loglevel":                 "info",
-        "nondeletable":             true,
+        "nondeletable":             false,
 	"materialize":              true,
 	"authors": 		    [ "Matten-Matten <matten-matten@web.de>" ],
         "type":                     "multimedia"
