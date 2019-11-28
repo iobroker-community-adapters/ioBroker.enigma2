@@ -30,7 +30,7 @@ Blockly.Sendto.blocks['enigma2'] =
     + '         <shadow type="text">'
     + '             <field name="TEXT">text</field>'
     + '         </shadow>'
-	
+/*	
 	+ '     <value name="TIMEOUT">'
     + '         <shadow type="value">'
     + '             <field name="TEXT">text</field>'
@@ -40,13 +40,12 @@ Blockly.Sendto.blocks['enigma2'] =
     + '         <shadow type="value">'
     + '             <field name="TEXT">text</field>'
     + '         </shadow>'
-/*	
+*/
     + '     </value>'
     + '     <value name="TIMEOUT">'
     + '     </value>'
     + '     <value name="MSGTYPE">'
     + '     </value>'
-*/
     + '     <value name="LOG">'
     + '     </value>'
     + '</block>';
