@@ -20,7 +20,7 @@ Blockly.Words['enigma2_log_error']     = {'en': 'error',                       '
 
 Blockly.Words['enigma2_anyInstance']   = {'en': 'all instances',               'de': 'Alle Instanzen',                     'ru': 'all instances'};
 Blockly.Words['enigma2_tooltip']       = {'en': 'Send message to enigma2',    'de': 'Sende eine Nachricht an den Receiver',   'ru': 'Send message to enigma2'};
-Blockly.Words['pushover_help']          = {'en': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'de': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'ru': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md'};
+Blockly.Words['enigma2_help']          = {'en': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'de': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'ru': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md'};
 
 Blockly.Sendto.blocks['enigma2'] =
     '<block type="enigma2">'
