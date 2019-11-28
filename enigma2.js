@@ -68,7 +68,7 @@ var main_commands = {
 };
 
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on('message', function (obj) {
+/*adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
 		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
 		var message_split = (JSON.stringify(obj.message)).split(":");
@@ -86,8 +86,8 @@ adapter.on('message', function (obj) {
 		adapter.setState('Message.Text', { val: MESSAGE_TEXT, ack: false });	
 	}
 });
-
-/*adapter.on('message', function (obj) {
+*/
+adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
 
 		adapter.log.debug('enigma2 message Timeout: ' + obj.timeout);
@@ -100,7 +100,7 @@ adapter.on('message', function (obj) {
 		adapter.setState('Message.Text', { val: obj.message, ack: false });	
 	}
 });
-*/
+
 adapter.on('stateChange', function (id, state) {
 	if (id && state && !state.ack) {
 		var parts = id.split('.');
