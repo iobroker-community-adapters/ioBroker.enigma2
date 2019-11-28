@@ -89,15 +89,16 @@ var main_commands = {
 */
 adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
-
-		adapter.log.debug('enigma2 message Timeout: ' + obj.timeout);
-		adapter.setState('Message.Timeout', { val: obj.timeout, ack: true });
+		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
+		
+		adapter.log.debug('enigma2 message Timeout: ' + parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, '')));
+		adapter.setState('Message.Timeout', { val: parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, '')), ack: true });
 	
-		adapter.log.debug('enigma2 command Message Type: ' + obj.msgType);
-		adapter.setState('Message.Type', { val: obj.msgType, ack: true });
+		adapter.log.debug('enigma2 command Message Type: ' + parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, '')));
+		adapter.setState('Message.Type', { val: parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, '')), ack: true });
 	
-		adapter.log.debug('enigma2 message Text: ' + obj.message);
-		adapter.setState('Message.Text', { val: obj.message, ack: false });	
+		adapter.log.debug('enigma2 message Text: ' + JSON.stringify(obj.message.message).replace(/"/g, ''));
+		adapter.setState('Message.Text', { val: JSON.stringify(obj.message.message).replace(/"/g, ''), ack: false });	
 	}
 });
 
