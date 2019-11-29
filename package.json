@@ -1,7 +1,7 @@
 {
   "name": "iobroker.enigma2",
   "description": "enigma2 adapter für VU+;Dreambox;EDISON...",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "author": {
     "name": "Matten-Matten",
     "email": "matten-matten@web.de"
@@ -33,9 +33,16 @@
   "bugs": {
     "url": "https://github.com/Matten-Matten/ioBroker.enigma2/issues"
   },
-  "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "init": "node lib/scripts.js init",
+    "sort": "node lib/scripts.js sort",
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "list": "node lib/scripts.js list --file /var/www/download/list.html",
+    "repos": "node lib/build.js --stable /var/www/download/sources-dist.json --latest /var/www/download/sources-dist-latest.json --shields /var/www/download/img",
+    "nodates": "node lib/scripts.js nodates",
+    "addToLatest": "node lib/scripts.js addToLatest",
+    "addToStable": "node lib/scripts.js addToStable"
   },
+  "bugs
   "readmeFilename": "README.md"
 } 
