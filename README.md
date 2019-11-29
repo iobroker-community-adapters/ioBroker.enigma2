@@ -1,5 +1,10 @@
+![NPM version](http://img.shields.io/npm/v/iobroker.enigma2.svg)
+
 ![Logo](admin/enigma2.png)
 # ioBroker enigma2 Adapter
+
+
+[![NPM](https://nodei.co/npm/iobroker.enigma2.png?downloads=true)](https://nodei.co/npm/iobroker.enigma2/)
 
 - Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
 - (Adapter only runs on one host! with a client installation there's currently still problems.)
