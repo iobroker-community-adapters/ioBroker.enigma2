@@ -29,3 +29,5 @@
   </value>
 </block>
 ```
+
+![Bild Text](https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/enigma2_message.png)
