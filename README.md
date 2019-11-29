@@ -44,7 +44,8 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 - WEB_IF_VERSION
 - isRecording
 - Timer_is_set
-- Timer_list
+- MOVIE_LIST (only openwebif)
+- TIMER_LIST
 
 ### main
 - enigma2-CONNECTION
@@ -86,17 +87,40 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
 
+
+
 ### Alexa_Command
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
  
+ 
+ ### sendTo 
+#### (in Blockly)
+ - message   = Text of Message
+ - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
+ - timeout   = Can be empty or the Number of seconds the Message should disappear after.
+
+ 
+#### (in java)
+```
+sendTo("enigma2.0", "send", {
+   "message": 'Test Nachricht',
+   "timeout": 26,
+   "msgType": 1
+});
+```
+
 
 ==============
  
 ## Changelog
 
+### 1.2.6 (2019-11-29)
+* (Matten-Matten)       add: `sendTo` (Blockly) to sending Messages
+* (Scrounger)           add: `.enigma2.MOVIE_LIST`
+
 ### 1.2.5 (2019-11-17)
-* (Scrounger)            add: `.enigma2.Timer_list` [#25](https://github.com/Matten-Matten/ioBroker.enigma2/issues/25) (Merge pull request [#28](https://github.com/Matten-Matten/ioBroker.enigma2/issues/28))
+* (Scrounger)           add: `.enigma2.Timer_list` [#25](https://github.com/Matten-Matten/ioBroker.enigma2/issues/25) (Merge pull request [#28](https://github.com/Matten-Matten/ioBroker.enigma2/issues/28))
 
 ### 1.2.4 (2019-10-20)
 * (Matten-Matten)       add: `.enigma2.Timer_is_set` ([#23](https://github.com/Matten-Matten/ioBroker.enigma2/issues/23))
