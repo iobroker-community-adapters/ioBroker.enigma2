@@ -85,7 +85,7 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 ### Message
  - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
- - Message.Timeout        = Can be empty or the Number of seconds the Message should disappear after.
+ - Message.Timeout        = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
 
 
 
@@ -98,15 +98,18 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 #### (in Blockly)
  - message   = Text of Message
  - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
- - timeout   = Can be empty or the Number of seconds the Message should disappear after.
+ - timeout   = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
+ 
+![Bild Text](https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/enigma2_message.png)
 
+https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/Blockly%20Import.md
  
 #### (in java)
 ```
 sendTo("enigma2.0", "send", {
-   "message": 'Test Nachricht',
-   "timeout": 26,
-   "msgType": 1
+   "message": 'Test Nachricht', /* Text of Message */
+   "timeout": 26,               /* timeout of Message in sec. (Can be empty or the Number of seconds the Message should disappear after.) */
+   "msgType": 1                 /* Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention) */
 });
 ```
 
