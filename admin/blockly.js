@@ -8,7 +8,7 @@ goog.require('Blockly.JavaScript');
 /// --- SendTo enigma2 --------------------------------------------------
 Blockly.Words['enigma2']               = {'en': 'enigma2',			'de': 'enigma2',			'ru': 'enigma2'};
 Blockly.Words['enigma2_message']       = {'en': 'message',			'de': 'Nachricht',			'ru': 'message'};
-Blockly.Words['enigma2_timeout']       = {'en': 'timeout',			'de': 'timeout',			'ru': 'timeout'};
+Blockly.Words['enigma2_timeout']       = {'en': 'timeout',			'de': 'Anzeige Länge',			'ru': 'timeout'};
 Blockly.Words['enigma2_msgType']       = {'en': 'message Type',		'de': 'Nachrichten Art',	'ru': 'message Type'};
 
 Blockly.Words['enigma2_log']           = {'en': 'log level',                   'de': 'Loglevel',                           'ru': 'Протокол'};
@@ -110,6 +110,6 @@ Blockly.JavaScript['enigma2'] = function(block) {
 
     //return 'sendTo"enigma2' + dropdown_instance + '", {\nmessage: ' +  value_message + ',\ntimeout: ' +  value_timeout + ',\nmsgType: ' +  value_msgType + '\n});\n' +
     //    logText;
-	return 'sendTo("enigma2' + dropdown_instance + '", "send", {message: ' + value_message  + ', ntimeout: ' + value_timeout + ', msgType: ' + value_msgType + '});\n' +
+	return 'sendTo("enigma2' + dropdown_instance + '", "send", {message: ' + value_message  + ', timeout: ' + value_timeout + ', msgType: ' + value_msgType + '});\n' +
         logText;
 };
