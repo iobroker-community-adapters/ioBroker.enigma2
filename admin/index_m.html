@@ -17,6 +17,7 @@
     // Dictionary (systemDictionary is global variable from adapter-settings.js)
     systemDictionary = {
 		"enigma2 adapter settings": {"en": "enigma2 adapter settings", "de": "enigma2 Adapter Einstellungen", "ru": "Пример"},
+		"settings":					{"en": "Extended Settings", "de": "Erweiterte Einstellungen", "ru": "Пример"},
         "example adapter settings": {"de": "enigma2", "ru": "Пример"},
         "IPAddress":                {"en": "IP address", "de": "IP Adresse (nur http kein https)", "ru": ""},
 		"Port":                     {"en": "Port", "de": "Port", "ru": ""},
@@ -27,11 +28,21 @@
 		"TimerCheck":               {"en": "Timer Check", "de": "Timer Prüfung", "ru": ""},
 		"TimerEnabled":				{"en": "Timer Enabled", "de": "Timer Prüfung aktivieren/deaktivieren", "ru": ""},
 		"Enabled":					{"en": "Enabled", "de": "Timer Checken", "ru": ""},
+	//movieliste
+		"movieliste":               {"en": "Movie List", "de": "Film Liste", "ru": ""},
+		"movieliste-des":			{"en": "Movie list load (Attention, can lead to increased utilization of the receiver!)", "de": "Filmliste laden (Achtung, kann zu erhöhter Auslastung des Receivers führen!)", "ru": ""},
+		"activ":					{"en": "activ", "de": "eingeschaltet", "ru": ""},
+		"deactiv":					{"en": "deactiv", "de": "ausgeschaltet", "ru": ""},
+	//timerliste
+		"timerliste":               {"en": "Timer List", "de": "Aufnahme Liste (Timer Liste)", "ru": ""},
+		"timerliste-des":			{"en": "Timer List load (Attention, can lead to increased utilization of the receiver!)", "de": "Aufnahme Liste laden (Achtung, kann zu erhöhter Auslastung des Receivers führen!)", "ru": ""},
+		//"activ":					{"en": "activ", "de": "eingeschaltet", "ru": ""},
+		//"deactiv":					{"en": "deactiv", "de": "ausgeschaltet", "ru": ""},
 	//Alexa
 		"Alexa":               		{"en": "Alexa,YAHKA extension", "de": "Alexa,YAHKA Erweiterung", "ru": ""},
 	//Important
 		"Important":				{"en": "!!! Important !!!", "de": "!!! Wichtig !!!", "ru": ""},
-		"Important-des":			{"en": "Important! Hijack action and token-based security must be disabled", "de": "Wichtig! 'Hijack-Maßnahmen' und 'Tokenbasierte Sicherheit' muss deaktiviert werden", "ru": ""},
+		"Important-des":			{"en": "Important! Hijack action and token-based security must be disabled", "de": "Wichtig! 'Hijack-Maßnahmen' und 'Tokenbasierte Sicherheit' muss im Receiver deaktiviert werden", "ru": ""},
 	//Network
 		"internal hard disk":		{"en": "internal hard disk", "de": "Interne Festplatte", "ru": ""},
 		"second hard disk":			{"en": "second hard disk", "de": "2. Festplatte", "ru": ""},
@@ -63,8 +74,10 @@
         onChange(false);
     }
 		if (settings.TimerCheck === undefined) settings.TimerCheck = 180000;
-		if (settings.Alexa === undefined) settings.Alexa = false;
-		if (settings.Webinterface === undefined) settings.Webinterface = true;
+		if (settings.Alexa === undefined) settings.Alexa = "false";
+		if (settings.Webinterface === undefined) settings.Webinterface = "true";
+		if (settings.movieliste === undefined) settings.movieliste = "false";
+		if (settings.timerliste === undefined) settings.timerliste = "false";
 		
 		
     // ... and the function save has to exist.
@@ -124,11 +137,11 @@
                 <!-- Tabs definieren -->
                 <ul class="tabs tabs-transparent">
                     <!-- Tab1 Login + Intervalle-->
-                    <li class="tab col s6"><a href="#tab-main" class="translate">enigma2 adapter settings</a></li>
-                    <!-- Tab2 TIMER -->
-<!--					<li class="tab col s4"><a href="#tab-timer" class="translate">TimerCheck</a></li>
+                    <li class="tab col s4"><a href="#tab-main" class="translate">enigma2 adapter settings</a></li>
+                    <!-- Tab2 weitere Einstellungen -->
+					<li class="tab col s4"><a href="#tab-settings" class="translate">settings</a></li>
 					<!-- Tab3 Alexa -->
-					<li class="tab col s6"><a href="#tab-Alexa" class="translate">Alexa</a></li>
+					<li class="tab col s4"><a href="#tab-Alexa" class="translate">Alexa</a></li>
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
             </div>
@@ -165,55 +178,86 @@
                         </div>
                     </div>
             </div>
-<!-- #################################-->				
+<!-- ######Webinterface Version##########-->				
 			<div class="row">
-                    <div class="col s12">
-                        <p class="translate title">Webinterface Version</p>
-								<div class="row">
-									<div class="input-field col s12 m2 l3">
-										<select  class="value" id="Webinterface">
-											<option value="true" class="translate">OpenWebif</option>
-											<option value="false" class="translate">Dream-Webinterface</option>
-										</select>
-											<label class="translate" for="Webinterface">Webinterface</label>
-									</div>
-								</div>
-					</div>
-					<div class="tab col s12">
-                <!--        <p class="translate title">Important</p> -->	
-				<!--		<label class="translate" for="Important-des">Important-des</label> -->	
-						<h5><span class="translate">Important-des</span></h5>
-					</div>
-				</div>			
-<!-- #################################-->	
-				<div class="row">
-                    <div class="col s12">
-                        <p class="translate title">PollingInterval</p>
-
-								<div class="row">
-									<div class="input-field col s12 m2 l3">
-										<select  class="value" id="PollingInterval">
-											<option value="2000" class="translate">2 sec.</option>
-											<option value="3000" class="translate">3 sec.</option>
-											<option value="4000" class="translate">4 sec.</option>
-											<option value="5000" class="translate">5 sec.</option>
-											<option value="6000" class="translate">6 sec.</option>
-											<option value="7000" class="translate">7 sec.</option>
-											<option value="8000" class="translate">8 sec.</option>
-											<option value="9000" class="translate">9 sec.</option>
-											<option value="10000" class="translate">10 sec.</option>
-											<option value="15000" class="translate">15 sec.</option>
-										</select>
-											<label class="translate" for="PollingInterval">PollingInterval</label>
-									</div>
-								</div>
+				<div class="col s12">
+					<p class="translate title">Webinterface Version</p>
+					<div class="row">
+						<div class="input-field col s12 m2 l3">
+							<select  class="value" id="Webinterface">
+								<option value="true" class="translate">OpenWebif</option>
+								<option value="false" class="translate">Dream-Webinterface</option>
+							</select>
+							<label class="translate" for="Webinterface">Webinterface</label>
+						</div>
 					</div>
 				</div>
+			</div>			
+<!-- #########polling###########-->	
+			<div class="row">
+                 <div class="col s12">
+					<p class="translate title">PollingInterval</p>
+					<div class="row">
+						<div class="input-field col s12 m2 l3">
+							<select  class="value" id="PollingInterval">
+								<option value="2000" class="translate">2 sec.</option>
+								<option value="3000" class="translate">3 sec.</option>
+								<option value="4000" class="translate">4 sec.</option>
+								<option value="5000" class="translate">5 sec.</option>
+								<option value="6000" class="translate">6 sec.</option>
+								<option value="7000" class="translate">7 sec.</option>
+								<option value="8000" class="translate">8 sec.</option>
+								<option value="9000" class="translate">9 sec.</option>
+								<option value="10000" class="translate">10 sec.</option>
+								<option value="15000" class="translate">15 sec.</option>
+								<option value="30000" class="translate">30 sec.</option>
+								<option value="60000" class="translate">1 min.</option>
+							</select>
+							<label class="translate" for="PollingInterval">PollingInterval</label>
+						</div>
+					</div>
+				</div>
+			</div>
 <!-- #################################-->	
             </div> <!-- Ende Tab1 -->			
 <!-- #################################-->
-<!--            <div id="tab-timer" class="col s12 page">
-                <div class="row">
+            <div id="tab-settings" class="col s12 page">
+<!-- ######### Infos ###########-->	
+				<div class="tab col s12">
+					<h5><span class="translate">Important-des</span></h5>
+				</div>
+<!-- #########movieliste###########-->
+			<div class="row">
+				<div class="col s12">
+					<p class="translate title">movieliste-des</p>
+					<div class="row">
+						<div class="input-field col s12 m2 l3">
+							<select  class="value" id="movieliste">
+								<option value="true" class="translate">activ</option>
+								<option value="false" class="translate">deactiv</option>
+							</select>
+							<label class="translate" for="movieliste">movieliste</label>
+						</div>
+					</div>
+				</div>
+			</div>
+<!-- #########timerliste###########-->
+			<div class="row">
+				<div class="col s12">
+					<p class="translate title">timerliste-des</p>
+					<div class="row">
+						<div class="input-field col s12 m2 l3">
+							<select  class="value" id="timerliste">
+								<option value="true" class="translate">activ</option>
+								<option value="false" class="translate">deactiv</option>
+							</select>
+							<label class="translate" for="timerliste">timerliste</label>
+						</div>
+					</div>
+				</div>
+			</div>
+<!-- ###########################-->
+<!--			<div class="row">
                     <div class="col s12 m4 l2">
                         <img src="enigma2.png" class="logo">
                     </div>
@@ -245,6 +289,7 @@
 					</div>
 				</div>
             </div> <!-- Ende Tab2 -->
+			</div>
 	    <!-- #################################-->
 			<div id="tab-Alexa" class="col s12 page">
 				<div class="row">
@@ -253,8 +298,8 @@
 								<div class="row">
 									<div class="input-field col s12 m2 l3">
 										<select  class="value" id="Alexa">
-											<option value="true" class="translate">Aktiv</option>
-											<option value="false" class="translate">Deaktiv</option>
+											<option value="true" class="translate">activ</option>
+											<option value="false" class="translate">deactiv</option>
 										</select>
 											<label class="translate" for="Alexa">Alexa</label>
 									</div>
