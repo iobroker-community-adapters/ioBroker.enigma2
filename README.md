@@ -120,7 +120,7 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
-### 1.2.7 (2019-11-30)
+### 1.2.8 (2019-11-30)
 * (Matten-Matten)       add: `.enigma2.CHANNEL_PICON` (Picon path - only openwebif)
 * (Matten-Matten)       add: Select / Deselect Timer List in the Adapter Config mask
 * (Matten-Matten)       add: Select / Deselect Movie List in the Adapter Config mask
