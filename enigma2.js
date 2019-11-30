@@ -1082,6 +1082,8 @@ function main() {
 			},
 			native: {}
 		});
+	} else {
+		adapter.delObject('enigma2.CHANNEL_PICON');
 	}
 	adapter.setObjectNotExists('enigma2.PROGRAMM', {
 		type: 'state',
