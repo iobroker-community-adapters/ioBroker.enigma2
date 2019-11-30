@@ -120,6 +120,9 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
+### 1.2.7 (2019-11-30)
+* (Matten-Matten)       correction in (Blockly Block) to sending Messages
+
 ### 1.2.6 (2019-11-29)
 * (Matten-Matten)       add: `sendTo` (Blockly) to sending Messages
 * (Scrounger)           add: `.enigma2.MOVIE_LIST`
