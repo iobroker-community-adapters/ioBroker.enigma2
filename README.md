@@ -47,6 +47,7 @@ https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
 - Timer_is_set
 - MOVIE_LIST (only openwebif)
 - TIMER_LIST
+- CHANNEL_PICON (Picon path - only openwebif)
 
 ### main
 - enigma2-CONNECTION
@@ -118,6 +119,11 @@ sendTo("enigma2.0", "send", {
 ==============
  
 ## Changelog
+
+### 1.2.7 (2019-11-30)
+* (Matten-Matten)       add: `.enigma2.CHANNEL_PICON` (Picon path - only openwebif)
+* (Matten-Matten)       add: Select / Deselect Timer List in the Adapter Config mask
+* (Matten-Matten)       add: Select / Deselect Movie List in the Adapter Config mask
 
 ### 1.2.7 (2019-11-30)
 * (Matten-Matten)       correction in (Blockly Block) to sending Messages
