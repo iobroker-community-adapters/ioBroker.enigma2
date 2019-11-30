@@ -13,7 +13,7 @@
 Installation requires nodejs v8 at minimum
 
 ## Forum
-https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3
+[![ioBroker](https://forum.iobroker.net/assets/uploads/system/site-logo.png)](https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3)
 
 
 ### Funktionen
