@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "enigma2",
-        "version":                  "1.2.7",
+        "version":                  "1.2.8",
         "title":                    "enigma2 Adapter",
         "desc":                     "enigma2 adapter für VU+;Dreambox;EDISON...",
 	"readme":                   "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
@@ -25,14 +25,16 @@
         }
     },
     "native": {
-        "IPAddress": "192.168.0.1",
-        "Port": "80",
-        "Username": "root",
-        "Password": "dreambox",
-	"TimerCheck": 5000,
-	"Alexa": "false",
-        "Webinterface": "true",
-        "PollingInterval": 5000
+    "IPAddress": "192.168.0.1",
+    "Port": "80",
+    "Username": "root",
+    "Password": "dreambox",
+    "timerliste": "false",
+    "timercheck": 5000,
+    "Alexa": "false",
+    "Webinterface": "true",
+    "movieliste": "false",
+    "PollingInterval": 5000
     },
     "objects": [
 
