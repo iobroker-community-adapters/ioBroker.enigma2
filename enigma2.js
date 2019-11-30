@@ -1,6 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-/* enigma2 Adapter V 1.2.5 */
+/* enigma2 Adapter V 1.2.8 */
 'use strict';
 
 const request = require('request');
@@ -67,26 +67,6 @@ var main_commands = {
 	STANDBY: 5
 };
 
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-/*adapter.on('message', function (obj) {
-	if (obj !== null && obj !== undefined) {
-		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
-		var message_split = (JSON.stringify(obj.message)).split(":");
-	
-		var MESSAGE_TIMEOUT = message_split[0].replace(/"/g, '').slice(1);
-		adapter.log.debug('enigma2 message Timeout: ' + message_split[0].replace(/"/g, '').slice(1));
-		adapter.setState('Message.Timeout', { val: MESSAGE_TIMEOUT, ack: true });
-	
-		var MESSAGE_TYPE = (JSON.stringify(obj.command)).replace(/"/g, '');
-		adapter.log.debug('enigma2 command Message Type: ' + MESSAGE_TYPE);
-		adapter.setState('Message.Type', { val: MESSAGE_TYPE, ack: true });
-	
-		var MESSAGE_TEXT = message_split[1].replace(/"/g, '').slice(0, -1);
-		adapter.log.debug('enigma2 message Text: ' + message_split[1].replace(/"/g, '').slice(0, -1));
-		adapter.setState('Message.Text', { val: MESSAGE_TEXT, ack: false });	
-	}
-});
-*/
 adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
 		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
@@ -133,7 +113,6 @@ adapter.on('stateChange', function (id, state) {
 				if (id === adapter.namespace + '.Timer.Update') {
 					getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
 					adapter.log.debug("Timer manuell aktualisiert");
-					//adapter.setState('Timer.Update', {val: state.val, ack: true});
 
 				} else
 					//+++++++++++++++++++++++++++
@@ -177,7 +156,7 @@ adapter.on('stateChange', function (id, state) {
 									}
 							});
 						} else
-							//+++++++++++++++++++++++++++ enigma2.Update
+							//enigma2.Update
 							if (id === adapter.namespace + '.enigma2.Update') {
 								getResponse('GETSTANDBY', deviceId, PATH['POWERSTATE'], evaluateCommandResponse);
 								getResponse('MESSAGEANSWER', deviceId, PATH['MESSAGEANSWER'], evaluateCommandResponse);
@@ -187,7 +166,6 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-								//getResponse('STATUSINFO',		deviceId, PATH['API'],					APIstatusinfo);
 								adapter.log.debug("E2 States manuell aktualisiert");
 								adapter.setState('enigma2.Update', { val: state.val, ack: true });
 							} else
@@ -320,6 +298,8 @@ function getResponse(command, deviceId, path, callback) {
 		port: adapter.config.Port,
 		TimerCheck: adapter.config.TimerCheck,
 		Webinterface: adapter.config.Webinterface,
+		movieliste: adapter.config.movieliste,
+		timerliste: adapter.config.timerliste,
 		path: path,
 		alexa: adapter.config.Alexa,
 		method: 'GET'
@@ -333,10 +313,8 @@ function getResponse(command, deviceId, path, callback) {
 				'Authorization': 'Basic ' + new Buffer(adapter.config.Username + ':' + adapter.config.Password).toString('base64')
 			}
 			adapter.log.debug("using authorization with user '" + adapter.config.Username + "'");
-			//adapter.log.info("using authorization with user '"+adapter.config.Username+"'");
 		} else {
 			adapter.log.debug("using no authorization");
-			//adapter.log.info("using no authorization");
 		}
 	}
 
@@ -435,8 +413,6 @@ function sec2HMS(sec) {
 async function evaluateCommandResponse(command, deviceId, xml) {
 	adapter.log.debug("evaluating response for command '" + command + "': " + JSON.stringify(xml));
 
-	//var id = parseInt(deviceId.substring(1));
-	//var boxId = (dreamSettings.firstId) + (id * 10);
 	var bool;
 
 	switch (command.toUpperCase()) {
@@ -449,7 +425,6 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "RESTART":
 		case "REBOOT":
 		case "DEEPSTANDBY":
-			//setState(boxId, "");
 			break;
 		case "MUTE":
 		case "UNMUTE":
@@ -549,10 +524,13 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				} else {
 					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: e2SERVICEREFERENCE, ack: true });
 					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1), ack: true });
+					if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+						//openwebif PICON http:// : /picon/ .png 
+						adapter.setState('enigma2.CHANNEL_PICON', { val: 'http://' + adapter.config.IPAddress + ':' + adapter.config.Port + '/picon/' + e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1) + '.png', ack: true });
+					}
 				};
 				//adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0], ack: true});
 				//adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0].replace(/:/g, '_').slice(0,-1), ack: true});
-
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 				var Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
@@ -610,25 +588,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "GETINFO":
 			adapter.log.debug("Box Sender: " + xml.e2abouts.e2about[0].e2servicename[0]);
 			adapter.setState('enigma2.CHANNEL', { val: xml.e2abouts.e2about[0].e2servicename[0], ack: true });
-			//adapter.log.debug("Box Model: " +xml.e2abouts.e2about[0].e2model[0]);
-			//adapter.setState('enigma2.MODEL', {val: xml.e2abouts.e2about[0].e2model[0], ack: true});
 			break;
-		/*case "ISRECORD":
-			//adapter.log.debug("is Recording: " + xml.e2timerlist.e2timer);
-			if(xml.e2timerlist.e2timer !== undefined){
-				adapter.log.debug("is Recording: " +xml.e2timerlist.e2timer[0].e2state[0]);
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				if(xml.e2timerlist.e2timer[0].e2state[0] === 2 || xml.e2timerlist.e2timer[0].e2state[0] === '2'){
-					adapter.setState('enigma2.isRecording', {val: true, ack: true});
-				} else {
-					adapter.setState('enigma2.isRecording', {val: false, ack: true});	
-				}
-			} else {
-				//adapter.delObject('enigma2.isRecording');
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				adapter.setState('enigma2.isRecording', {val: false, ack: true});
-			}
-            break;*/
 		case "DEVICEINFO":
 			adapter.setState('enigma2.WEB_IF_VERSION', { val: xml.e2deviceinfo.e2webifversion[0], ack: true });
 			adapter.setState('enigma2.NETWORK', { val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true });
@@ -719,7 +679,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "MENU":
 		case "TIMERLIST":
 			let result = [];
-
+			if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
 			if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
 				let timerList = xml.e2timerlist.e2timer;
 
@@ -756,6 +716,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 						adapter.log.debug("timer list updated");
 					}
 				});
+			}
 			}
 			break;
 		case "GETMOVIELIST":
@@ -820,59 +781,39 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 	}
 }
 
-/*function APIstatusinfo () {
-var etwas, result;
-try {
-  require("request")('http://' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['API'], function (error, response, result) {
-	if (!error) { 
-		etwas = result.slice(((result.indexOf('"isRecording": ') + 1) - 1), result.indexOf('", "currservice_description":') + 1);
-			if(etwas === '' || etwas === undefined){
-				adapter.log.debug("isRecording: undefined");
-				adapter.delObject('enigma2.isRecording');
-			} else {
-				adapter.log.debug("isRecording: " + parseBool(etwas.slice(16, etwas.length - 1)));
-				adapter.setObjectNotExists('enigma2.isRecording', { type: 'state', common: { type: 'boolean', role: 'state', name: 'is Recording', read:  true, write: false }, native: {} });
-				adapter.setState('enigma2.isRecording', {val: (parseBool(etwas.slice(16, etwas.length - 1))), ack: true});
-			}
-	} else {
-		adapter.log.debug("isRecording: error");
-		adapter.delObject('enigma2.isRecording');
-	}
-  }).on("error", function (e) {console.error(e);});
-} catch (e) { console.error(e); }
-}*/
-
 async function getAllMovies(directory, movieList, servicesList) {
 	adapter.log.debug('get movies from directory: ' + directory);
 
 	try {
-		if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-			// openwebif api
-			let result = await getResponseAsync(deviceId, `/api/movielist?dirname=${encodeURI(directory)}`);
+		if (adapter.config.movieliste === "true" || adapter.config.movieliste === true) {
+			if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+				// openwebif api
+				let result = await getResponseAsync(deviceId, `/api/movielist?dirname=${encodeURI(directory)}`);
 
-			if (result) {
-				if (result.movies && result.movies.length > 0) {
-					for (var movie of result.movies) {
-						var service = servicesList.filter(obj => {
-							return obj.e2servicename.toString() === movie.servicename.toString();
-						});
+				if (result) {
+					if (result.movies && result.movies.length > 0) {
+						for (var movie of result.movies) {
+							var service = servicesList.filter(obj => {
+								return obj.e2servicename.toString() === movie.servicename.toString();
+							});
 
-						if (service && service[0]) {
-							movie.service = service[0].e2servicereference.toString();
-							movie.serviceRefName = service[0].e2servicereference.toString().replace(/:/g, '_').slice(0, -1);
+							if (service && service[0]) {
+								movie.service = service[0].e2servicereference.toString();
+								movie.serviceRefName = service[0].e2servicereference.toString().replace(/:/g, '_').slice(0, -1);
+							}
+							movieList.push(movie);
 						}
-						movieList.push(movie);
 					}
-				}
 
-				if (result.bookmarks && result.bookmarks.length > 0) {
-					for (var subDir of result.bookmarks) {
-						await getAllMovies(directory + subDir + '/', movieList, servicesList);
+					if (result.bookmarks && result.bookmarks.length > 0) {
+						for (var subDir of result.bookmarks) {
+							await getAllMovies(directory + subDir + '/', movieList, servicesList);
+						}
 					}
 				}
-			}
-		} else {
+			} else {
 			// TODO: dream api
+			}
 		}
 	} catch (err) {
 		adapter.log.error(`[getAllMovies] dir: ${directory}, error: ${err.message}`);
@@ -884,7 +825,6 @@ function ISRECORD() {
 	var result;
 	try {
 		require("request")('http://' + adapter.config.Username + ':' + adapter.config.Password + '@' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
-			//getResponse('ISRECORD', deviceId, PATH['ISRECORD'], TimerSearch);	
 			if (result !== undefined) {
 				if (result.indexOf('<e2state>2</e2state>') != -1) {
 					adapter.setState('enigma2.isRecording', { val: true, ack: true });
@@ -923,7 +863,6 @@ function setStatus(status) {
 			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
-			//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
 		} else {
 			adapter.log.info("enigma2: " + adapter.config.IPAddress + ":" + adapter.config.Port + " ist nicht erreichbar!");
@@ -1009,8 +948,7 @@ function main() {
 	});
 	adapter.setState('Message.Timeout', 15, true);
 
-	//+++++++++ Verbindung +++++++++++++++++++++
-
+	//Verbindung
 	adapter.setObjectNotExists('enigma2-CONNECTION', {
 		type: 'state',
 		common: {
@@ -1024,8 +962,7 @@ function main() {
 	});
 	adapter.setState('enigma2-CONNECTION', false, true);
 
-	//+++++++++++++++++++++++++ ALEXA +++++++++++++++++++++++++++++++++++++++++++
-
+	//ALEXA
 	if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
 		adapter.setObjectNotExists('Alexa_Command.Standby', {
 			type: 'state',
@@ -1054,8 +991,7 @@ function main() {
 		adapter.delObject('Alexa_Command.Mute');
 	};
 
-	//+++++++++++++++++++++++++ STATE +++++++++++++++++++++++++++++++++++++++++++
-
+	//STATE
 	adapter.setObjectNotExists('enigma2.VOLUME', {
 		type: 'state',
 		common: {
@@ -1133,17 +1069,20 @@ function main() {
 		},
 		native: {}
 	});
-    /*adapter.setObjectNotExists('enigma2.CHANNEL_PICON', {
-        type: 'state',
-        common: {
-            type: 'string',
-            role: 'state',
-			name: 'Servicereference Picon',
-			read:  true,
-            write: false
-        },
-        native: {}
-    });*/
+	if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+	// openwebif api
+		adapter.setObjectNotExists('enigma2.CHANNEL_PICON', {
+			type: 'state',
+			common: {
+				type: 'string',
+				role: 'state',
+				name: 'Servicereference Picon',
+				read:  true,
+				write: false
+			},
+			native: {}
+		});
+	}
 	adapter.setObjectNotExists('enigma2.PROGRAMM', {
 		type: 'state',
 		common: {
@@ -1310,7 +1249,6 @@ function main() {
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
 		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
-		//getResponse('STATUSINFO',		deviceId, PATH['API'],				APIstatusinfo);
 	}, adapter.config.PollingInterval);
 
 	setInterval(function () {
@@ -1396,41 +1334,44 @@ function main2() {
 		},
 		native: {}
 	});
-	adapter.setObjectNotExists('enigma2.TIMER_LIST', {
-		type: 'state',
-		common: {
-			type: 'string',
-			role: 'info',
-			name: 'Timer List',
-			read: true,
-			write: false
-		},
-		native: {}
-	});
-	adapter.setObjectNotExists('enigma2.MOVIE_LIST', {
-		type: 'state',
-		common: {
-			type: 'string',
-			role: 'info',
-			name: 'Movie List',
-			read: true,
-			write: false
-		},
-		native: {}
-	});
+	if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
+		adapter.setObjectNotExists('enigma2.TIMER_LIST', {
+			type: 'state',
+			common: {
+				type: 'string',
+				role: 'info',
+				name: 'Timer List',
+				read: true,
+				write: false
+			},
+			native: {}
+		});
+	} else {
+		adapter.delObject('enigma2.TIMER_LIST');
+	}
+	if (adapter.config.movieliste === "true" || adapter.config.movieliste === true) {
+		adapter.setObjectNotExists('enigma2.MOVIE_LIST', {
+			type: 'state',
+			common: {
+				type: 'string',
+				role: 'info',
+				name: 'Movie List',
+				read: true,
+				write: false
+			},
+			native: {}
+		});
+	} else {
+		adapter.delObject('enigma2.MOVIE_LIST');
+	}
 
 	// in this example all states changes inside the adapters namespace are subscribed
 	adapter.subscribeStates('*');
-
 	//Check ever 3 secs
-	// adapter.log.info("starting Polling every " + adapter.config.PollingInterval / 1000 + " seconds");
+	//adapter.log.info("starting Polling every " + adapter.config.PollingInterval / 1000 + " seconds");
 	//setInterval(checkStatus,adapter.config.PollingInterval);
 	//getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'],  evaluateCommandResponse);
 }
-
-
-
-
 
 function checkTimer() {
 	getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], TimerSearch);
@@ -1445,11 +1386,7 @@ function timer() {
 	adapter.log.info("starting Timercheck every " + adapter.config.TimerCheck + " ms");
 }
 
-
-
-
-//############################################   TIMER   ####################################################
-
+//TIMER
 function TimerSearch(command, deviceId, xml) {
 	//var bool;
 	switch (command.toUpperCase()) {
