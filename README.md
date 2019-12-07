@@ -104,9 +104,9 @@ Installation requires nodejs v8 at minimum
  - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - timeout   = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
  
-![Bild Text](https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/enigma2_message.png)
+![Bild Text](admin/enigma2_message.png)
 
-[Blockly_Import](https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/admin/Blockly_Import.md)
+[Blockly_Import](admin/Blockly_Import.md)
  
 #### (in java)
 ```
