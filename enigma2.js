@@ -1265,7 +1265,7 @@ function main() {
 		if (isConnected) {
 			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 		}
-	}, 300000);
+	}, 60000 * 30);
 }
 
 
