@@ -54,6 +54,7 @@
         "extIcon": "https://raw.githubusercontent.com/Matten-Matten/ioBroker.enigma2/master/admin/enigma2.png",
         "loglevel": "info",
         "nondeletable": false,
+        "compact": true,
         "materialize": true,
         "authors": [
             "Matten-Matten <matten-matten@web.de>"
