@@ -17,7 +17,30 @@
             }
         },
         "title": "enigma2 Adapter",
-        "desc": "enigma2 adapter für VU+;Dreambox;EDISON...",
+        "titleLang": {
+            "en": "enigma2 Adapter",
+            "de": "enigma2 Adapter",
+            "ru": "enigma2 Adapter",
+            "pt": "enigma2 Adapter",
+            "nl": "enigma2 Adapter",
+            "fr": "enigma2 Adapter",
+            "it": "enigma2 Adapter",
+            "es": "enigma2 Adapter",
+            "pl": "enigma2 Adapter",
+            "zh-cn": "enigma2 Adapter"
+        },
+        "desc": {
+            "en": "enigma2 adapter for VU+, Dreambox, EDISON...",
+            "de": "enigma2 Adapter für VU +, Dreambox, EDISON ...",
+            "ru": "адаптер enigma2 для VU +, Dreambox, EDISON ...",
+            "pt": "adaptador enigma2 para VU +, Dreambox, EDISON ...",
+            "nl": "enigma2-adapter voor VU +, Dreambox, EDISON ...",
+            "fr": "adaptateur enigma2 pour VU +, Dreambox, EDISON ...",
+            "it": "adattatore enigma2 per VU +, Dreambox, EDISON ...",
+            "es": "Adaptador enigma2 para VU +, Dreambox, EDISON ...",
+            "pl": "enigma2 adapter do VU +, Dreambox, EDISON ...",
+            "zh-cn": "用于VU +，Dreambox，EDISON ...的enigma2适配器"
+        },
         "readme": "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
         "platform": "Javascript/Node.js",
         "license": "MIT",
