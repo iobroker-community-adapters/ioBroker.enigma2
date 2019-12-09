@@ -70,15 +70,15 @@ var main_commands = {
 adapter.on('message', function (obj) {
 	if (obj !== null && obj !== undefined) {
 		adapter.log.debug('enigma2 message: ' + JSON.stringify(obj.message));
-		
+
 		adapter.log.debug('enigma2 message Timeout: ' + parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, '')));
 		adapter.setState('Message.Timeout', { val: parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, '')), ack: true });
-	
+
 		adapter.log.debug('enigma2 command Message Type: ' + parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, '')));
 		adapter.setState('Message.Type', { val: parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, '')), ack: true });
-	
+
 		adapter.log.debug('enigma2 message Text: ' + JSON.stringify(obj.message.message).replace(/"/g, ''));
-		adapter.setState('Message.Text', { val: JSON.stringify(obj.message.message).replace(/"/g, ''), ack: false });	
+		adapter.setState('Message.Text', { val: JSON.stringify(obj.message.message).replace(/"/g, ''), ack: false });
 	}
 });
 
@@ -680,43 +680,43 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "TIMERLIST":
 			let result = [];
 			if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
-			if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
-				let timerList = xml.e2timerlist.e2timer;
+				if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
+					let timerList = xml.e2timerlist.e2timer;
 
-				timerList.forEach(function (timerItem) {
-					result.push(
-						{
-							title: timerItem["e2name"].toString(),
-							channel: timerItem["e2servicename"].toString(),
-							serviceRef: timerItem["e2servicereference"].toString(),
-							serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0, -1),
-							starTime: timerItem["e2timebegin"].toString(),
-							endTime: timerItem["e2timeend"].toString(),
-							duration: timerItem["e2duration"].toString(),
-							subtitle: timerItem["e2description"].toString(),
-							description: timerItem["e2descriptionextended"].toString(),
-						}
-					)
-				});
+					timerList.forEach(function (timerItem) {
+						result.push(
+							{
+								title: timerItem["e2name"].toString(),
+								channel: timerItem["e2servicename"].toString(),
+								serviceRef: timerItem["e2servicereference"].toString(),
+								serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0, -1),
+								starTime: timerItem["e2timebegin"].toString(),
+								endTime: timerItem["e2timeend"].toString(),
+								duration: timerItem["e2duration"].toString(),
+								subtitle: timerItem["e2description"].toString(),
+								description: timerItem["e2descriptionextended"].toString(),
+							}
+						)
+					});
 
-				// only update if we have a result -> keep on data if box is in deepStandby
-				result = JSON.stringify(result);
+					// only update if we have a result -> keep on data if box is in deepStandby
+					result = JSON.stringify(result);
 
-				adapter.getState('enigma2.TIMER_LIST', function (err, state) {
-					// only update if we have new timer	
-					if (state && state.val !== null) {
-						if (result !== state.val) {
+					adapter.getState('enigma2.TIMER_LIST', function (err, state) {
+						// only update if we have new timer	
+						if (state && state.val !== null) {
+							if (result !== state.val) {
+								adapter.setState('enigma2.TIMER_LIST', result, true);
+								adapter.log.debug("timer list updated");
+							} else {
+								adapter.log.debug("no new timer found -> timer list is up to date");
+							}
+						} else {
 							adapter.setState('enigma2.TIMER_LIST', result, true);
 							adapter.log.debug("timer list updated");
-						} else {
-							adapter.log.debug("no new timer found -> timer list is up to date");
 						}
-					} else {
-						adapter.setState('enigma2.TIMER_LIST', result, true);
-						adapter.log.debug("timer list updated");
-					}
-				});
-			}
+					});
+				}
 			}
 			break;
 		case "GETMOVIELIST":
@@ -746,6 +746,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 					for (var dir of movieDirs) {
 						// iterate through media directories
 						await getAllMovies(dir, movieList, servicesList);
+						await Sleep(500);
 					}
 
 					movieList.sort(function (a, b) {
@@ -808,11 +809,12 @@ async function getAllMovies(directory, movieList, servicesList) {
 					if (result.bookmarks && result.bookmarks.length > 0) {
 						for (var subDir of result.bookmarks) {
 							await getAllMovies(directory + subDir + '/', movieList, servicesList);
+							await Sleep(500);
 						}
 					}
 				}
 			} else {
-			// TODO: dream api
+				// TODO: dream api
 			}
 		}
 	} catch (err) {
@@ -1070,14 +1072,14 @@ function main() {
 		native: {}
 	});
 	if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-	// openwebif api
+		// openwebif api
 		adapter.setObjectNotExists('enigma2.CHANNEL_PICON', {
 			type: 'state',
 			common: {
 				type: 'string',
 				role: 'state',
 				name: 'Servicereference Picon',
-				read:  true,
+				read: true,
 				write: false
 			},
 			native: {}
@@ -1528,4 +1530,8 @@ function TimerSearch(command, deviceId, xml) {
 		default:
 			adapter.log.info("received unknown TimerSearch '" + command + "' @ TimerSearch");
 	}
+}
+
+function Sleep(milliseconds) {
+	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
