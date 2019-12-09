@@ -45,6 +45,7 @@
         "platform": "Javascript/Node.js",
         "license": "MIT",
         "mode": "daemon",
+        "main": "enigma2.js",
         "icon": "enigma2.png",
         "messagebox": true,
         "subscribe": "messagebox",
