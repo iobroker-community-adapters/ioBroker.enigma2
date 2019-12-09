@@ -1,6 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-/* enigma2 Adapter V 1.2.8 */
+/* enigma2 Adapter V 1.2.9 */
 'use strict';
 
 const request = require('request');
