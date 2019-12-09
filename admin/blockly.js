@@ -6,10 +6,16 @@ goog.require('Blockly.JavaScript');
 
 
 /// --- SendTo enigma2 --------------------------------------------------
-Blockly.Words['enigma2']               = {'en': 'enigma2',			'de': 'enigma2',			'ru': 'enigma2'};
-Blockly.Words['enigma2_message']       = {'en': 'message',			'de': 'Nachricht',			'ru': 'message'};
-Blockly.Words['enigma2_timeout']       = {'en': 'timeout',			'de': 'Anzeige Länge',			'ru': 'timeout'};
-Blockly.Words['enigma2_msgType']       = {'en': 'message Type',		'de': 'Nachrichten Art',	'ru': 'message Type'};
+Blockly.Words['enigma2']               = {'en': 'enigma2',			'de': 'enigma2',					'ru': 'enigma2'};
+Blockly.Words['enigma2_message']       = {'en': 'message',			'de': 'Nachrichten Text',			'ru': 'message'};
+Blockly.Words['enigma2_timeout']       = {'en': 'timeout',			'de': 'Anzeige Dauer in Sekunden',	'ru': 'timeout'};
+Blockly.Words['enigma2_msgType']       = {'en': 'message Type',		'de': 'Nachrichten Art',			'ru': 'message Type'};
+
+Blockly.Words['enigma2_MSGTYPE_']       = {'en': '1',                        'de': 'Informationen',                        'ru': '1'};
+Blockly.Words['enigma2_MSGTYPE_0']      = {'en': '0',                        'de': 'Ja/Nein',                              'ru': '0'};
+//Blockly.Words['enigma2_MSGTYPE_1']      = {'en': '1',                        'de': 'Informationen',                        'ru': '1'};
+Blockly.Words['enigma2_MSGTYPE_2']      = {'en': '2',                        'de': 'Warnung',                              'ru': '2'};
+Blockly.Words['enigma2_MSGTYPE_3']      = {'en': '3',                     	 'de': 'Fehler',                               'ru': '3'};
 
 Blockly.Words['enigma2_log']           = {'en': 'log level',                   'de': 'Loglevel',                           'ru': 'Протокол'};
 Blockly.Words['enigma2_log_none']      = {'en': 'none',                        'de': 'keins',                              'ru': 'нет'};
@@ -37,9 +43,6 @@ Blockly.Sendto.blocks['enigma2'] =
     + '         </shadow>'
     + '     </value>'
     + '     <value name="MSGTYPE">'
-    + '         <shadow type="math_number">'
-    + '             <field name="NUM">1</field>'
-    + '         </shadow>'
     + '     </value>'
     + '     <value name="LOG">'
     + '     </value>'
@@ -72,8 +75,18 @@ Blockly.Blocks['enigma2'] = {
 		this.appendValueInput('TIMEOUT')
             .appendField(Blockly.Words['enigma2_timeout'][systemLang]);
 			
-		this.appendValueInput('MSGTYPE')
-            .appendField(Blockly.Words['enigma2_msgType'][systemLang]);
+//		this.appendValueInput('MSGTYPE')
+//            .appendField(Blockly.Words['enigma2_msgType'][systemLang]);
+
+		this.appendDummyInput('MSGTYPE')
+            .appendField(Blockly.Words['enigma2_msgType'][systemLang])
+            .appendField(new Blockly.FieldDropdown([
+				[Blockly.Words['enigma2_MSGTYPE_'][systemLang],   '1'],
+                [Blockly.Words['enigma2_MSGTYPE_0'][systemLang],  '0'],
+//                [Blockly.Words['enigma2_MSGTYPE_1'][systemLang],  '1'],
+                [Blockly.Words['enigma2_MSGTYPE_2'][systemLang],  '2'],
+                [Blockly.Words['enigma2_MSGTYPE_3'][systemLang],  '3']
+            ]), 'MSGTYPE');
 
         this.appendDummyInput('LOG')
             .appendField(Blockly.Words['enigma2_log'][systemLang])
@@ -98,20 +111,18 @@ Blockly.Blocks['enigma2'] = {
 Blockly.JavaScript['enigma2'] = function(block) {
     var dropdown_instance = block.getFieldValue('INSTANCE');
     var logLevel = block.getFieldValue('LOG');
+	var value_msgType = block.getFieldValue('MSGTYPE');
     var value_message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
 	var value_timeout = Blockly.JavaScript.valueToCode(block, 'TIMEOUT', Blockly.JavaScript.ORDER_ATOMIC);
-	var value_msgType = Blockly.JavaScript.valueToCode(block, 'MSGTYPE', Blockly.JavaScript.ORDER_ATOMIC);
+	//var value_msgType = Blockly.JavaScript.valueToCode(block, 'MSGTYPE', Blockly.JavaScript.ORDER_ATOMIC);
 
     var logText;
     if (logLevel) {
-		logText = 'console.' + logLevel + '("enigma2: "  message: ' + value_message  + ', ntimeout: ' + value_timeout + ', msgType: ' + value_msgType + ');\n'
-		//logText = 'console.' + logLevel + 'sendTo("enigma2' + dropdown_instance + '", "send", {message: ' + value_message  + ', ntimeout: ' + value_timeout + ', msgType: ' + value_msgType + '});\n'
-    } else {
+		logText = 'console.' + logLevel + '("enigma2: " + ' + value_message  + ' + ' + value_timeout + ' + ' + value_msgType + ');\n'
+	} else {
         logText = '';
     }
 
-    //return 'sendTo"enigma2' + dropdown_instance + '", {\nmessage: ' +  value_message + ',\ntimeout: ' +  value_timeout + ',\nmsgType: ' +  value_msgType + '\n});\n' +
-    //    logText;
 	return 'sendTo("enigma2' + dropdown_instance + '", "send", {message: ' + value_message  + ', timeout: ' + value_timeout + ', msgType: ' + value_msgType + '});\n' +
         logText;
 };
