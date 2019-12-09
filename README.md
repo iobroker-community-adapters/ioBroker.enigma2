@@ -104,6 +104,8 @@ Installation requires nodejs v8 at minimum
  - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - timeout   = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
  
+![Bild Text](admin/enigma2_message2.png)
+### oder
 ![Bild Text](admin/enigma2_message.png)
 
 [Blockly_Import](admin/Blockly_Import.md)
@@ -121,6 +123,10 @@ sendTo("enigma2.0", "send", {
 ==============
  
 ## Changelog
+
+### 1.2.9 (2019-12-10)
+* (Scrounger)           bugfix: Movielist generates high load [#33](https://github.com/Matten-Matten/ioBroker.enigma2/issues/33)
+* (Matten-Matten)       bugfix: Blockly [#31](https://github.com/Matten-Matten/ioBroker.enigma2/issues/31)
 
 ### 1.2.8 (2019-11-30)
 * (Matten-Matten)       add: `.enigma2.CHANNEL_PICON` (Picon path - only openwebif)
