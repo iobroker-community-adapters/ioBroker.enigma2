@@ -20,6 +20,7 @@
         "desc": "enigma2 adapter für VU+;Dreambox;EDISON...",
         "readme": "https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md",
         "platform": "Javascript/Node.js",
+        "license": "MIT",
         "mode": "daemon",
         "icon": "enigma2.png",
         "messagebox": true,
