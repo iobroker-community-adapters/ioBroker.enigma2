@@ -441,6 +441,9 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "GETSTANDBY":
 			adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
 			adapter.setState('enigma2.STANDBY', { val: parseBool(xml.e2powerstate.e2instandby), ack: true });
+			if (adapter.config.Webinterface === "true" && parseBool(xml.e2powerstate.e2instandby) === true) {
+				adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
+			}
 			//Alexa_Command.Standby
 			if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
 				var alexastby = parseBool(xml.e2powerstate.e2instandby);
