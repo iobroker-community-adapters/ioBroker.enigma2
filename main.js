@@ -501,10 +501,10 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 				adapter.log.debug("Box Programm: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);
-				adapter.setState('enigma2.PROGRAMM', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0], ack: true });
+				adapter.setState('enigma2.PROGRAMM', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]).replace('N/A', ''), ack: true });
 
 				adapter.log.debug("Box Programm_danach: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]);
-				adapter.setState('enigma2.PROGRAMM_AFTER', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0], ack: true });
+				adapter.setState('enigma2.PROGRAMM_AFTER', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]).replace('N/A', ''), ack: true });
 
 				adapter.log.debug("Box Programm Info: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]);
 				adapter.setState('enigma2.PROGRAMM_INFO', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0], ack: true });
