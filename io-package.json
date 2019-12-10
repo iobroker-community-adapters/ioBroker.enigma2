@@ -16,18 +16,18 @@
                 "zh-cn": "增加的功能：pcion路径，禁用计时器列表和/或电影列表"
             }
         },
-        "title": "enigma2 Adapter",
+        "title": "enigma2",
         "titleLang": {
-            "en": "enigma2 Adapter",
-            "de": "enigma2 Adapter",
-            "ru": "enigma2 Adapter",
-            "pt": "enigma2 Adapter",
-            "nl": "enigma2 Adapter",
-            "fr": "enigma2 Adapter",
-            "it": "enigma2 Adapter",
-            "es": "enigma2 Adapter",
-            "pl": "enigma2 Adapter",
-            "zh-cn": "enigma2 Adapter"
+            "en": "enigma2",
+            "de": "enigma2",
+            "ru": "enigma2",
+            "pt": "enigma2",
+            "nl": "enigma2",
+            "fr": "enigma2",
+            "it": "enigma2",
+            "es": "enigma2",
+            "pl": "enigma2",
+            "zh-cn": "enigma2"
         },
         "desc": {
             "en": "enigma2 adapter for VU+, Dreambox, EDISON...",
@@ -84,7 +84,7 @@
             "_id": "",
             "type": "meta",
             "common": {
-                "name": "Enigma2 Adapter",
+                "name": "Enigma2",
                 "type": "meta.user"
             },
             "native": {}
