@@ -1373,7 +1373,7 @@ function main2() {
 	}
 
 	// in this example all states changes inside the adapters namespace are subscribed
-	adapter.subscribeStates('*');
+	//adapter.subscribeStates('*');
 	//Check ever 3 secs
 	//adapter.log.info("starting Polling every " + adapter.config.PollingInterval / 1000 + " seconds");
 	//setInterval(checkStatus,adapter.config.PollingInterval);
