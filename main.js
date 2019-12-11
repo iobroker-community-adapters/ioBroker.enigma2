@@ -73,16 +73,20 @@ var main_commands = {
 };
 
 //Polling
-adapter.on("unload", function () {
-    if (event_interval) {
-        clearInterval(event_interval);
-    }
-    if (deviceinfo_interval) {
-        clearInterval(deviceinfo_interval);
-    }
-	if (movielist_interval) {
-        clearInterval(movielist_interval);
-    }
+adapter.on("unload", function (callback) {
+	try {
+		if (event_interval) {
+			clearInterval(event_interval);
+		}
+		if (deviceinfo_interval) {
+			clearInterval(deviceinfo_interval);
+		}
+		if (movielist_interval) {
+			clearInterval(movielist_interval);
+		}
+	} catch (e) {
+		callback();
+	}
 });
 
 adapter.on('message', function (obj) {
@@ -198,7 +202,7 @@ adapter.on('stateChange', function (id, state) {
 										}
 									});
 								} else if (id === adapter.namespace + '.command.SET_VOLUME') {
-									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + parseInt(state.val, 10), function (error, command, deviceId, xml) {
+									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + parseInt(state.val, /*10*/), function (error, command, deviceId, xml) {
 										if (!error) {
 											//adapter.setState('command.SET_VOLUME', { val: '', ack: true });
 											adapter.setState('command.SET_VOLUME', { val: state.val, ack: false });
@@ -912,7 +916,7 @@ function main() {
 	adapter.log.debug('config IPAddress: ' + adapter.config.IPAddress);
 	adapter.log.debug('config Port: ' + adapter.config.Port);
 	adapter.log.debug('config Username: ' + adapter.config.Username);
-	adapter.log.debug('config Password' + adapter.config.Password);
+	adapter.log.debug('config Password: ' + adapter.config.Password);
 
 
 	adapter.setObjectNotExists('Message.Text', {
