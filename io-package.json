@@ -60,6 +60,7 @@
             "Matten-Matten <matten-matten@web.de>"
         ],
         "type": "multimedia",
+        "connectionType": "local polling",
         "blockly": true,
         "config": {
             "width ": 1224,
