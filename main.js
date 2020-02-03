@@ -848,7 +848,7 @@ async function getAllMovies(directory, movieList, servicesList) {
 function ISRECORD() {
 	var result;
 	try {
-		require("request")('http://' + adapter.config.Username + ':' + adapter.config.Password + '@' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
+		require("request")('http://' + (adapter.config.Username + ':' + adapter.config.Password).toString('base64') + '@' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
 			if (result !== undefined) {
 				if (result.indexOf('<e2state>2</e2state>') != -1) {
 					adapter.setState('enigma2.isRecording', { val: true, ack: true });
