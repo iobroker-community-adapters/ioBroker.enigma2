@@ -550,8 +550,14 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: e2SERVICEREFERENCE, ack: true });
 					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1), ack: true });
 					if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-						//openwebif PICON http://...
-						adapter.setState('enigma2.CHANNEL_PICON', { val: 'http://' + adapter.config.IPAddress + ':' + adapter.config.Port + '/picon/' + e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1) + '.png', ack: true });
+						adapter.getState('enigma2.STANDBY', function (err, state) {
+							if (state.val === false) {
+								//openwebif PICON http://...
+								adapter.setState('enigma2.CHANNEL_PICON', { val: 'http://' + adapter.config.IPAddress + ':' + adapter.config.Port + '/picon/' + e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1) + '.png', ack: true });
+							} else {
+								adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
+							}
+						});
 					}
 				};
 				//EVENT_PROGRESS_PERCENT
