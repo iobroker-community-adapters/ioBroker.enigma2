@@ -124,6 +124,11 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
+
+### 1.3.0 (2020-02-08)
+* (Matten-Matten)       add: connectionType and dataSource in io-package.json
+* (Matten-Matten)       bugfix: in enigma2.CHANNEL_PICON
+
 ### 1.2.9 (2019-12-10)
 * (Scrounger)           bugfix: Movielist generates high load [#33](https://github.com/Matten-Matten/ioBroker.enigma2/issues/33)
 * (Matten-Matten)       bugfix: Blockly [#31](https://github.com/Matten-Matten/ioBroker.enigma2/issues/31)
