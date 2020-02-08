@@ -2,14 +2,16 @@
     "common": {
         "name": "enigma2",
         "version": "1.3.0",
+        "connectionType": "local",
+        "dataSource": "poll",
         "news": {
             "1.3.0": {
                 "en": "Add: connectionType and dataSource in io-package.json, bugfix: enigma2.CHANNEL_PICON",
-                "de": "Integration: connectionType und dataSource in io-package.json, Fehlerbehebung: enigma2.CHANNEL_PICON",
+                "de": "Integration: connectionType und dataSource in io-package.json, Fehlerbehebung: enigma2.CHANNEL_PICON"
             },
             "1.2.9": {
                 "en": "bugfix: Movielist generates high load #33, bugfix: Blockly #31",
-                "de": "Fehlerbehebung: Movielist generates high load #33, Fehlerbehebung: Blockly #31",
+                "de": "Fehlerbehebung: Movielist generates high load #33, Fehlerbehebung: Blockly #31"
             },
             "1.2.8": {
                 "en": "Features added: pcion path, disable timerlist and or movielist",
