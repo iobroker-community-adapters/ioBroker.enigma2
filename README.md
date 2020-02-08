@@ -17,7 +17,7 @@ Installation requires nodejs v8 at minimum
 ## Forum
 [![ioBroker](https://forum.iobroker.net/assets/uploads/system/site-logo.png)](https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3)
 
-
+----
 ### Funktionen
 - BOX_IP
 - NETWORK
@@ -51,9 +51,11 @@ Installation requires nodejs v8 at minimum
 - TIMER_LIST
 - CHANNEL_PICON (Picon path - only openwebif)
 
+----
 ### main
 - enigma2-CONNECTION
 
+----
 ### Command
 - command.CHANNEL_DOWN
 - command.CHANNEL_UP
@@ -78,6 +80,7 @@ Installation requires nodejs v8 at minimum
 - command.UP
 - command.ZAP = send an invalid servicereference
 
+----
 ### Main Command
 - main_command.DEEP_STANDBY         = Deepstandby
 - main_command.REBOOT               = Reboot
@@ -85,19 +88,19 @@ Installation requires nodejs v8 at minimum
 - main_command.STANDBY              = Standby
 - main_command.WAKEUP_FROM_STANDBY  = Wakeup form Standby
 
-
+----
 ### Message
  - Message.Text           = Text of Message (Enter -> Send)
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
 
 
-
+----
 ### Alexa_Command
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
  
- 
+---- 
  ### sendTo 
 #### (in Blockly)
  - message   = Text of Message
@@ -108,7 +111,7 @@ Installation requires nodejs v8 at minimum
 ### oder
 ![Bild Text](admin/enigma2_message.png)
 
-[Blockly_Import](admin/Blockly_Import.md)
+[> zum Blockly Import <](admin/Blockly_Import.md)
  
 #### (in java)
 ```
@@ -119,15 +122,14 @@ sendTo("enigma2.0", "send", {
 });
 ```
 
-
-==============
+----
  
 ## Changelog
 
 
 ### 1.3.0 (2020-02-08)
-* (Matten-Matten)       add: connectionType and dataSource in io-package.json
-* (Matten-Matten)       bugfix: in enigma2.CHANNEL_PICON
+* (Matten-Matten)       add: `connectionType` and `dataSource` in `io-package.json`
+* (Matten-Matten)       bugfix: in `.enigma2.CHANNEL_PICON`
 
 ### 1.2.9 (2019-12-10)
 * (Scrounger)           bugfix: Movielist generates high load [#33](https://github.com/Matten-Matten/ioBroker.enigma2/issues/33)
@@ -283,6 +285,7 @@ sendTo("enigma2.0", "send", {
 ### 0.0.5 (2017-09-18)
 * (Matten-Matten) add grafische Optimierung der Adapterkonfiguration
 
+----
 ## License
 MIT License
 
