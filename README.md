@@ -126,6 +126,8 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
+### 1.3.1 (2020-08-20)
+* (Matten-Matten)       correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling
 
 ### 1.3.0 (2020-02-08)
 * (Matten-Matten)       add: `connectionType` and `dataSource` in `io-package.json`
