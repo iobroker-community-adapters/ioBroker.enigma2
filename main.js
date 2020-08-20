@@ -1,6 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-/* enigma2 Adapter V 1.2.9 */
+/* enigma2 Adapter V 1.3.0 */
 'use strict';
 
 const request = require('request');
@@ -185,7 +185,7 @@ adapter.on('stateChange', function (id, state) {
 								getResponse('GETINFO', deviceId, PATH['ABOUT'], evaluateCommandResponse);
 								getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 								getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
-								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
+								getResponse('ISRECORD', deviceId, PATH['ISRECORD'], evaluateCommandResponse);
 								getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 								getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 								adapter.log.debug("E2 States manuell aktualisiert");
@@ -699,6 +699,34 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 		case "BOUQUET_DOWN":
 		case "INFO":
 		case "MENU":
+		case "ISRECORD":
+			if (xml.e2timerlist.e2timer !== undefined) {
+				var meinArray = xml.e2timerlist.e2timer;
+				var rec = 0;
+				var isset = 3;
+				adapter.log.debug("Array.length:" + meinArray.length);
+				
+				for (var i = 0; i < meinArray.length; i++) {
+					
+					if (2 === parseFloat(meinArray[i].e2state[0])) {
+						adapter.setState('enigma2.isRecording', { val: true, ack: true });
+						rec = 2;
+					} else if (i === (meinArray.length-1) && rec !== 2) {
+						adapter.setState('enigma2.isRecording', { val: false, ack: true });
+					}
+					if (parseFloat(meinArray[i].e2state[0]) === 0 || parseFloat(meinArray[i].e2state[0]) === 2) {
+						adapter.setState('enigma2.Timer_is_set', { val: true, ack: true });
+						isset = 2;
+					} else if (parseFloat(meinArray[i].e2state[0]) === 3 && isset !== 2) {
+						adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
+					}
+	
+				}
+			} else {
+				adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
+				adapter.setState('enigma2.isRecording', { val: false, ack: true });
+			}
+			break;
 		case "TIMERLIST":
 			let result = [];
 			if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
@@ -845,34 +873,6 @@ async function getAllMovies(directory, movieList, servicesList) {
 	}
 }
 
-function ISRECORD() {
-	var result;
-	try {
-		require("request")('http://' + adapter.config.Username + ':' + adapter.config.Password + '@' + adapter.config.IPAddress + ':' + adapter.config.Port + PATH['ISRECORD'], function (error, response, result) {
-			if (result !== undefined) {
-				if (result.indexOf('<e2state>2</e2state>') != -1) {
-					adapter.setState('enigma2.isRecording', { val: true, ack: true });
-					adapter.log.debug("is Recording: true");
-				} else {
-					adapter.setState('enigma2.isRecording', { val: false, ack: true });
-					adapter.log.debug("is Recording: false");
-				}
-				// Timer is set
-				if (result.indexOf('<e2state>2</e2state>') != -1) {
-					adapter.setState('enigma2.Timer_is_set', { val: true, ack: true });
-					adapter.log.debug("Timer is set: true");
-				} else if (result.indexOf('<e2state>0</e2state>') != -1) {
-					adapter.setState('enigma2.Timer_is_set', { val: true, ack: true });
-					adapter.log.debug("Timer is set: true");
-				} else {
-					adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
-					adapter.log.debug("Timer is set: false");
-				}
-			}
-		}).on("error", function (e) { console.error(e); });
-	} catch (e) { console.error(e); }
-}
-
 function setStatus(status) {
 	if (status != isConnected) {
 		isConnected = status;
@@ -884,7 +884,7 @@ function setStatus(status) {
 			getResponse('GETINFO', deviceId, PATH['ABOUT'], evaluateCommandResponse);
 			getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 			getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
-			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
+			getResponse('ISRECORD', deviceId, PATH['ISRECORD'], evaluateCommandResponse);
 			getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 			getResponse('GETMOVIELIST', deviceId, PATH['GETLOCATIONS'], evaluateCommandResponse);
 			getResponse('DEVICEINFO', deviceId, PATH['DEVICEINFO'], evaluateCommandResponse);
@@ -1274,7 +1274,7 @@ function main() {
 		getResponse('GETINFO', deviceId, PATH['ABOUT'], evaluateCommandResponse);
 		getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
-		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
+		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], evaluateCommandResponse);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 	}, adapter.config.PollingInterval);
 
@@ -1296,7 +1296,7 @@ function main() {
 		getResponse('GETINFO', deviceId, PATH['ABOUT'], evaluateCommandResponse);
 		getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 		getResponse('GETCURRENT', deviceId, PATH['GET_CURRENT'], evaluateCommandResponse);
-		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], ISRECORD);
+		getResponse('ISRECORD', deviceId, PATH['ISRECORD'], evaluateCommandResponse);
 		getResponse('TIMERLIST', deviceId, PATH['TIMERLIST'], evaluateCommandResponse);
 	}, adapter.config.PollingInterval);
 
