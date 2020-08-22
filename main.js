@@ -202,13 +202,33 @@ adapter.on('stateChange', function (id, state) {
 										}
 									});
 								} else if (id === adapter.namespace + '.command.SET_VOLUME') {
-									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + parseInt(state.val, /*10*/), function (error, command, deviceId, xml) {
+									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + "set" + parseInt(state.val, /*10*/), function (error, command, deviceId, xml) {
 										if (!error) {
 											//adapter.setState('command.SET_VOLUME', { val: '', ack: true });
 											adapter.setState('command.SET_VOLUME', { val: state.val, ack: false });
 										} else {
 											adapter.setState('command.SET_VOLUME', { val: '', ack: true });
 											//adapter.setState('command.SET_VOLUME', { val: state.val, ack: true });
+											getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
+										}
+									});
+								} else if (id === adapter.namespace + '.command.VOLUME_UP') {
+									adapter.log.debug(' Vol UP'); 
+									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + 'up', function (error, command, deviceId, xml) {
+										if (!error) {
+											adapter.setState('command.VOLUME_UP', { val: true, ack: false });
+										} else {
+											adapter.setState('command.VOLUME_UP', { val: true, ack: true });
+											getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
+										}
+									});
+								} else if (id === adapter.namespace + '.command.VOLUME_DOWN') {
+									adapter.log.debug(' Vol Down');
+									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + 'down', function (error, command, deviceId, xml) {
+										if (!error) {
+											adapter.setState('command.VOLUME_DOWN', { val: true, ack: false });
+										} else {
+											adapter.setState('command.VOLUME_DOWN', { val: true, ack: true });
 											getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 										}
 									});
