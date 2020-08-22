@@ -1,6 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-/* enigma2 Adapter V 1.3.1 */
+/* enigma2 Adapter V 1.3.2 */
 'use strict';
 
 const request = require('request');
@@ -27,7 +27,7 @@ var PATH = {
 	DEVICEINFO: '/web/deviceinfo',
 	REMOTE_CONTROL: '/web/remotecontrol?command=',
 	VOLUME: '/web/vol',
-	VOLUME_SET: '/web/vol?set=set',
+	VOLUME_SET: '/web/vol?set=',
 	ABOUT: '/web/about',
 	GET_CURRENT: '/web/getcurrent',
 	POWERSTATE: '/web/powerstate',
