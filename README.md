@@ -78,6 +78,8 @@ Installation requires nodejs v8 at minimum
 - command.STOP
 - command.TV
 - command.UP
+- command.VOLUME_DOWN
+- command.VOLUME_UP
 - command.ZAP = send an invalid servicereference
 
 ----
@@ -125,6 +127,9 @@ sendTo("enigma2.0", "send", {
 ----
  
 ## Changelog
+
+### 1.3.2 (2020-08-22)
+* (Matten-Matten)       add: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`([#41](https://github.com/Matten-Matten/ioBroker.enigma2/issues/41))
 
 ### 1.3.1 (2020-08-20)
 * (Matten-Matten)       correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling
