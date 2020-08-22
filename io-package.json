@@ -1,10 +1,14 @@
 {
     "common": {
         "name": "enigma2",
-        "version": "1.3.1",
+        "version": "1.3.2",
         "connectionType": "local",
         "dataSource": "poll",
         "news": {
+            "1.3.2": {
+                "en": "Add: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`",
+                "de": "Hinzugefügt: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`"
+            },
             "1.3.1": {
                 "en": "Add: correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling",
                 "de": "correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling"
@@ -241,6 +245,30 @@
                 "min": 0,
                 "max": 100,
                 "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "command.VOLUME_UP",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "VOLUME UP",
+                "type": "boolean",
+                "read": false,
+                "write": true
+                },
+            "native": {}
+        },
+        {
+            "_id": "command.VOLUME_DOWN",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "VOLUME DOWN",
+                "type": "boolean",
+                "read": false,
                 "write": true
             },
             "native": {}
