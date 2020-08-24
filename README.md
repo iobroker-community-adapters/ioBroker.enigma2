@@ -296,7 +296,7 @@ sendTo("enigma2.0", "send", {
 ## License
 MIT License
 
-Copyright (c) 2020 Matten-Matten 
+Copyright (c) 2020 Matten-Matten matten-matten@web.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
