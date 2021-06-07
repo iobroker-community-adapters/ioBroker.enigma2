@@ -213,7 +213,7 @@ adapter.on('stateChange', function (id, state) {
 										}
 									});
 								} else if (id === adapter.namespace + '.command.VOLUME_UP') {
-									adapter.log.debug(' Vol UP'); 
+									adapter.log.debug(' Vol UP');
 									getResponse('NONE', deviceId, PATH['VOLUME_SET'] + 'up', function (error, command, deviceId, xml) {
 										if (!error) {
 											adapter.setState('command.VOLUME_UP', { val: true, ack: false });
@@ -725,9 +725,9 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 				var rec = 0;
 				var isset = 3;
 				adapter.log.debug("Array.length:" + meinArray.length);
-				
+
 				for (var i = 0; i < meinArray.length; i++) {
-					
+
 					if (2 === parseFloat(meinArray[i].e2state[0])) {
 						adapter.setState('enigma2.isRecording', { val: true, ack: true });
 						rec = 2;
@@ -740,7 +740,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 					} else if (parseFloat(meinArray[i].e2state[0]) === 3 && isset !== 2) {
 						adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
 					}
-	
+
 				}
 			} else {
 				adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
@@ -773,7 +773,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 					result = JSON.stringify(result);
 
 					adapter.getState('enigma2.TIMER_LIST', function (err, state) {
-						// only update if we have new timer	
+						// only update if we have new timer
 						if (state && state.val !== null) {
 							if (result !== state.val) {
 								adapter.setState('enigma2.TIMER_LIST', result, true);
@@ -796,7 +796,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
 					let movieList = [];
 					let movieDirs = xml.e2locations.e2location;
-					let allServices = await getResponseAsync(deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)					
+					let allServices = await getResponseAsync(deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)
 
 					let servicesList = [];
 					if (allServices && allServices.e2servicelistrecursive && allServices.e2servicelistrecursive.e2bouquet) {
@@ -828,7 +828,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
 					let state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
 
-					// only update if we have new movies	
+					// only update if we have new movies
 					if (state && state.val !== null) {
 						if (movieList !== state.val) {
 							adapter.setState('enigma2.MOVIE_LIST', movieList, true);
@@ -957,7 +957,7 @@ function main() {
 		},
 		native: {}
 	});
-	
+
 	adapter.setObjectNotExists('Message.Type', {
 		type: 'state',
 		common: {
@@ -979,7 +979,7 @@ function main() {
 		native: {}
 	});
 	adapter.setState('Message.Type', 1, true);
-	
+
 	adapter.setObjectNotExists('Message.Timeout', {
 		type: 'state',
 		common: {
@@ -1051,7 +1051,7 @@ function main() {
 	adapter.setObjectNotExists('enigma2.MESSAGE_ANSWER', {
 		type: 'state',
 		common: {
-			type: 'integer',
+			type: 'string',
 			role: 'message',
 			name: 'Message Answer',
 			read: true,
