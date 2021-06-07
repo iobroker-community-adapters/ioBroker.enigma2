@@ -1189,7 +1189,7 @@ function main() {
 	adapter.setObjectNotExists('enigma2.EVENTDURATION', {
 		type: 'state',
 		common: {
-			type: 'number',
+			type: 'string',
 			role: 'media.duration.text',
 			name: 'Event Duration in H:M:S',
 			read: true,
@@ -1201,7 +1201,7 @@ function main() {
 	adapter.setObjectNotExists('enigma2.EVENTREMAINING', {
 		type: 'state',
 		common: {
-			type: 'number',
+			type: 'string',
 			role: 'media.elapsed.text',
 			name: 'Event Remaining in H:M:S',
 			read: true,
