@@ -133,6 +133,9 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
+### 1.3.3 (2021-06-07)
+* (TDCroPower)          Bugfixes: [#48](https://github.com/Matten-Matten/ioBroker.enigma2/issues/48)
+
 ### 1.3.2 (2020-08-22)
 * (Matten-Matten)       add: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`([#41](https://github.com/Matten-Matten/ioBroker.enigma2/issues/41))
 
