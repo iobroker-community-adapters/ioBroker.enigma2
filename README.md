@@ -106,20 +106,20 @@ Installation requires nodejs v8 at minimum
 ### Alexa_Command
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
- 
----- 
- ### sendTo 
+
+----
+ ### sendTo
 #### (in Blockly)
  - message   = Text of Message
  - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - timeout   = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
- 
+
 ![Bild Text](admin/enigma2_message2.png)
 ### oder
 ![Bild Text](admin/enigma2_message.png)
 
 [> zum Blockly Import <](admin/Blockly_Import.md)
- 
+
 #### (in java)
 ```
 sendTo("enigma2.0", "send", {
@@ -130,7 +130,7 @@ sendTo("enigma2.0", "send", {
 ```
 
 ----
- 
+
 ## Changelog
 
 ### 1.3.3 (2021-06-07)
@@ -219,7 +219,7 @@ sendTo("enigma2.0", "send", {
 ### 1.1.0 (2018-10-26)
 * (Matten-Matten)      add Timer, max 8 Timer
 * (Matten-Matten)      add manually updating Timer states
-* (Matten-Matten)      optimizations 
+* (Matten-Matten)      optimizations
 * (Matten-Matten)      auto Check HDD (max.2 HDD)
 * (Matten-Matten)      add manually updating Enigma2 states
 * (Matten-Matten)      read the device information only at the adapter start
@@ -235,7 +235,7 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)      Nicht bestätigte Werte und zustände (rot angezeigt) angepasst
 * (Matten-Matten)      Message um ein Objekt erweitert "ANSWER_IS"
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.4 angepasst
-                       
+
 
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
@@ -276,7 +276,7 @@ sendTo("enigma2.0", "send", {
 
 ### 0.0.11 (2018-03-19)
 * (Matten-Matten)                  Adapterkonfigurationsmaske (für Admin3) überarbeitet
-* (wendy2702 & Matten-Matten)      Admin3 
+* (wendy2702 & Matten-Matten)      Admin3
 
 ### 0.0.10 (2018-03-19)
 * (Matten-Matten)  Umstellungsversuch Admin3
@@ -289,7 +289,7 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)  Fehlerbehebung in HDD Abfrage
 * (Matten-Matten)  Fehlerbehebung wenn Box Heruntergefahren (nicht erreichbar)
                     jetzt nur noch mit: info	received error: connect ECONNREFUSED 192.168. ...
-* (Matten-Matten)  Konfigurations-Maske vereinfacht 
+* (Matten-Matten)  Konfigurations-Maske vereinfacht
 
 ### 0.0.7 (2017-09-20)
 * (Matten-Matten) add Fehlerbehebung in der MUTED Abfrage
@@ -304,7 +304,7 @@ sendTo("enigma2.0", "send", {
 ## License
 MIT License
 
-Copyright (c) 2020 Matten-Matten matten-matten@web.de
+Copyright (c) 2021 Matten-Matten matten-matten@web.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
