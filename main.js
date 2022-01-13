@@ -1,6 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-/* enigma2 Adapter V 1.3.2 */
+/* enigma2 Adapter V 1.3.4 */
 'use strict';
 
 const request = require('request');
@@ -207,8 +207,8 @@ adapter.on('stateChange', function (id, state) {
 											//adapter.setState('command.SET_VOLUME', { val: '', ack: true });
 											adapter.setState('command.SET_VOLUME', { val: state.val, ack: false });
 										} else {
-											adapter.setState('command.SET_VOLUME', { val: '', ack: true });
-											//adapter.setState('command.SET_VOLUME', { val: state.val, ack: true });
+											//adapter.setState('command.SET_VOLUME', { val: '', ack: true });
+											adapter.setState('command.SET_VOLUME', { val: state.val, ack: true });
 											getResponse('GETVOLUME', deviceId, PATH['VOLUME'], evaluateCommandResponse);
 										}
 									});
