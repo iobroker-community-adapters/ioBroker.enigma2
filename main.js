@@ -760,8 +760,12 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 								channel: timerItem["e2servicename"].toString(),
 								serviceRef: timerItem["e2servicereference"].toString(),
 								serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0, -1),
-								starTime: timerItem["e2timebegin"].toString(),
-								endTime: timerItem["e2timeend"].toString(),
+								//starTime: timerItem["e2timebegin"].toString(),
+								//endTime: timerItem["e2timeend"].toString(),
+								// V1.3.4 #59
+								starTime: (timerItem["e2timebegin"]*1000).toString(),
+								endTime: (timerItem["e2timeend"]*1000).toString(),
+								// end
 								duration: timerItem["e2duration"].toString(),
 								subtitle: timerItem["e2description"].toString(),
 								description: timerItem["e2descriptionextended"].toString(),
