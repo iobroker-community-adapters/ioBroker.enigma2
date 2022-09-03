@@ -133,6 +133,10 @@ sendTo("enigma2.0", "send", {
  
 ## Changelog
 
+### 1.3.5 (2022-09-03)
+* (Lucky-ESA)          Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
+* (Lucky-ESA)          Bugfixes: undefined e2eventlist
+
 ### 1.3.3 (2021-06-07)
 * (TDCroPower)          Bugfixes: [#48](https://github.com/Matten-Matten/ioBroker.enigma2/issues/48)
 
