@@ -452,407 +452,410 @@ function sec2HMS(sec) {
 	return hours + ':' + minutes + ':' + seconds;
 }
 
-
 async function evaluateCommandResponse(command, deviceId, xml) {
-	adapter.log.debug("evaluating response for command '" + command + "': " + JSON.stringify(xml));
+	try {
+		adapter.log.debug("evaluating response for command '" + command + "': " + JSON.stringify(xml));
 
-	var bool;
+		var bool;
 
-	switch (command.toUpperCase()) {
-		case "MESSAGE":
-		case "MESSAGETEXT":
-		case "MESSAGEANSWER":
-			adapter.log.debug("message answer: " + xml.e2simplexmlresult.e2statetext[0]);
-			adapter.setState('enigma2.MESSAGE_ANSWER', { val: xml.e2simplexmlresult.e2statetext[0], ack: true });
-			break;
-		case "RESTART":
-		case "REBOOT":
-		case "DEEPSTANDBY":
-			break;
-		case "MUTE":
-		case "UNMUTE":
-		case "MUTE_TOGGLE":
-		case "VOLUME":
-		case "SET_VOLUME":
-			adapter.setState('enigma2.COMMAND', { val: '', ack: true });
-			break;
-		case "WAKEUP":
-		case "STANDBY":
-		case "OFF":
-		case 'STANDBY_TOGGLE':
-			break;
-		case "GETSTANDBY":
-			adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
-			adapter.setState('enigma2.STANDBY', { val: parseBool(xml.e2powerstate.e2instandby), ack: true });
-			if (adapter.config.Webinterface === "true" && parseBool(xml.e2powerstate.e2instandby) === true) {
-				adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
-			}
-			//Alexa_Command.Standby
-			if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
-				var alexastby = parseBool(xml.e2powerstate.e2instandby);
-				if (alexastby === false || alexastby === "false") {
-					adapter.setState('Alexa_Command.Standby', { val: true, ack: true });
-				} else if (alexastby === true || alexastby === "true") {
-					adapter.setState('Alexa_Command.Standby', { val: false, ack: true });
-				}
-			}
-			break;
-		case "GETVOLUME":
-			if (!xml.e2volume || !xml.e2volume.e2current) {
-				adapter.log.error('No e2volume found');
-				return;
-			}
-			bool = parseBool(xml.e2volume.e2ismuted);
-			adapter.log.debug("Box Volume:" + parseInt(xml.e2volume.e2current[0]));
-			adapter.setState('enigma2.VOLUME', { val: parseInt(xml.e2volume.e2current[0]), ack: true });
-			adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
-			adapter.setState('enigma2.MUTED', { val: parseBool(xml.e2volume.e2ismuted), ack: true });
-			//Alexa_Command.Mute
-			if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
-				var alexaMute = parseBool(xml.e2volume.e2ismuted);
-				if (alexaMute === false || alexaMute === "false") {
-					adapter.setState('Alexa_Command.Mute', { val: true, ack: true });
-				} else if (alexaMute === true || alexaMute === "true") {
-					adapter.setState('Alexa_Command.Mute', { val: false, ack: true });
-				}
-			}
-			break;
-		case "GETCURRENT":
-			if (xml.e2currentserviceinformation.e2eventlist[0] !== undefined) {
-				adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
-				var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
-				adapter.setState('enigma2.EVENTDURATION_MIN', { val: Math.round(e2EVENTDURATION_X / 60), ack: true });
-				var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
-
-				if (e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0') {
-					adapter.setState('enigma2.EVENTDURATION', { val: ''/*'0:0:0'*/, ack: true });
-				} else {
-					adapter.setState('enigma2.EVENTDURATION', { val: e2EVENTDURATION, ack: true });
-				};
-
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-				adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
-				var e2EVENTREMAINING_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);
-				adapter.setState('enigma2.EVENTREMAINING_MIN', { val: Math.round(e2EVENTREMAINING_X / 60), ack: true });
-				var e2EVENTREMAINING = sec2HMS(parseFloat(e2EVENTREMAINING_X));
-
-				if (e2EVENTREMAINING === 'NaN:NaN:NaN' || e2EVENTREMAINING === '0') {
-					adapter.setState('enigma2.EVENTREMAINING', { val: ''/*'0:0:0'*/, ack: true });
-				} else {
-					adapter.setState('enigma2.EVENTREMAINING', { val: e2EVENTREMAINING, ack: true });
-				};
-
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-				adapter.log.debug("Box Programm: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);
-				adapter.setState('enigma2.PROGRAMM', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]).replace('N/A', ''), ack: true });
-
-				adapter.log.debug("Box Programm_danach: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]);
-				adapter.setState('enigma2.PROGRAMM_AFTER', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]).replace('N/A', ''), ack: true });
-
-				adapter.log.debug("Box Programm Info: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]);
-				adapter.setState('enigma2.PROGRAMM_INFO', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0], ack: true });
-
-				adapter.log.debug("Box Programm danach Info: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]);
-				adapter.setState('enigma2.PROGRAMM_AFTER_INFO', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0], ack: true });
-
-				adapter.log.debug("Box eventdescription: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);
-				adapter.setState('enigma2.EVENTDESCRIPTION', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true });
-
-				adapter.log.debug("Box Sender Servicereference: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
-				var e2SERVICEREFERENCE = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
-
-				if (e2SERVICEREFERENCE === '-1:8087252:0:77132724:2:0:C:0:0:77040804:' || e2EVENTREMAINING === '0') {
-					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: '', ack: true });
-					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: '', ack: true });
-				} else {
-					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: e2SERVICEREFERENCE, ack: true });
-					adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1), ack: true });
-					if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
-						adapter.getState('enigma2.STANDBY', function (err, state) {
-							if (state.val === false) {
-								//openwebif PICON http://...
-								adapter.setState('enigma2.CHANNEL_PICON', { val: 'http://' + adapter.config.IPAddress + ':' + adapter.config.Port + '/picon/' + e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1) + '.png', ack: true });
-							} else {
-								adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
-							}
-						});
-					}
-				};
-				//EVENT_PROGRESS_PERCENT
-				var Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
-				var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION_X)));
-				var Step3 = parseFloat((Math.round(Step2 * 100)));
-				adapter.setState('enigma2.EVENT_PROGRESS_PERCENT', { val: parseInt(Step3), ack: true });
-				//EVENT_TIME_PASSED //NaN:NaN:NaN
-				var Step1_1 = sec2HMS(parseInt(Step1));
-				if (Step1_1 === 'NaN:NaN:NaN') {
-					adapter.setState('enigma2.EVENT_TIME_PASSED', { val: "", ack: true });
-				} else {
-					adapter.setState('enigma2.EVENT_TIME_PASSED', { val: sec2HMS(parseInt(Step1)), ack: true });
-				};
-
-				var e2Eventstart = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventstart[0]);
-				var e2Eventend = (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventstart[0]);
-
-				if (e2Eventstart !== e2Eventend) {
-
-					//EVENT_TIME_START
-					var date = new Date(e2Eventstart * 1000);
-					// Hours part from the timestamp
-					var hours = date.getHours();
-					// Minutes part from the timestamp
-					var minutes = "0" + date.getMinutes();
-
-					// Will display time in 10:30 format
-					var formattedTime = hours + ':' + minutes.substr(-2);
-					adapter.setState('enigma2.EVENT_TIME_START', { val: (formattedTime), ack: true });
-
-					//EVENT_TIME_END
-					var date = new Date(e2Eventend * 1000);
-					// Hours part from the timestamp
-					var hours = date.getHours();
-					// Minutes part from the timestamp
-					var minutes = "0" + date.getMinutes();
-
-					// Will display time in 10:30 format
-					var formattedTime = hours + ':' + minutes.substr(-2);
-					adapter.setState('enigma2.EVENT_TIME_END', { val: (formattedTime), ack: true });
-
-				} else {
-					adapter.setState('enigma2.EVENT_TIME_END', { val: '', ack: true });
-					adapter.setState('enigma2.EVENT_TIME_START', { val: '', ack: true });
-				};
-
+		switch (command.toUpperCase()) {
+			case "MESSAGE":
+			case "MESSAGETEXT":
+			case "MESSAGEANSWER":
+				adapter.log.debug("message answer: " + xml.e2simplexmlresult.e2statetext[0]);
+				adapter.setState('enigma2.MESSAGE_ANSWER', { val: xml.e2simplexmlresult.e2statetext[0], ack: true });
 				break;
-			}
-		case "GETINFO":
-			adapter.log.debug("Box Sender: " + xml.e2abouts.e2about[0].e2servicename[0]);
-			adapter.setState('enigma2.CHANNEL', { val: xml.e2abouts.e2about[0].e2servicename[0], ack: true });
-			break;
-		case "DEVICEINFO":
-			adapter.setState('enigma2.WEB_IF_VERSION', { val: xml.e2deviceinfo.e2webifversion[0], ack: true });
-			adapter.setState('enigma2.NETWORK', { val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true });
-			adapter.setState('enigma2.BOX_IP', { val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true });
-			adapter.setState('enigma2.MODEL', { val: xml.e2deviceinfo.e2devicename[0], ack: true });
-			break;
-		case "DEVICEINFO_HDD":
-			if (xml.e2deviceinfo.e2hdds[0].e2hdd !== undefined) {
+			case "RESTART":
+			case "REBOOT":
+			case "DEEPSTANDBY":
+				break;
+			case "MUTE":
+			case "UNMUTE":
+			case "MUTE_TOGGLE":
+			case "VOLUME":
+			case "SET_VOLUME":
+				adapter.setState('enigma2.COMMAND', { val: '', ack: true });
+				break;
+			case "WAKEUP":
+			case "STANDBY":
+			case "OFF":
+			case 'STANDBY_TOGGLE':
+				break;
+			case "GETSTANDBY":
+				adapter.log.debug("Box Standby: " + parseBool(xml.e2powerstate.e2instandby));
+				adapter.setState('enigma2.STANDBY', { val: parseBool(xml.e2powerstate.e2instandby), ack: true });
+				if (adapter.config.Webinterface === "true" && parseBool(xml.e2powerstate.e2instandby) === true) {
+					adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
+				}
+				//Alexa_Command.Standby
+				if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
+					var alexastby = parseBool(xml.e2powerstate.e2instandby);
+					if (alexastby === false || alexastby === "false") {
+						adapter.setState('Alexa_Command.Standby', { val: true, ack: true });
+					} else if (alexastby === true || alexastby === "true") {
+						adapter.setState('Alexa_Command.Standby', { val: false, ack: true });
+					}
+				}
+				break;
+			case "GETVOLUME":
+				if (!xml.e2volume || !xml.e2volume.e2current) {
+					adapter.log.error('No e2volume found');
+					return;
+				}
+				bool = parseBool(xml.e2volume.e2ismuted);
+				adapter.log.debug("Box Volume:" + parseInt(xml.e2volume.e2current[0]));
+				adapter.setState('enigma2.VOLUME', { val: parseInt(xml.e2volume.e2current[0]), ack: true });
+				adapter.log.debug("Box Muted:" + parseBool(xml.e2volume.e2ismuted));
+				adapter.setState('enigma2.MUTED', { val: parseBool(xml.e2volume.e2ismuted), ack: true });
+				//Alexa_Command.Mute
+				if (adapter.config.Alexa === 'true' || adapter.config.Alexa === true) {
+					var alexaMute = parseBool(xml.e2volume.e2ismuted);
+					if (alexaMute === false || alexaMute === "false") {
+						adapter.setState('Alexa_Command.Mute', { val: true, ack: true });
+					} else if (alexaMute === true || alexaMute === "true") {
+						adapter.setState('Alexa_Command.Mute', { val: false, ack: true });
+					}
+				}
+				break;
+			case "GETCURRENT":
+				if (xml && xml.e2currentserviceinformation && xml.e2currentserviceinformation.e2eventlist[0] !== undefined) {
+					adapter.log.debug("Box EVENTDURATION:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]));
+					var e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
+					adapter.setState('enigma2.EVENTDURATION_MIN', { val: Math.round(e2EVENTDURATION_X / 60), ack: true });
+					var e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
 
-				adapter.setObjectNotExists('enigma2.HDD_CAPACITY', {
-					type: 'state',
-					common: {
-						type: 'string',
-						role: 'state',
-						name: 'maximal Flash Capacity (Flash 1)',
-						read: true,
-						write: false
-					},
-					native: {}
-				});
-				adapter.setObjectNotExists('enigma2.HDD_FREE', {
-					type: 'state',
-					common: {
-						type: 'string',
-						role: 'state',
-						name: 'free Flash Capacity (Flash 1)',
-						read: true,
-						write: false
-					},
-					native: {}
-				});
+					if (e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0') {
+						adapter.setState('enigma2.EVENTDURATION', { val: ''/*'0:0:0'*/, ack: true });
+					} else {
+						adapter.setState('enigma2.EVENTDURATION', { val: e2EVENTDURATION, ack: true });
+					};
 
-				adapter.setState('enigma2.HDD_CAPACITY', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true });
-				adapter.setState('enigma2.HDD_FREE', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true });
-				if (xml.e2deviceinfo.e2hdds[0].e2hdd[1] !== undefined) {
+					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-					adapter.setObjectNotExists('enigma2.HDD2_CAPACITY', {
+					adapter.log.debug("Box EVENTREMAINING:" + parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]));
+					var e2EVENTREMAINING_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0]);
+					adapter.setState('enigma2.EVENTREMAINING_MIN', { val: Math.round(e2EVENTREMAINING_X / 60), ack: true });
+					var e2EVENTREMAINING = sec2HMS(parseFloat(e2EVENTREMAINING_X));
+
+					if (e2EVENTREMAINING === 'NaN:NaN:NaN' || e2EVENTREMAINING === '0') {
+						adapter.setState('enigma2.EVENTREMAINING', { val: ''/*'0:0:0'*/, ack: true });
+					} else {
+						adapter.setState('enigma2.EVENTREMAINING', { val: e2EVENTREMAINING, ack: true });
+					};
+
+					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+					adapter.log.debug("Box Programm: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]);
+					adapter.setState('enigma2.PROGRAMM', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]).replace('N/A', ''), ack: true });
+
+					adapter.log.debug("Box Programm_danach: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]);
+					adapter.setState('enigma2.PROGRAMM_AFTER', { val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]).replace('N/A', ''), ack: true });
+
+					adapter.log.debug("Box Programm Info: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]);
+					adapter.setState('enigma2.PROGRAMM_INFO', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0], ack: true });
+
+					adapter.log.debug("Box Programm danach Info: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]);
+					adapter.setState('enigma2.PROGRAMM_AFTER_INFO', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0], ack: true });
+
+					adapter.log.debug("Box eventdescription: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]);
+					adapter.setState('enigma2.EVENTDESCRIPTION', { val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0], ack: true });
+
+					adapter.log.debug("Box Sender Servicereference: " + xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
+					var e2SERVICEREFERENCE = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
+
+					if (e2SERVICEREFERENCE === '-1:8087252:0:77132724:2:0:C:0:0:77040804:' || e2EVENTREMAINING === '0') {
+						adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: '', ack: true });
+						adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: '', ack: true });
+					} else {
+						adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', { val: e2SERVICEREFERENCE, ack: true });
+						adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1), ack: true });
+						if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+							adapter.getState('enigma2.STANDBY', function (err, state) {
+								if (state.val === false) {
+									//openwebif PICON http://...
+									adapter.setState('enigma2.CHANNEL_PICON', { val: 'http://' + adapter.config.IPAddress + ':' + adapter.config.Port + '/picon/' + e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1) + '.png', ack: true });
+								} else {
+									adapter.setState('enigma2.CHANNEL_PICON', { val: '', ack: true });
+								}
+							});
+						}
+					};
+					//EVENT_PROGRESS_PERCENT
+					var Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
+					var Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION_X)));
+					var Step3 = parseFloat((Math.round(Step2 * 100)));
+					adapter.setState('enigma2.EVENT_PROGRESS_PERCENT', { val: parseInt(Step3), ack: true });
+					//EVENT_TIME_PASSED //NaN:NaN:NaN
+					var Step1_1 = sec2HMS(parseInt(Step1));
+					if (Step1_1 === 'NaN:NaN:NaN') {
+						adapter.setState('enigma2.EVENT_TIME_PASSED', { val: "", ack: true });
+					} else {
+						adapter.setState('enigma2.EVENT_TIME_PASSED', { val: sec2HMS(parseInt(Step1)), ack: true });
+					};
+
+					var e2Eventstart = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventstart[0]);
+					var e2Eventend = (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventstart[0]);
+
+					if (e2Eventstart !== e2Eventend) {
+
+						//EVENT_TIME_START
+						var date = new Date(e2Eventstart * 1000);
+						// Hours part from the timestamp
+						var hours = date.getHours();
+						// Minutes part from the timestamp
+						var minutes = "0" + date.getMinutes();
+
+						// Will display time in 10:30 format
+						var formattedTime = hours + ':' + minutes.substr(-2);
+						adapter.setState('enigma2.EVENT_TIME_START', { val: (formattedTime), ack: true });
+
+						//EVENT_TIME_END
+						var date = new Date(e2Eventend * 1000);
+						// Hours part from the timestamp
+						var hours = date.getHours();
+						// Minutes part from the timestamp
+						var minutes = "0" + date.getMinutes();
+
+						// Will display time in 10:30 format
+						var formattedTime = hours + ':' + minutes.substr(-2);
+						adapter.setState('enigma2.EVENT_TIME_END', { val: (formattedTime), ack: true });
+
+					} else {
+						adapter.setState('enigma2.EVENT_TIME_END', { val: '', ack: true });
+						adapter.setState('enigma2.EVENT_TIME_START', { val: '', ack: true });
+					};
+
+					break;
+				}
+			case "GETINFO":
+				adapter.log.debug("Box Sender: " + xml.e2abouts.e2about[0].e2servicename[0]);
+				adapter.setState('enigma2.CHANNEL', { val: xml.e2abouts.e2about[0].e2servicename[0], ack: true });
+				break;
+			case "DEVICEINFO":
+				adapter.setState('enigma2.WEB_IF_VERSION', { val: xml.e2deviceinfo.e2webifversion[0], ack: true });
+				adapter.setState('enigma2.NETWORK', { val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0], ack: true });
+				adapter.setState('enigma2.BOX_IP', { val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0], ack: true });
+				adapter.setState('enigma2.MODEL', { val: xml.e2deviceinfo.e2devicename[0], ack: true });
+				break;
+			case "DEVICEINFO_HDD":
+				if (xml.e2deviceinfo.e2hdds[0].e2hdd !== undefined) {
+
+					adapter.setObjectNotExists('enigma2.HDD_CAPACITY', {
 						type: 'state',
 						common: {
 							type: 'string',
 							role: 'state',
-							name: 'maximal Flash Capacity (Flash 2)',
+							name: 'maximal Flash Capacity (Flash 1)',
 							read: true,
 							write: false
 						},
 						native: {}
 					});
-					adapter.setObjectNotExists('enigma2.HDD2_FREE', {
+					adapter.setObjectNotExists('enigma2.HDD_FREE', {
 						type: 'state',
 						common: {
 							type: 'string',
 							role: 'state',
-							name: 'free Flash Capacity (Flash 2)',
+							name: 'free Flash Capacity (Flash 1)',
 							read: true,
 							write: false
 						},
 						native: {}
 					});
 
-					adapter.setState('enigma2.HDD2_CAPACITY', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true });
-					adapter.setState('enigma2.HDD2_FREE', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true });
+					adapter.setState('enigma2.HDD_CAPACITY', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0], ack: true });
+					adapter.setState('enigma2.HDD_FREE', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0], ack: true });
+					if (xml.e2deviceinfo.e2hdds[0].e2hdd[1] !== undefined) {
+
+						adapter.setObjectNotExists('enigma2.HDD2_CAPACITY', {
+							type: 'state',
+							common: {
+								type: 'string',
+								role: 'state',
+								name: 'maximal Flash Capacity (Flash 2)',
+								read: true,
+								write: false
+							},
+							native: {}
+						});
+						adapter.setObjectNotExists('enigma2.HDD2_FREE', {
+							type: 'state',
+							common: {
+								type: 'string',
+								role: 'state',
+								name: 'free Flash Capacity (Flash 2)',
+								read: true,
+								write: false
+							},
+							native: {}
+						});
+
+						adapter.setState('enigma2.HDD2_CAPACITY', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0], ack: true });
+						adapter.setState('enigma2.HDD2_FREE', { val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0], ack: true });
+					} else {
+						adapter.delObject('enigma2.HDD2_CAPACITY');
+						adapter.delObject('enigma2.HDD2_FREE');
+					};
 				} else {
 					adapter.delObject('enigma2.HDD2_CAPACITY');
 					adapter.delObject('enigma2.HDD2_FREE');
-				};
-			} else {
-				adapter.delObject('enigma2.HDD2_CAPACITY');
-				adapter.delObject('enigma2.HDD2_FREE');
-				adapter.delObject('enigma2.HDD_CAPACITY');
-				adapter.delObject('enigma2.HDD_FREE');
-			}
-
-			break;
-		case "VOLUME_UP":
-		case "VOLUME_DOWN":
-		case "LEFT":
-		case "RIGHT":
-		case "UP":
-		case "DOWN":
-		case "EXIT":
-		case "CH_UP":
-		case "CH_DOWN":
-		case "SELECT":
-		case "OK":
-		case "BOUQUET_UP":
-		case "BOUQUET_DOWN":
-		case "INFO":
-		case "MENU":
-		case "ISRECORD":
-			if (xml.e2timerlist.e2timer !== undefined) {
-				var meinArray = xml.e2timerlist.e2timer;
-				var rec = 0;
-				var isset = 3;
-				adapter.log.debug("Array.length:" + meinArray.length);
-
-				for (var i = 0; i < meinArray.length; i++) {
-
-					if (2 === parseFloat(meinArray[i].e2state[0])) {
-						adapter.setState('enigma2.isRecording', { val: true, ack: true });
-						rec = 2;
-					} else if (i === (meinArray.length-1) && rec !== 2) {
-						adapter.setState('enigma2.isRecording', { val: false, ack: true });
-					}
-					if (parseFloat(meinArray[i].e2state[0]) === 0 || parseFloat(meinArray[i].e2state[0]) === 2) {
-						adapter.setState('enigma2.Timer_is_set', { val: true, ack: true });
-						isset = 2;
-					} else if (parseFloat(meinArray[i].e2state[0]) === 3 && isset !== 2) {
-						adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
-					}
-
+					adapter.delObject('enigma2.HDD_CAPACITY');
+					adapter.delObject('enigma2.HDD_FREE');
 				}
-			} else {
-				adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
-				adapter.setState('enigma2.isRecording', { val: false, ack: true });
-			}
-			break;
-		case "TIMERLIST":
-			let result = [];
-			if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
-				if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
-					let timerList = xml.e2timerlist.e2timer;
 
-					timerList.forEach(function (timerItem) {
-						result.push(
-							{
-								title: timerItem["e2name"].toString(),
-								channel: timerItem["e2servicename"].toString(),
-								serviceRef: timerItem["e2servicereference"].toString(),
-								serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0, -1),
-								//starTime: timerItem["e2timebegin"].toString(),
-								//endTime: timerItem["e2timeend"].toString(),
-								// V1.3.4 #59
-								starTime: (timerItem["e2timebegin"]*1000).toString(),
-								endTime: (timerItem["e2timeend"]*1000).toString(),
-								// end
-								duration: timerItem["e2duration"].toString(),
-								subtitle: timerItem["e2description"].toString(),
-								description: timerItem["e2descriptionextended"].toString(),
-							}
-						)
-					});
+				break;
+			case "VOLUME_UP":
+			case "VOLUME_DOWN":
+			case "LEFT":
+			case "RIGHT":
+			case "UP":
+			case "DOWN":
+			case "EXIT":
+			case "CH_UP":
+			case "CH_DOWN":
+			case "SELECT":
+			case "OK":
+			case "BOUQUET_UP":
+			case "BOUQUET_DOWN":
+			case "INFO":
+			case "MENU":
+			case "ISRECORD":
+				if (xml.e2timerlist.e2timer !== undefined) {
+					var meinArray = xml.e2timerlist.e2timer;
+					var rec = 0;
+					var isset = 3;
+					adapter.log.debug("Array.length:" + meinArray.length);
 
-					// only update if we have a result -> keep on data if box is in deepStandby
-					result = JSON.stringify(result);
+					for (var i = 0; i < meinArray.length; i++) {
 
-					adapter.getState('enigma2.TIMER_LIST', function (err, state) {
-						// only update if we have new timer
-						if (state && state.val !== null) {
-							if (result !== state.val) {
+						if (2 === parseFloat(meinArray[i].e2state[0])) {
+							adapter.setState('enigma2.isRecording', { val: true, ack: true });
+							rec = 2;
+						} else if (i === (meinArray.length-1) && rec !== 2) {
+							adapter.setState('enigma2.isRecording', { val: false, ack: true });
+						}
+						if (parseFloat(meinArray[i].e2state[0]) === 0 || parseFloat(meinArray[i].e2state[0]) === 2) {
+							adapter.setState('enigma2.Timer_is_set', { val: true, ack: true });
+							isset = 2;
+						} else if (parseFloat(meinArray[i].e2state[0]) === 3 && isset !== 2) {
+							adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
+						}
+
+					}
+				} else {
+					adapter.setState('enigma2.Timer_is_set', { val: false, ack: true });
+					adapter.setState('enigma2.isRecording', { val: false, ack: true });
+				}
+				break;
+			case "TIMERLIST":
+				let result = [];
+				if (adapter.config.timerliste === "true" || adapter.config.timerliste === true) {
+					if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
+						let timerList = xml.e2timerlist.e2timer;
+
+						timerList.forEach(function (timerItem) {
+							result.push(
+								{
+									title: timerItem["e2name"].toString(),
+									channel: timerItem["e2servicename"].toString(),
+									serviceRef: timerItem["e2servicereference"].toString(),
+									serviceRefName: timerItem["e2servicereference"].toString().replace(/:/g, '_').slice(0, -1),
+									//starTime: timerItem["e2timebegin"].toString(),
+									//endTime: timerItem["e2timeend"].toString(),
+									// V1.3.4 #59
+									starTime: (timerItem["e2timebegin"]*1000).toString(),
+									endTime: (timerItem["e2timeend"]*1000).toString(),
+									// end
+									duration: timerItem["e2duration"].toString(),
+									subtitle: timerItem["e2description"].toString(),
+									description: timerItem["e2descriptionextended"].toString(),
+								}
+							)
+						});
+
+						// only update if we have a result -> keep on data if box is in deepStandby
+						result = JSON.stringify(result);
+
+						adapter.getState('enigma2.TIMER_LIST', function (err, state) {
+							// only update if we have new timer
+							if (state && state.val !== null) {
+								if (result !== state.val) {
+									adapter.setState('enigma2.TIMER_LIST', result, true);
+									adapter.log.debug("timer list updated");
+								} else {
+									adapter.log.debug("no new timer found -> timer list is up to date");
+								}
+							} else {
 								adapter.setState('enigma2.TIMER_LIST', result, true);
 								adapter.log.debug("timer list updated");
-							} else {
-								adapter.log.debug("no new timer found -> timer list is up to date");
 							}
-						} else {
-							adapter.setState('enigma2.TIMER_LIST', result, true);
-							adapter.log.debug("timer list updated");
-						}
-					});
+						});
+					}
 				}
-			}
-			break;
-		case "GETMOVIELIST":
-			try {
-				if (xml && xml.e2locations && xml.e2locations.e2location) {
-					adapter.log.debug("updating movie list");
+				break;
+			case "GETMOVIELIST":
+				try {
+					if (xml && xml.e2locations && xml.e2locations.e2location) {
+						adapter.log.debug("updating movie list");
 
-					let movieList = [];
-					let movieDirs = xml.e2locations.e2location;
-					let allServices = await getResponseAsync(deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)
+						let movieList = [];
+						let movieDirs = xml.e2locations.e2location;
+						let allServices = await getResponseAsync(deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)
 
-					let servicesList = [];
-					if (allServices && allServices.e2servicelistrecursive && allServices.e2servicelistrecursive.e2bouquet) {
-						// prepare serviceList
-						for (var bouquet of allServices.e2servicelistrecursive.e2bouquet) {
-							if (bouquet && bouquet.e2servicelist) {
-								for (var service of bouquet.e2servicelist) {
-									servicesList.push(...service.e2service)
+						let servicesList = [];
+						if (allServices && allServices.e2servicelistrecursive && allServices.e2servicelistrecursive.e2bouquet) {
+							// prepare serviceList
+							for (var bouquet of allServices.e2servicelistrecursive.e2bouquet) {
+								if (bouquet && bouquet.e2servicelist) {
+									for (var service of bouquet.e2servicelist) {
+										servicesList.push(...service.e2service)
+									}
 								}
 							}
+
+							//remove duplicates
+							servicesList = servicesList.filter(obj => !servicesList[obj.e2servicereference] && (servicesList[obj.e2servicereference] = true));
 						}
 
-						//remove duplicates
-						servicesList = servicesList.filter(obj => !servicesList[obj.e2servicereference] && (servicesList[obj.e2servicereference] = true));
-					}
+						for (var dir of movieDirs) {
+							// iterate through media directories
+							await getAllMovies(dir, movieList, servicesList);
+							await Sleep(500);
+						}
 
-					for (var dir of movieDirs) {
-						// iterate through media directories
-						await getAllMovies(dir, movieList, servicesList);
-						await Sleep(500);
-					}
+						movieList.sort(function (a, b) {
+							// sort recording time desc
+							return b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1;
+						});
 
-					movieList.sort(function (a, b) {
-						// sort recording time desc
-						return b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1;
-					});
+						movieList = JSON.stringify(movieList);
 
-					movieList = JSON.stringify(movieList);
+						let state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
 
-					let state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
-
-					// only update if we have new movies
-					if (state && state.val !== null) {
-						if (movieList !== state.val) {
+						// only update if we have new movies
+						if (state && state.val !== null) {
+							if (movieList !== state.val) {
+								adapter.setState('enigma2.MOVIE_LIST', movieList, true);
+								adapter.log.debug("movie list updated");
+							} else {
+								adapter.log.debug("no new movies found -> movies list is up to date");
+							}
+						} else {
 							adapter.setState('enigma2.MOVIE_LIST', movieList, true);
 							adapter.log.debug("movie list updated");
-						} else {
-							adapter.log.debug("no new movies found -> movies list is up to date");
 						}
-					} else {
-						adapter.setState('enigma2.MOVIE_LIST', movieList, true);
-						adapter.log.debug("movie list updated");
 					}
+				} catch (err) {
+					adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
+					adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
 				}
-			} catch (err) {
-				adapter.log.error(`[GETMOVIELIST] error: ${err.message}`);
-				adapter.log.error("[GETMOVIELIST] stack: " + err.stack);
-			}
 
-			break;
-		default:
-			adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
+				break;
+			default:
+				adapter.log.info("received unknown command '" + command + "' @ evaluateCommandResponse");
+		}
+	} catch (err) {
+		adapter.log.warn("evaluateCommandResponse: " + err);
 	}
 }
 
@@ -917,25 +920,25 @@ function setStatus(status) {
 			adapter.setState('enigma2-CONNECTION', false, true);
 			adapter.setState('enigma2.isRecording', false, true);
 			// Werte aus Adapter loeschen
-			adapter.setState('enigma2.BOX_IP', "");
-			adapter.setState('enigma2.CHANNEL', "");
-			adapter.setState('enigma2.CHANNEL_PICON', "");
-			adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "");
-			adapter.setState('enigma2.EVENTDESCRIPTION', "");
-			adapter.setState('enigma2.EVENTDURATION', "");
-			adapter.setState('enigma2.EVENTREMAINING', "");
-			adapter.setState('enigma2.MESSAGE_ANSWER', "");
-			adapter.setState('enigma2.MODEL', "");
-			adapter.setState('enigma2.MUTED', "");
-			adapter.setState('enigma2.NETWORK', "");
-			adapter.setState('enigma2.PROGRAMM', "");
-			adapter.setState('enigma2.PROGRAMM_AFTER', "");
-			adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "");
-			adapter.setState('enigma2.PROGRAMM_INFO', "");
+			adapter.setState('enigma2.BOX_IP', "", true);
+			adapter.setState('enigma2.CHANNEL', "", true);
+			adapter.setState('enigma2.CHANNEL_PICON', "", true);
+			adapter.setState('enigma2.CHANNEL_SERVICEREFERENCE', "", true);
+			adapter.setState('enigma2.EVENTDESCRIPTION', "", true);
+			adapter.setState('enigma2.EVENTDURATION', "", true);
+			adapter.setState('enigma2.EVENTREMAINING', "", true);
+			adapter.setState('enigma2.MESSAGE_ANSWER', "", true);
+			adapter.setState('enigma2.MODEL', "", true);
+			adapter.setState('enigma2.MUTED', false, true);
+			adapter.setState('enigma2.NETWORK', "", true);
+			adapter.setState('enigma2.PROGRAMM', "", true);
+			adapter.setState('enigma2.PROGRAMM_AFTER', "", true);
+			adapter.setState('enigma2.PROGRAMM_AFTER_INFO', "", true);
+			adapter.setState('enigma2.PROGRAMM_INFO', "", true);
 			adapter.setState('enigma2.STANDBY', true, true);
-			adapter.setState('enigma2.VOLUME', "");
-			adapter.setState('enigma2.WEB_IF_VERSION', "");
-			adapter.setState('Message.MESSAGE_ANSWER', false, true);
+			adapter.setState('enigma2.VOLUME', 0, true);
+			adapter.setState('enigma2.WEB_IF_VERSION', "", true);
+			//adapter.setState('Message.MESSAGE_ANSWER', false, true);
 			//...
 		}
 	}
