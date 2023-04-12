@@ -3,11 +3,6 @@
 [![NPM version](http://img.shields.io/npm/v/iobroker.enigma2.svg)](https://www.npmjs.com/package/iobroker.enigma2) [![Downloads](https://img.shields.io/npm/dm/iobroker.enigma2.svg)](https://www.npmjs.com/package/iobroker.enigma2) [![NPM](https://nodei.co/npm/iobroker.enigma2.png?downloads=true)](https://nodei.co/npm/iobroker.enigma2/)
 
 ----
-## Work on adapter enigma2 canceled. Project taker wanted!
-## Arbeit am Adapter enigma2 abgebrochen. Projekt Übernehmer gesucht!
-### Bei Interesse bitte auf das ISSUE antworten -> [#44](https://github.com/Matten-Matten/ioBroker.enigma2/issues/44) <-
-
-----
 # ioBroker enigma2
 - Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
 - (Adapter only runs on one host! with a client installation there's currently still problems.)
@@ -306,7 +301,7 @@ sendTo("enigma2.0", "send", {
 ## License
 MIT License
 
-Copyright (c) 2021 Matten-Matten matten-matten@web.de
+Copyright (c) 2023 iobroker-community-adapters
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
