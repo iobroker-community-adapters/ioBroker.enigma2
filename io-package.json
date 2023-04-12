@@ -1,10 +1,22 @@
 {
     "common": {
         "name": "enigma2",
-        "version": "1.3.4",
+        "version": "1.4.0",
         "connectionType": "local",
         "dataSource": "poll",
         "news": {
+            "1.4.0": {
+                "en": "compatibility to js-controller v5",
+                "de": "Kompatibilität mit js-controller v5",
+                "ru": "совместимость с js-controller v5",
+                "pt": "compatibilidade com js-controller v5",
+                "fr": "compatibilité avec js-controller v5",
+                "it": "compatibilità con js-controller v5",
+                "es": "compatibilidad con js-controller v5",
+                "pl": "kompatybilność z js-controllerem v5",
+                "uk": "сумісність з js-controller v5",
+                "zh-cn": "兼容并行李"
+            },
             "1.3.4": {
                 "en": "bugfix SET_VOLUME string error #56, Timestamp #59",
                 "de": "fehler SET_VOLUME string error korregiert, Zeitstempel"

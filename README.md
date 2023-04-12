@@ -132,6 +132,8 @@ sendTo("enigma2.0", "send", {
 ----
  
 ## Changelog
+### 1.4.0 (2022-04-11)
+* (foxriver76) compatibility to js-controller v5
 
 ### 1.3.3 (2021-06-07)
 * (TDCroPower)          Bugfixes: [#48](https://github.com/Matten-Matten/ioBroker.enigma2/issues/48)
