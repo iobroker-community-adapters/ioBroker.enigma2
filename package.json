@@ -9,7 +9,7 @@
   "contributors": [
     {}
   ],
-  "homepage": "https://github.com/Matten-Matten/ioBroker.enigma2",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.enigma2",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Matten-Matten/ioBroker.enigma2.git"
+    "url": "git+https://github.com/iobroker-community-adapters/ioBroker.enigma2.git"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.8",
@@ -47,7 +47,7 @@
     "sinon-chai": "^3.3.0"
   },
   "bugs": {
-    "url": "https://github.com/Matten-Matten/ioBroker.enigma2/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues"
   },
   "scripts": {
     "init": "node lib/scripts.js init",
