@@ -127,6 +127,15 @@ sendTo("enigma2.0", "send", {
 ----
  
 ## Changelog
+
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
+### **WORK IN PROGRESS**
+-   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
+-   (mcm1957) changed: Dependencies have been updated
+
 ### 1.4.0 (2022-04-11)
 * (foxriver76) compatibility to js-controller v5
 
