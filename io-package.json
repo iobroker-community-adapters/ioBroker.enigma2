@@ -79,7 +79,6 @@
             "pl": "enigma2 adapter do VU +, Dreambox, EDISON ...",
             "zh-cn": "用于VU +，Dreambox，EDISON ...的enigma2适配器"
         },
-        "readme": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md",
         "platform": "Javascript/Node.js",
         "license": "MIT",
         "mode": "daemon",
@@ -89,7 +88,8 @@
         "subscribe": "messagebox",
         "enabled": false,
         "stopBeforeUpdate": true,
-        "extIcon": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/master/admin/enigma2.png",
+        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.enigma2/master/admin/enigma2.png",
+        "readme": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md",
         "loglevel": "info",
         "nondeletable": false,
         "compact": false,
