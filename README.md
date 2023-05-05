@@ -136,6 +136,7 @@ sendTo("enigma2.0", "send", {
 -   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
 -   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
 -   (mcm1957) changed: Dependencies have been updated
+-   (mcm1957) changed: issues reported by adapter-checker have been fixed (#15)
 
 ### 1.4.0 (2022-04-11)
 * (foxriver76) compatibility to js-controller v5
