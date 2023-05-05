@@ -133,6 +133,7 @@ sendTo("enigma2.0", "send", {
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+-   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
 -   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
 -   (mcm1957) changed: Dependencies have been updated
 
