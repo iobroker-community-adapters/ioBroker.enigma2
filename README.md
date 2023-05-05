@@ -132,7 +132,7 @@ sendTo("enigma2.0", "send", {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 1.5.0 (2023-05-05)
 -   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
 -   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
 -   (mcm1957) changed: Dependencies have been updated
@@ -238,28 +238,23 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)      Message optimized
 * (Matten-Matten)      Command-Button integrated (no extra script needed!)
 
-
 ### 0.4.3 (2018-10-21)
 * (Matten-Matten)      Nicht bestätigte Werte und zustände (rot angezeigt) angepasst
 * (Matten-Matten)      Message um ein Objekt erweitert "ANSWER_IS"
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.4 angepasst
-                       
 
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.1 angepasst
 
-
 ### 0.4.1 (2018-09-21)
 * (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
 * (Matten-Matten)      Alexa (Mute,Standby)
-
 
 ### 0.3.3 (2018-09-20)
 * (Matten-Matten)      Message senden hinzugefügt
 * (Matten-Matten)      Message answer (true/false) hinzugefügt
 * (Matten-Matten)      Message.Question_Activ hinzugefügt
-
 
 ### 0.3.0 (2018-08-19)
 * (Matten-Matten)      enigma2-CONNECTION hinzugefügt
@@ -284,7 +279,7 @@ sendTo("enigma2.0", "send", {
 
 ### 0.0.11 (2018-03-19)
 * (Matten-Matten)                  Adapterkonfigurationsmaske (für Admin3) überarbeitet
-* (wendy2702 & Matten-Matten)      Admin3 
+* (wendy2702 & Matten-Matten)      Admin3
 
 ### 0.0.10 (2018-03-19)
 * (Matten-Matten)  Umstellungsversuch Admin3
@@ -297,7 +292,7 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)  Fehlerbehebung in HDD Abfrage
 * (Matten-Matten)  Fehlerbehebung wenn Box Heruntergefahren (nicht erreichbar)
                     jetzt nur noch mit: info	received error: connect ECONNREFUSED 192.168. ...
-* (Matten-Matten)  Konfigurations-Maske vereinfacht 
+* (Matten-Matten)  Konfigurations-Maske vereinfacht
 
 ### 0.0.7 (2017-09-20)
 * (Matten-Matten) add Fehlerbehebung in der MUTED Abfrage
@@ -309,6 +304,7 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten) add grafische Optimierung der Adapterkonfiguration
 
 ----
+
 ## License
 MIT License
 
