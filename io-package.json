@@ -102,7 +102,17 @@
         "config": {
             "width ": 1224,
             "height": 700
-        }
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
     "native": {
         "IPAddress": "192.168.0.1",
