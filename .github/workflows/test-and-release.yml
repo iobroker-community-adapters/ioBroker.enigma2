@@ -51,7 +51,7 @@ jobs:
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
           # install-command: 'npm install'
 
-# TODO: To enable automatic npm releases, create a token on npmjs.org 
+# TODO: To enable automatic npm releases, create a token on npmjs.org
 # Enter this token as a GitHub secret (with name NPM_TOKEN) in the repository options
 # Then uncomment the following block:
 
@@ -67,7 +67,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # Write permissions are required to create Github releases
+    # Write permissions are required to create GitHub releases
     permissions:
       contents: write
 
@@ -81,7 +81,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
           # When using Sentry for error reporting, Sentry can be informed about new releases
-          # To enable create a API-Token in Sentry (User settings, API keys)
+          # To enable create an API-Token in Sentry (User settings, API keys)
           # Enter this token as a GitHub secret (with name SENTRY_AUTH_TOKEN) in the repository options
           # Then uncomment and customize the following block:
 #          sentry: true

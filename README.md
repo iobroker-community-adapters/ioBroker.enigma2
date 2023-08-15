@@ -10,10 +10,6 @@
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 - (DE)(Adapter läuft nur auf einem Host! bei einer Client Installation gib's aktuell noch probleme.)
 
-
-## Installation:
-Installation requires nodejs v8 at minimum
-
 ## Forum
 [![ioBroker](https://forum.iobroker.net/assets/uploads/system/site-logo.png)](https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3)
 
@@ -130,14 +126,15 @@ sendTo("enigma2.0", "send", {
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (Lucky-ESA)          Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
-* (Lucky-ESA)          Bugfixes: undefined e2eventlist
+* (Lucky-ESA) Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
+* (Lucky-ESA) Bugfixes: undefined e2eventlist
+* (bluefox) Added json config
 
 ### 1.5.0 (2023-05-05)
--   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
--   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
--   (mcm1957) changed: Dependencies have been updated
--   (mcm1957) changed: issues reported by adapter-checker have been fixed (#15)
+* (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
+* (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
+* (mcm1957) changed: Dependencies have been updated
+* (mcm1957) changed: issues reported by adapter-checker have been fixed (#15)
 
 ### 1.4.0 (2022-04-11)
 * (foxriver76) compatibility to js-controller v5
@@ -303,8 +300,6 @@ sendTo("enigma2.0", "send", {
 
 ### 0.0.5 (2017-09-18)
 * (Matten-Matten) add grafische Optimierung der Adapterkonfiguration
-
-----
 
 ## License
 MIT License

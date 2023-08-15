@@ -91,17 +91,15 @@
     "readme": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md",
     "loglevel": "info",
     "nondeletable": false,
-    "compact": false,
-    "materialize": true,
+    "compact": true,
+    "adminUI": {
+      "config": "json"
+    },
     "authors": [
       "Matten-Matten <matten-matten@web.de>"
     ],
     "type": "multimedia",
     "blockly": true,
-    "config": {
-      "width ": 1224,
-      "height": 700
-    },
     "dependencies": [
       {
         "js-controller": ">=3.3.22"

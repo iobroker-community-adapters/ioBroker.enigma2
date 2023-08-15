@@ -1,0 +1,134 @@
+{
+  "type": "tabs",
+  "i18n": true,
+  "items": {
+    "_main": {
+      "label": "Main",
+      "type": "panel",
+      "items": {
+        "IPAddress": {
+          "type": "text",
+          "label": "IP Address of device",
+          "sm": 8,
+          "md": 4,
+          "lg": 2
+        },
+        "Port": {
+          "label": "Port",
+          "type": "number",
+          "min": 1,
+          "max": 65535,
+          "sm": 4,
+          "md": 2,
+          "lg": 1
+        },
+        "Username": {
+          "newLine": true,
+          "type": "text",
+          "label": "Username",
+          "sm": 4,
+          "md": 2,
+          "lg": 1
+        },
+        "Password": {
+          "label": "Password",
+          "type": "password",
+          "repeat": true,
+          "sm": 8,
+          "md": 4,
+          "lg": 2
+        },
+        "Webinterface": {
+          "newLine": true,
+          "type": "select",
+          "label": "Webinterface",
+          "options": [
+            {
+              "value": "true",
+              "label": "OpenWebif"
+            },
+            {
+              "value": "false",
+              "label": "Dream-Webinterface"
+            }
+          ],
+          "sm": 12,
+          "md": 6,
+          "lg": 2
+        },
+        "PollingInterval": {
+          "newLine": true,
+          "type": "select",
+          "label": "PollingInterval",
+          "options": [
+            {"value": "2000", "label": "2 sec."},
+            {"value": "3000", "label": "3 sec."},
+            {"value": "4000", "label": "4 sec."},
+            {"value": "5000", "label": "5 sec."},
+            {"value": "6000", "label": "6 sec."},
+            {"value": "7000", "label": "7 sec."},
+            {"value": "8000", "label": "8 sec."},
+            {"value": "9000", "label": "9 sec."},
+            {"value": "10000", "label": "10 sec."},
+            {"value": "15000", "label": "15 sec."},
+            {"value": "30000", "label": "30 sec."},
+            {"value": "60000", "label": "1 min."}
+          ],
+          "sm": 12,
+          "md": 6,
+          "lg": 2
+        }
+      }
+    },
+    "_settings": {
+      "label": "Settings",
+      "type": "panel",
+      "items": {
+        "_desc": {
+          "type": "staticText",
+          "text": "Important-desc",
+          "sm": 12,
+          "style": {
+            "fontSize": 16
+          }
+        },
+        "_desc2": {
+          "newLine": true,
+          "type": "header",
+            "text": "movielist-desc",
+            "size": 4,
+            "sm": 12
+        },
+        "movieliste": {
+          "newLine": true,
+          "label": "Movie list",
+          "type": "checkbox",
+          "sm": 12
+        },
+        "_desc3": {
+          "newLine": true,
+          "type": "header",
+          "text": "timerlist-desc",
+          "size": 4,
+          "sm": 12
+        },
+        "timerliste": {
+          "newLine": true,
+          "label": "Timer list",
+          "type": "checkbox",
+          "sm": 12
+        }
+      }
+    },
+    "_alexa": {
+      "label": "Alexa",
+      "type": "panel",
+      "items": {
+        "Alexa": {
+          "type": "checkbox",
+          "label": "Alexa"
+        }
+      }
+    }
+  }
+}
