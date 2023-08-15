@@ -126,7 +126,6 @@ sendTo("enigma2.0", "send", {
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (mcm1957) Adapter now required node 16
 * (Lucky-ESA) Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
 * (Lucky-ESA) Bugfixes: undefined e2eventlist
 * (bluefox) Added json config
