@@ -123,15 +123,16 @@ sendTo("enigma2.0", "send", {
    "msgType": 1                 /* Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention) */
 });
 ```
-
-----
  
 ## Changelog
-
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Lucky-ESA)          Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
+* (Lucky-ESA)          Bugfixes: undefined e2eventlist
+
 ### 1.5.0 (2023-05-05)
 -   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
 -   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
