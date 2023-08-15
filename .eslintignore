@@ -1,0 +1,7 @@
+**/.eslintrc.js
+admin/words.js
+admin/blockly.js
+lib/build.js
+lib/scripts.js
+lib/tools.js
+main.js

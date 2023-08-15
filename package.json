@@ -1,7 +1,7 @@
 {
   "name": "iobroker.enigma2",
-  "description": "enigma2 adapter für VU+;Dreambox;EDISON...",
-  "version": "1.3.5",
+  "description": "enigma2 adapter für VU+;Dreambox;EDISON... ",
+  "version": "1.5.0",
   "author": {
     "name": "Matten-Matten",
     "email": "matten-matten@web.de"
@@ -9,7 +9,7 @@
   "contributors": [
     {}
   ],
-  "homepage": "https://github.com/Matten-Matten/ioBroker.enigma2",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.enigma2",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -18,46 +18,51 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Matten-Matten/ioBroker.enigma2.git"
+    "url": "git+https://github.com/iobroker-community-adapters/ioBroker.enigma2.git"
   },
   "dependencies": {
+    "@iobroker/adapter-core": "^2.6.8",
+    "ping": "^0.2.2",
     "request": "^2.88.0",
-    "xml2js": "^0.4.19",
-    "ping": "^0.2.2"
+    "xml2js": "^0.5.0"
   },
   "devDependencies": {
-    "@iobroker/testing": "^1.3.0",
+    "@alcalzone/release-script": "^3.6.0",
+    "@alcalzone/release-script-plugin-iobroker": "^3.6.0",
+    "@alcalzone/release-script-plugin-license": "^3.5.9",
+    "@alcalzone/release-script-plugin-manual-review": "^3.5.9",
+    "@iobroker/adapter-dev": "^1.2.0",
+    "@iobroker/testing": "^4.1.0",
     "@types/chai": "^4.2.5",
     "@types/chai-as-promised": "^7.1.2",
-    "@types/gulp": "^4.0.6",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^10.17.6",
+    "@types/gulp": "^4.0.13",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.5.0",
     "@types/proxyquire": "^1.3.28",
-    "@types/sinon": "^7.5.1",
+    "@types/sinon": "^10.0.16",
     "@types/sinon-chai": "^3.2.3",
-    "axios": "^0.19.0",
+    "axios": "^1.3.5",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.7.1",
-    "gulp": "^4.0.2",
-    "mocha": "^6.2.2",
+    "eslint": "^8.47.0",
+    "mocha": "^10.2.0",
     "proxyquire": "^2.1.3",
-    "sinon": "^7.5.0",
+    "sinon": "^15.2.0",
     "sinon-chai": "^3.3.0"
   },
   "bugs": {
-    "url": "https://github.com/Matten-Matten/ioBroker.enigma2/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues"
   },
   "scripts": {
-    "init": "node lib/scripts.js init",
-    "sort": "node lib/scripts.js sort",
-    "test": "node node_modules/mocha/bin/mocha --exit",
-    "list": "node lib/scripts.js list --file /var/www/download/list.html",
-    "repos": "node lib/build.js --stable /var/www/download/sources-dist.json --latest /var/www/download/sources-dist-latest.json --shields /var/www/download/img",
-    "nodates": "node lib/scripts.js nodates",
-    "addToLatest": "node lib/scripts.js addToLatest",
-    "addToStable": "node lib/scripts.js addToStable"
+    "test:js": "mocha --config test/mocharc.custom.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
+    "test:package": "mocha test/package --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "check": "tsc --noEmit -p tsconfig.check.json",
+    "lint": "eslint .",
+    "translate": "translate-adapter",
+    "release": "release-script"
   },
   "main": "main.js",
   "readmeFilename": "README.md"
-} 
+}

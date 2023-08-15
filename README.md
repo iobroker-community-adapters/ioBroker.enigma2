@@ -3,11 +3,6 @@
 [![NPM version](http://img.shields.io/npm/v/iobroker.enigma2.svg)](https://www.npmjs.com/package/iobroker.enigma2) [![Downloads](https://img.shields.io/npm/dm/iobroker.enigma2.svg)](https://www.npmjs.com/package/iobroker.enigma2) [![NPM](https://nodei.co/npm/iobroker.enigma2.png?downloads=true)](https://nodei.co/npm/iobroker.enigma2/)
 
 ----
-## Work on adapter enigma2 canceled. Project taker wanted!
-## Arbeit am Adapter enigma2 abgebrochen. Projekt Übernehmer gesucht!
-### Bei Interesse bitte auf das ISSUE antworten -> [#44](https://github.com/Matten-Matten/ioBroker.enigma2/issues/44) <-
-
-----
 # ioBroker enigma2
 - Adapter for ioBroker to retrieve information from an enigma2 receiver and send commands
 - (Adapter only runs on one host! with a client installation there's currently still problems.)
@@ -128,14 +123,24 @@ sendTo("enigma2.0", "send", {
    "msgType": 1                 /* Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention) */
 });
 ```
-
-----
  
 ## Changelog
-
-### 1.3.5 (2022-09-03)
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
+### **WORK IN PROGRESS**
 * (Lucky-ESA)          Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
 * (Lucky-ESA)          Bugfixes: undefined e2eventlist
+
+### 1.5.0 (2023-05-05)
+-   (mcm1957) The adapter has been moved into iobroker-community-adapters organisation
+-   (mcm1957) changed: Testing has been added and changed to support node 16, 18 and 20
+-   (mcm1957) changed: Dependencies have been updated
+-   (mcm1957) changed: issues reported by adapter-checker have been fixed (#15)
+
+### 1.4.0 (2022-04-11)
+* (foxriver76) compatibility to js-controller v5
 
 ### 1.3.3 (2021-06-07)
 * (TDCroPower)          Bugfixes: [#48](https://github.com/Matten-Matten/ioBroker.enigma2/issues/48)
@@ -234,28 +239,23 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)      Message optimized
 * (Matten-Matten)      Command-Button integrated (no extra script needed!)
 
-
 ### 0.4.3 (2018-10-21)
 * (Matten-Matten)      Nicht bestätigte Werte und zustände (rot angezeigt) angepasst
 * (Matten-Matten)      Message um ein Objekt erweitert "ANSWER_IS"
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.4 angepasst
-                       
 
 ### 0.4.2 (2018-10-05)
 * (Matten-Matten)      Button Probleme bei Dreamwebif angepasst
 * (Matten-Matten)      Button BUTTON SCRIPT auf V3.1 angepasst
 
-
 ### 0.4.1 (2018-09-21)
 * (Matten-Matten)      Button werden gelöscht wenn in der Config "BUTTON SCRIPT" deaktiviert wird
 * (Matten-Matten)      Alexa (Mute,Standby)
-
 
 ### 0.3.3 (2018-09-20)
 * (Matten-Matten)      Message senden hinzugefügt
 * (Matten-Matten)      Message answer (true/false) hinzugefügt
 * (Matten-Matten)      Message.Question_Activ hinzugefügt
-
 
 ### 0.3.0 (2018-08-19)
 * (Matten-Matten)      enigma2-CONNECTION hinzugefügt
@@ -280,7 +280,7 @@ sendTo("enigma2.0", "send", {
 
 ### 0.0.11 (2018-03-19)
 * (Matten-Matten)                  Adapterkonfigurationsmaske (für Admin3) überarbeitet
-* (wendy2702 & Matten-Matten)      Admin3 
+* (wendy2702 & Matten-Matten)      Admin3
 
 ### 0.0.10 (2018-03-19)
 * (Matten-Matten)  Umstellungsversuch Admin3
@@ -293,7 +293,7 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten)  Fehlerbehebung in HDD Abfrage
 * (Matten-Matten)  Fehlerbehebung wenn Box Heruntergefahren (nicht erreichbar)
                     jetzt nur noch mit: info	received error: connect ECONNREFUSED 192.168. ...
-* (Matten-Matten)  Konfigurations-Maske vereinfacht 
+* (Matten-Matten)  Konfigurations-Maske vereinfacht
 
 ### 0.0.7 (2017-09-20)
 * (Matten-Matten) add Fehlerbehebung in der MUTED Abfrage
@@ -305,10 +305,11 @@ sendTo("enigma2.0", "send", {
 * (Matten-Matten) add grafische Optimierung der Adapterkonfiguration
 
 ----
+
 ## License
 MIT License
 
-Copyright (c) 2021 Matten-Matten matten-matten@web.de
+Copyright (c) 2023 iobroker-community-adapters
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
