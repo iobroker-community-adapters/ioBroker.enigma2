@@ -125,7 +125,7 @@ sendTo("enigma2.0", "send", {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.0.1 (2023-08-15)
 * (Lucky-ESA) Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)
 * (Lucky-ESA) Bugfixes: undefined e2eventlist
 * (bluefox) Added json config

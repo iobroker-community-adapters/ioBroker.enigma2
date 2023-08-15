@@ -1,22 +1,22 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "connectionType": "local",
     "dataSource": "poll",
     "news": {
-      "2.0.0": {
-        "en": "Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAdded json config",
-        "de": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefinierte e2eventlist\nHinzugefügt json config",
-        "ru": "Исправления: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: неопределенный e2eventlist\nДобавлено json config",
-        "pt": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: indefinido e2eventlist\nAdicionado json config",
-        "nl": "Quality over Quantity (QoQ) Releases Vertaling:\nOnbepaalde e2eventlist\n_",
-        "fr": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAjouté json config",
-        "it": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist non definita\nAggiunto json config",
-        "es": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist indefinido\nAñadido json config",
-        "pl": "Bugfixes: #61 (https:/github.com/Matten-Matten/ioBroker.enigma2/issues/61) (ang.)\nBugfixes: nieokreślona e2\nAdded json configig",
-        "uk": "Виправлення помилок: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nВиправлення помилок\nДодано json config",
-        "zh-cn": "Bugfix:#[61](http://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfix:未界定的电子清单\n增编"
+      "2.0.1": {
+        "en": "Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAdded json config\nAdapter now requires node 16",
+        "de": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefinierte e2eventlist\nHinzugefügt json config\nAdapter benötigt nun node 16",
+        "ru": "Исправления: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: неопределенный e2eventlist\nДобавлено json config\nАдаптер теперь требует ноды 16",
+        "pt": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: indefinido e2eventlist\nAdicionado json config\nAdaptador agora requer nó 16",
+        "nl": "Quality over Quantity (QoQ) Releases Vertaling:\nOnbepaalde e2eventlist\n_\nAdapter vereist nu node 16",
+        "fr": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAjouté json config\nL'adaptateur ne nécessite plus 16 ans",
+        "it": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist non definita\nAggiunto json config\nAdattatore ora richiede nodo 16",
+        "es": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist indefinido\nAñadido json config\nAdaptador ahora requiere nodo 16",
+        "pl": "Bugfixes: #61 (https:/github.com/Matten-Matten/ioBroker.enigma2/issues/61) (ang.)\nBugfixes: nieokreślona e2\nAdded json configig\nObecnie węzeł wymaga węzła 16 węzłów",
+        "uk": "Виправлення помилок: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nВиправлення помилок\nДодано json config\nАдаптер тепер вимагає вузла 16",
+        "zh-cn": "Bugfix:#[61](http://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfix:未界定的电子清单\n增编\n现在需要道歉16"
       },
       "1.5.0": {
         "en": "The adapter has been moved into iobroker-community-adapters organisation\nchanged: Testing has been added and changed to support node 16, 18 and 20\nchanged: Dependencies have been updated\nchanged: issues reported by adapter-checker have been fixed (#15)",
@@ -54,10 +54,6 @@
       "1.3.2": {
         "en": "Add: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`",
         "de": "Hinzugefügt: `.command.VOLUME_UP` & `.command.VOLUME_DOWN`"
-      },
-      "1.3.1": {
-        "en": "Add: correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling",
-        "de": "correction in `.enigma2.Timer_is_set` & `.enigma2.isRecording` with login handling"
       }
     },
     "title": "enigma2",
