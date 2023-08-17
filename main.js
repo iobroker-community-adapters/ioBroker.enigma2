@@ -134,21 +134,18 @@ function startAdapter(options) {
 
             } else if (id === `${adapter.namespace}.Alexa_Command.Standby`) {
                 //+++++++++++++++++++++++++++
-                const state = await adapter.getStateAsync('Alexa_Command.Standby');
-                if (state.val === true) {
+                const _state = await adapter.getStateAsync('Alexa_Command.Standby');
+                if (_state.val === true) {
                     await getResponseAsync('NONE', deviceId, `${PATH['MAIN_COMMAND']}4`);
-                } else if (state.val === false) {
+                } else if (_state.val === false) {
                     await getResponseAsync('NONE', deviceId, `${PATH['MAIN_COMMAND']}5`);
                 }
-                await adapter.setStateAsync('Alexa_Command.Standby', {val: state.val, ack: true});
+                await adapter.setStateAsync('Alexa_Command.Standby', {val: _state.val, ack: true});
             } else if (id === `${adapter.namespace}.Alexa_Command.Mute`) {
-                const state = await adapter.getStateAsync('Alexa_Command.Mute');
-                if (state && state.val === true) {
+                const _state = await adapter.getStateAsync('Alexa_Command.Mute');
+                if ((_state && _state.val === true) || (!_state || _state.val === false)) {
                     await getResponseAsync('NONE', deviceId, `${PATH['REMOTE_CONTROL']}113`);
-                    await adapter.setStateAsync('Alexa_Command.Mute', {val: state.val, ack: true});
-                } else if (!state || state.val === false) {
-                    await getResponseAsync('NONE', deviceId, `${PATH['REMOTE_CONTROL']}113`);
-                    await adapter.setStateAsync('Alexa_Command.Mute', {val: state.val, ack: true});
+                    await adapter.setStateAsync('Alexa_Command.Mute', {val: _state.val, ack: true});
                 }
             } else if (id === `${adapter.namespace}.enigma2.Update`) {
                 // enigma2.Update
@@ -208,13 +205,13 @@ function startAdapter(options) {
                 adapter.log.debug(`Info message: ${state.val}`);
                 const MESSAGE_TEXT = state.val;
 
-                let state = await adapter.getStateAsync('Message.Type')
-                adapter.log.debug(`Info Message Type: ${state.val}`);
-                const MESSAGE_TYPE = state.val;
+                let _state = await adapter.getStateAsync('Message.Type');
+                adapter.log.debug(`Info Message Type: ${_state.val}`);
+                const MESSAGE_TYPE = _state.val;
 
-                state = await adapter.getStateAsync('Message.Timeout');
-                adapter.log.debug(`Info Message Type: ${state.val}`);
-                const MESSAGE_TIMEOUT = state.val;
+                _state = await adapter.getStateAsync('Message.Timeout');
+                adapter.log.debug(`Info Message Type: ${_state.val}`);
+                const MESSAGE_TIMEOUT = _state.val;
 
                 await getResponseAsync('NONE', deviceId, `${PATH['MESSAGE'] + encodeURIComponent(MESSAGE_TEXT)}&type=${MESSAGE_TYPE}&timeout=${MESSAGE_TIMEOUT}`);
                 await adapter.setStateAsync('Message.Text', {val: MESSAGE_TEXT, ack: true});
@@ -228,12 +225,12 @@ function startAdapter(options) {
                 //Timer
                 const timerID = parts[2];
 
-                let state = await adapter.getStateAsync(`Timer.${timerID}.Timer_servicereference`);
-                const T_sRef = state.val;
-                state = await adapter.getStateAsync(`Timer.${timerID}.Timer_Start`);
-                const T_begin = state.val;
-                state = await adapter.getStateAsync(`Timer.${timerID}.Timer_End`);
-                const T_end = state.val;
+                let _state = await adapter.getStateAsync(`Timer.${timerID}.Timer_servicereference`);
+                const T_sRef = _state.val;
+                _state = await adapter.getStateAsync(`Timer.${timerID}.Timer_Start`);
+                const T_begin = _state.val;
+                _state = await adapter.getStateAsync(`Timer.${timerID}.Timer_End`);
+                const T_end = _state.val;
                 await getResponseAsync('NONE', deviceId, `${PATH['TIMER_TOGGLE'] + T_sRef}&begin=${T_begin}&end=${T_end}`);
                 const xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
                 await timerSearchResponse('TIMERLIST', deviceId, xml);
@@ -288,7 +285,7 @@ async function getResponseAsync(command, deviceId, path) {
             if (adapter.config.Username.length > 0 && adapter.config.Password.length > 0) {
                 options.headers = {
                     'Authorization': `Basic ${Buffer.from(`${adapter.config.Username}:${adapter.config.Password}`).toString('base64')}`
-                }
+                };
                 adapter.log.debug(`using authorization with user '${adapter.config.Username}'`);
             } else {
                 adapter.log.debug('using no authorization');
@@ -431,14 +428,13 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                 bool = parseBool(xml.e2volume.e2ismuted);
                 adapter.log.debug(`Box Volume:${parseInt(xml.e2volume.e2current[0])}`);
                 await adapter.setStateAsync('enigma2.VOLUME', {val: parseInt(xml.e2volume.e2current[0]), ack: true});
-                adapter.log.debug(`Box Muted:${parseBool(xml.e2volume.e2ismuted)}`);
-                await adapter.setStateAsync('enigma2.MUTED', {val: parseBool(xml.e2volume.e2ismuted), ack: true});
+                adapter.log.debug(`Box Muted:${bool}`);
+                await adapter.setStateAsync('enigma2.MUTED', {val: bool, ack: true});
                 // Alexa_Command.Mute
                 if (adapter.config.Alexa) {
-                    const alexaMute = parseBool(xml.e2volume.e2ismuted);
-                    if (alexaMute === false || alexaMute === 'false') {
+                    if (bool === false || bool === 'false') {
                         await adapter.setStateAsync('Alexa_Command.Mute', {val: true, ack: true});
-                    } else if (alexaMute === true || alexaMute === 'true') {
+                    } else if (bool === true || bool === 'true') {
                         await adapter.setStateAsync('Alexa_Command.Mute', {val: false, ack: true});
                     }
                 }
@@ -572,9 +568,8 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                         await adapter.setStateAsync('enigma2.EVENT_TIME_END', {val: '', ack: true});
                         await adapter.setStateAsync('enigma2.EVENT_TIME_START', {val: '', ack: true});
                     }
-
-                    break;
                 }
+                break;
             case 'GETINFO':
                 adapter.log.debug(`Box Sender: ${xml.e2abouts.e2about[0].e2servicename[0]}`);
                 await adapter.setStateAsync('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
@@ -708,11 +703,11 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                     await adapter.setStateAsync('enigma2.isRecording', {val: false, ack: true});
                 }
                 break;
-            case 'TIMERLIST':
+            case 'TIMERLIST': {
                 let result = [];
                 if (adapter.config.timerliste) {
                     if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
-                        let timerList = xml.e2timerlist.e2timer;
+                        const timerList = xml.e2timerlist.e2timer;
 
                         timerList.forEach(timerItem => result.push({
                             title: timerItem.e2name.toString(),
@@ -740,7 +735,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                                 await adapter.setStateAsync('enigma2.TIMER_LIST', result, true);
                                 adapter.log.debug('timer list updated');
                             } else {
-                                adapter.log.debug("no new timer found -> timer list is up to date");
+                                adapter.log.debug('no new timer found -> timer list is up to date');
                             }
                         } else {
                             await adapter.setStateAsync('enigma2.TIMER_LIST', result, true);
@@ -748,6 +743,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                         }
                     }
                 }
+            }
                 break;
             case 'GETMOVIELIST':
                 try {
@@ -784,7 +780,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
                         movieList = JSON.stringify(movieList);
 
-                        let state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
+                        const state = await adapter.getStateAsync('enigma2.MOVIE_LIST');
 
                         // only update if we have new movies
                         if (state && state.val !== null) {
@@ -1103,7 +1099,7 @@ async function main() {
         },
         native: {}
     });
-    if (adapter.config.Webinterface === "true" || adapter.config.Webinterface === true) {
+    if (adapter.config.Webinterface === 'true' || adapter.config.Webinterface === true) {
         // openwebif api
         await adapter.setObjectNotExistsAsync('enigma2.CHANNEL_PICON', {
             type: 'state',
@@ -1455,148 +1451,148 @@ function timer() {
 }
 */
 // TIMER
-async function timerSearchResponse(command, deviceId, xml) {
+async function timerSearchResponse(/* command, deviceId, xml */) {
     // disabled
-	return;
-
-	switch (command.toUpperCase()) {
-		case 'TIMERLIST':
-			// Clear Timerlist
-			await adapter.delObjectAsync('Timer');
-			if (xml.e2timerlist.e2timer !== undefined) {
-				for (let i = 0; i < xml.e2timerlist.e2timer.length; i++) {
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Event-Name`, {
-						type: 'state',
-						common: {
-							type: 'string',
-							role: 'state',
-							name: 'Sendung Name',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Station`, {
-						type: 'state',
-						common: {
-							type: 'string',
-							role: 'state',
-							name: 'TV Sender',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Disabled`, {
-						type: 'state',
-						common: {
-							type: 'number',
-							role: 'state',
-							states: {
-								0: 'Timer aktiviert',
-								1: 'Timer deaktiviert'
-							},
-							name: 'Timer Aktivität',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Repeated`, {
-						type: 'state',
-						common: {
-							type: 'number',
-							role: 'state',
-							states: {
-							'False': 'keine Wiederholung',
-							0: 'keine Wiederholung',
-							1: 'Mo',
-							2: 'Di',
-							4: 'Mi',
-							8: 'Do',
-							16: 'Fr',
-							32: 'Sa',
-							64: 'So'
-							},
-							name: 'Timer Wiederholung',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_Start`, {
-						type: 'state',
-						common: {
-							type: 'number',
-							role: 'state',
-							name: 'Timer Aktivität',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_End`, {
-						type: 'state',
-						common: {
-							type: 'number',
-							role: 'state',
-							name: 'Timer Aktivität',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_servicereference`, {
-						type: 'state',
-						common: {
-							type: 'number',
-							role: 'state',
-							name: 'Timer Aktivität',
-							read: true,
-							write: false,
-						},
-						native: {},
-					});
-					//++BUTTON++ 	Timer_Toggle
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Delete`, {
-						type: 'state',
-						common: {
-							type: 'boolean',
-							role: 'button',
-							name: 'Timer Delete',
-							read:  false,
-							write: true,
-						},
-						native: {},
-					});
-					await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_Toggle`, {
-						type: 'state',
-						common: {
-							type: 'boolean',
-							role: 'button',
-							name: 'Timer ON/OFF',
-							read:  false,
-							write: true,
-						},
-						native: {},
-					});
-
-					await adapter.setStateAsync(`Timer.${i}.Event-Name`, { val: xml.e2timerlist.e2timer[i].e2name[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Station`, { val: xml.e2timerlist.e2timer[i].e2servicename[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Disabled`, { val: xml.e2timerlist.e2timer[i].e2disabled[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Repeated`, { val: xml.e2timerlist.e2timer[i].e2repeated[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Timer_servicereference`, { val: xml.e2timerlist.e2timer[i].e2servicereference[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Timer_End`, { val: xml.e2timerlist.e2timer[i].e2timeend[0], ack: true });
-					await adapter.setStateAsync(`Timer.${i}.Timer_Start`, { val: xml.e2timerlist.e2timer[i].e2timebegin[0], ack: true });
-				}
-			}
-			break;
-
-		default:
-			adapter.log.info(`received unknown TimerSearch '${command}' @ TimerSearch`);
-            break;
-	}
+    return;
+    //
+    // switch (command.toUpperCase()) {
+    // 	case 'TIMERLIST':
+    // 		// Clear Timerlist
+    // 		await adapter.delObjectAsync('Timer');
+    // 		if (xml.e2timerlist.e2timer !== undefined) {
+    // 			for (let i = 0; i < xml.e2timerlist.e2timer.length; i++) {
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Event-Name`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'string',
+    // 						role: 'state',
+    // 						name: 'Sendung Name',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Station`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'string',
+    // 						role: 'state',
+    // 						name: 'TV Sender',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Disabled`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'number',
+    // 						role: 'state',
+    // 						states: {
+    // 							0: 'Timer aktiviert',
+    // 							1: 'Timer deaktiviert'
+    // 						},
+    // 						name: 'Timer Aktivität',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Repeated`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'number',
+    // 						role: 'state',
+    // 						states: {
+    // 						'False': 'keine Wiederholung',
+    // 						0: 'keine Wiederholung',
+    // 						1: 'Mo',
+    // 						2: 'Di',
+    // 						4: 'Mi',
+    // 						8: 'Do',
+    // 						16: 'Fr',
+    // 						32: 'Sa',
+    // 						64: 'So'
+    // 						},
+    // 						name: 'Timer Wiederholung',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_Start`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'number',
+    // 						role: 'state',
+    // 						name: 'Timer Aktivität',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_End`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'number',
+    // 						role: 'state',
+    // 						name: 'Timer Aktivität',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    //
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_servicereference`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'number',
+    // 						role: 'state',
+    // 						name: 'Timer Aktivität',
+    // 						read: true,
+    // 						write: false,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				//++BUTTON++ 	Timer_Toggle
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Delete`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'boolean',
+    // 						role: 'button',
+    // 						name: 'Timer Delete',
+    // 						read:  false,
+    // 						write: true,
+    // 					},
+    // 					native: {},
+    // 				});
+    // 				await adapter.setObjectNotExistsAsync(`Timer.${i}.Timer_Toggle`, {
+    // 					type: 'state',
+    // 					common: {
+    // 						type: 'boolean',
+    // 						role: 'button',
+    // 						name: 'Timer ON/OFF',
+    // 						read:  false,
+    // 						write: true,
+    // 					},
+    // 					native: {},
+    // 				});
+    //
+    // 				await adapter.setStateAsync(`Timer.${i}.Event-Name`, { val: xml.e2timerlist.e2timer[i].e2name[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Station`, { val: xml.e2timerlist.e2timer[i].e2servicename[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Disabled`, { val: xml.e2timerlist.e2timer[i].e2disabled[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Repeated`, { val: xml.e2timerlist.e2timer[i].e2repeated[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Timer_servicereference`, { val: xml.e2timerlist.e2timer[i].e2servicereference[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Timer_End`, { val: xml.e2timerlist.e2timer[i].e2timeend[0], ack: true });
+    // 				await adapter.setStateAsync(`Timer.${i}.Timer_Start`, { val: xml.e2timerlist.e2timer[i].e2timebegin[0], ack: true });
+    // 			}
+    // 		}
+    // 		break;
+    //
+    // 	default:
+    // 		adapter.log.info(`received unknown TimerSearch '${command}' @ TimerSearch`);
+    //         break;
+    // }
 }
 
 // If started as allInOne mode => return function to create instance
