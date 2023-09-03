@@ -1,23 +1,10 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.0.3",
+    "version": "2.0.2",
     "connectionType": "local",
     "dataSource": "poll",
     "news": {
-      "2.0.3": {
-        "en": "Bugfixes: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "de": "Fehlerbehebungen: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "ru": "Исправления: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "pt": "Correcções de erros: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "nl": "Verbetering: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "fr": "Corrections de bugs: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "it": "Correzioni di bug: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "es": "Corrección de errores: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "pl": "Poprawki błędów: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "uk": "Виправлення помилок: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)",
-        "zh-cn": "缺陷修复: [#118](https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues/118)"
-      },
       "2.0.2": {
         "en": "Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAdded json config\nAdapter now requires node 16",
         "de": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefinierte e2eventlist\nHinzugefügt json config\nAdapter benötigt nun den Knoten 16",
