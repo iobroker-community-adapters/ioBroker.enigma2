@@ -1294,28 +1294,20 @@ async function main() {
         }, 60000 * 30);
     */
     eventInterval = setInterval(async () => {
-        if (isConnected) {
-            let xml = await getResponseAsync('GETSTANDBY', deviceId, PATH['POWERSTATE']);
-            await evaluateCommandResponse('GETSTANDBY', deviceId, xml);
-
-            xml = await getResponseAsync('MESSAGEANSWER', deviceId, PATH['MESSAGEANSWER']);
-            await evaluateCommandResponse('MESSAGEANSWER', deviceId, xml);
-
-            xml = await getResponseAsync('GETINFO', deviceId, PATH['ABOUT']);
-            await evaluateCommandResponse('GETINFO', deviceId, xml);
-
-            xml = await getResponseAsync('GETVOLUME', deviceId, PATH['VOLUME']);
-            await evaluateCommandResponse('GETVOLUME', deviceId, xml);
-
-            xml = await getResponseAsync('GETCURRENT', deviceId, PATH['GET_CURRENT']);
-            await evaluateCommandResponse('GETCURRENT', deviceId, xml);
-
-            xml = await getResponseAsync('ISRECORD', deviceId, PATH['ISRECORD'],);
-            await evaluateCommandResponse('ISRECORD', deviceId, xml);
-
-            xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
-            await evaluateCommandResponse('TIMERLIST', deviceId, xml);
-        }
+        let xml = await getResponseAsync('GETSTANDBY', deviceId, PATH['POWERSTATE']);
+        await evaluateCommandResponse('GETSTANDBY', deviceId, xml);
+        xml = await getResponseAsync('MESSAGEANSWER', deviceId, PATH['MESSAGEANSWER']);
+        await evaluateCommandResponse('MESSAGEANSWER', deviceId, xml);
+        xml = await getResponseAsync('GETINFO', deviceId, PATH['ABOUT']);
+        await evaluateCommandResponse('GETINFO', deviceId, xml);
+        xml = await getResponseAsync('GETVOLUME', deviceId, PATH['VOLUME']);
+        await evaluateCommandResponse('GETVOLUME', deviceId, xml);
+        xml = await getResponseAsync('GETCURRENT', deviceId, PATH['GET_CURRENT']);
+        await evaluateCommandResponse('GETCURRENT', deviceId, xml);
+        xml = await getResponseAsync('ISRECORD', deviceId, PATH['ISRECORD'],);
+        await evaluateCommandResponse('ISRECORD', deviceId, xml);
+        xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
+        await evaluateCommandResponse('TIMERLIST', deviceId, xml);
     }, adapter.config.PollingInterval);
 
     deviceInfoInterval = setInterval(async () => {
