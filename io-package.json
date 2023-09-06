@@ -1,10 +1,23 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "connectionType": "local",
     "dataSource": "poll",
     "news": {
+      "2.0.3": {
+        "en": "fixed the problem that no objects are updated",
+        "de": "Das Problem, dass keine Objekte aktualisiert werden, wurde behoben",
+        "ru": "исправлена проблема, которую никакие объекты не обновляются",
+        "pt": "corrigiu o problema que nenhum objeto é atualizado",
+        "nl": "_",
+        "fr": "fixe le problème qu'aucun objet n'est mis à jour",
+        "it": "risolto il problema che nessun oggetto viene aggiornato",
+        "es": "solucionó el problema que ningún objeto se actualiza",
+        "pl": "zastosowano problem, który nie jest aktualizowany",
+        "uk": "виправлено проблему, яку немає об'єктів",
+        "zh-cn": "未更新物体的固定问题"
+      },
       "2.0.2": {
         "en": "Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAdded json config\nAdapter now requires node 16",
         "de": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefinierte e2eventlist\nHinzugefügt json config\nAdapter benötigt nun den Knoten 16",
