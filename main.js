@@ -721,7 +721,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                             endTime: (timerItem.e2timeend * 1000).toString(),
                             // end
                             duration: timerItem.e2duration.toString(),
-                            subtitle: timerItem.e2descriptio.toString(),
+                            subtitle: timerItem.e2description.toString(),
                             description: timerItem.e2descriptionextended.toString(),
                         }));
 
