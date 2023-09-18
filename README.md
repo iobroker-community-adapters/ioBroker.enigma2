@@ -125,7 +125,7 @@ sendTo("enigma2.0", "send", {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 2.0.4 (2023-09-18)
+### **WORK IN PROGRESS**
 * (mcm1957) A problem causing missing descriptions for timer entryies and warnings has been fixed. #119 
 * (mcm1957) Dependencies have been updated.
 
