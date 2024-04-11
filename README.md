@@ -123,9 +123,9 @@ sendTo("enigma2.0", "send", {
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
+    ### **WORK IN PROGRESS**
 -->
-### __WORK IN PROGRESS__
+### **WORK IN PROGRESS**
 * (mcm1957) Adapter requires node.js >=18 and js-controller >= 5 now
 * (mcm1957) Dependencies have been updated
 
