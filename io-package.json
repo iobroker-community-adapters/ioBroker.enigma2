@@ -2,8 +2,6 @@
     "common": {
         "name": "enigma2",
         "version": "2.0.5",
-        "connectionType": "local",
-        "dataSource": "poll",
         "news": {
             "2.0.5": {
                 "en": "A problem causing missing descriptions for timer entryies and warnings has been fixed. #119 \nDependencies have been updated.",
@@ -97,7 +95,6 @@
                 "zh-cn": "错误修正 SET_VOLUME 字符串错误 #56，时间戳 #59"
             }
         },
-        "title": "enigma2",
         "titleLang": {
             "en": "enigma2",
             "de": "enigma2",
@@ -124,38 +121,46 @@
             "uk": "адаптер enigma2 для VU+, Dreambox, EDISON...",
             "zh-cn": "万国邮联+,Dream箱,EDISON..."
         },
+        "authors": [
+            "Matten-Matten <matten-matten@web.de>"
+        ],
+        "keywords": [
+            "enigma2"
+        ],
+        "licenseInformation": {
+            "license": "MIT",
+            "type": "free"
+        },
         "platform": "Javascript/Node.js",
-        "license": "MIT",
-        "mode": "daemon",
-        "main": "main.js",
         "icon": "enigma2.png",
-        "messagebox": true,
-        "subscribe": "messagebox",
         "enabled": false,
-        "stopBeforeUpdate": true,
+        "messagebox": true,
         "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.enigma2/master/admin/enigma2.png",
         "readme": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md",
         "loglevel": "info",
-        "nondeletable": false,
+        "tier": 2,
+        "mode": "daemon",
+        "type": "multimedia",
+        "connectionType": "local",
+        "dataSource": "poll",
         "compact": true,
         "adminUI": {
             "config": "json"
         },
-        "authors": [
-            "Matten-Matten <matten-matten@web.de>"
-        ],
-        "type": "multimedia",
-        "blockly": true,
         "dependencies": [
             {
-                "js-controller": ">=3.3.22"
+                "js-controller": ">=5.0.0"
             }
         ],
         "globalDependencies": [
             {
                 "admin": ">=5.1.13"
             }
-        ]
+        ],
+        "subscribe": "messagebox",
+        "stopBeforeUpdate": true,
+        "nondeletable": false,
+        "blockly": true
     },
     "native": {
         "IPAddress": "192.168.0.1",
