@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "news": {
+      "2.1.1": {
+        "en": "Updated Blockly definitions",
+        "de": "Aktualisierte Blockly Definitionen",
+        "ru": "Обновленные детальные определения",
+        "pt": "Definições Blockly atualizadas",
+        "nl": "Bijgewerkte blokdefinities",
+        "fr": "Mise à jour des définitions par blocs",
+        "it": "Aggiornate definizioni Blockly",
+        "es": "Definiciones bloqueadas actualizadas",
+        "pl": "Aktualizacja definicji blockly",
+        "uk": "Оновлено блочні визначення",
+        "zh-cn": "更新的块状定义"
+      },
       "2.1.0": {
         "en": "Adapter requires node.js >=18 and js-controller >= 5 now\nDependencies have been updated",
         "de": "Adapter benötigt node.js >=18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "Adaptator został przeniesiony do organizacji iobroker-community-profit\nzmieniono: Testy zostały dodane i zmienione na 16 węzłów, 18 i 20\nzmieniono: Zależności zostały zaktualizowane\nzmieniono następujące problemy: urządzenie regulowane przez adapter-checker zostało ustalone #(15)",
         "uk": "Перехідник був переведений в організацію iobroker-community-adapters\nзмінено: Тестування було додано та змінено для підтримки вузлів 16, 18 та 20\nзмінено: Оновлено залежність\nзмінено: проблеми, які повідомляються адаптером-шкером, були виправлені #(15)",
         "zh-cn": "适应者被移入了小型妓院。\n修改: 添加并修改了试验,以支助第16、18和20条。\n修改: 已更新了属地\n变化:适应者报告的问题已确定为第(15)号。"
-      },
-      "1.4.0": {
-        "en": "compatibility to js-controller v5",
-        "de": "Kompatibilität mit js-controller v5",
-        "ru": "совместимость с js-controller v5",
-        "pt": "compatibilidade com js-controller v5",
-        "fr": "compatibilité avec js-controller v5",
-        "it": "compatibilità con js-controller v5",
-        "es": "compatibilidad con js-controller v5",
-        "pl": "kompatybilność z js-controllerem v5",
-        "uk": "сумісність з js-controller v5",
-        "zh-cn": "兼容并行李",
-        "nl": "compatibiliteit met js-controller v5"
       }
     },
     "titleLang": {
