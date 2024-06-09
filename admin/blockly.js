@@ -26,7 +26,7 @@ Blockly.Words['enigma2_log_error']     = {'en': 'error',                       '
 
 Blockly.Words['enigma2_anyInstance']   = {'en': 'all instances',               'de': 'Alle Instanzen',                     'ru': 'all instances'};
 Blockly.Words['enigma2_tooltip']       = {'en': 'Send message to enigma2',    'de': 'Sende eine Nachricht an den Receiver',   'ru': 'Send message to enigma2'};
-Blockly.Words['enigma2_help']          = {'en': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'de': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md', 'ru': 'https://github.com/Matten-Matten/ioBroker.enigma2/blob/master/README.md'};
+Blockly.Words['enigma2_help']          = {'en': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md', 'de': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md', 'ru': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md'};
 
 Blockly.Sendto.blocks['enigma2'] =
     '<block type="enigma2">'
@@ -49,53 +49,55 @@ Blockly.Sendto.blocks['enigma2'] =
     + '</block>';
 
 Blockly.Blocks['enigma2'] = {
-    init: function() {
-        var options = [];
+    init: function () {
+        const options = [[Blockly.Translate('enigma2_anyInstance'), '']];
         if (typeof main !== 'undefined' && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.enigma2.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.enigma2.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
-                    options.push(['enigma2.' + n, '.' + n]);
+                    const k = parseInt(m[1], 10);
+                    options.push(['enigma2.' + k, '.' + k]);
+                }
+            }
+            if (options.length === 0) {
+                for (let u = 0; u <= 4; u++) {
+                    options.push(['enigma2.' + u, '.' + u]);
                 }
             }
         } else {
-            for (var u = 0; u <= 4; u++) {
-                options.push(['enigma2.' + u, '.' + u]);
+            for (let n = 0; n <= 4; n++) {
+                options.push(['enigma2.' + n, '.' + n]);
             }
         }
 
         this.appendDummyInput('INSTANCE')
-            .appendField(Blockly.Words['enigma2'][systemLang])
+            .appendField(Blockly.Translate('enigma2'))
             .appendField(new Blockly.FieldDropdown(options), 'INSTANCE');
 
         this.appendValueInput('MESSAGE')
-            .appendField(Blockly.Words['enigma2_message'][systemLang]);
+            .appendField(Blockly.Translate('enigma2_message'));
 
 		this.appendValueInput('TIMEOUT')
-            .appendField(Blockly.Words['enigma2_timeout'][systemLang]);
+            .appendField(Blockly.Translate('enigma2_timeout'));
 			
-//		this.appendValueInput('MSGTYPE')
-//            .appendField(Blockly.Words['enigma2_msgType'][systemLang]);
-
 		this.appendDummyInput('MSGTYPE')
-            .appendField(Blockly.Words['enigma2_msgType'][systemLang])
+            .appendField(Blockly.Translate('enigma2_msgType'))
             .appendField(new Blockly.FieldDropdown([
-				[Blockly.Words['enigma2_MSGTYPE_'][systemLang],   '1'],
-                [Blockly.Words['enigma2_MSGTYPE_0'][systemLang],  '0'],
-//                [Blockly.Words['enigma2_MSGTYPE_1'][systemLang],  '1'],
-                [Blockly.Words['enigma2_MSGTYPE_2'][systemLang],  '2'],
-                [Blockly.Words['enigma2_MSGTYPE_3'][systemLang],  '3']
+				[Blockly.Translate('enigma2_MSGTYPE_'),   '1'],
+                [Blockly.Translate('enigma2_MSGTYPE_0'),  '0'],
+//                [Blockly.Translate('enigma2_MSGTYPE_1'),  '1'],
+                [Blockly.Translate('enigma2_MSGTYPE_2'),  '2'],
+                [Blockly.Translate('enigma2_MSGTYPE_3'),  '3'],
             ]), 'MSGTYPE');
 
         this.appendDummyInput('LOG')
-            .appendField(Blockly.Words['enigma2_log'][systemLang])
+            .appendField(Blockly.Translate('enigma2_log'))
             .appendField(new Blockly.FieldDropdown([
-                [Blockly.Words['enigma2_log_none'][systemLang],  ''],
-                [Blockly.Words['enigma2_log_info'][systemLang],  'log'],
-                [Blockly.Words['enigma2_log_debug'][systemLang], 'debug'],
-                [Blockly.Words['enigma2_log_warn'][systemLang],  'warn'],
-                [Blockly.Words['enigma2_log_error'][systemLang], 'error']
+                [Blockly.Translate('enigma2_log_none'),  ''],
+                [Blockly.Translate('enigma2_log_debug'), 'debug'],
+                [Blockly.Translate('enigma2_log_info'),  'log'],
+                [Blockly.Translate('enigma2_log_warn'),  'warn'],
+                [Blockly.Translate('enigma2_log_error'), 'error'],
             ]), 'LOG');
 
         this.setInputsInline(false);
@@ -103,26 +105,26 @@ Blockly.Blocks['enigma2'] = {
         this.setNextStatement(true, null);
 
         this.setColour(Blockly.Sendto.HUE);
-        this.setTooltip(Blockly.Words['enigma2_tooltip'][systemLang]);
-        this.setHelpUrl(Blockly.Words['enigma2_help'][systemLang]);
-    }
+        this.setTooltip(Blockly.Translate('enigma2_tooltip'));
+        this.setHelpUrl(Blockly.Translate('enigma2_help'));
+    },
 };
 
-Blockly.JavaScript['enigma2'] = function(block) {
-    var dropdown_instance = block.getFieldValue('INSTANCE');
-    var logLevel = block.getFieldValue('LOG');
-	var value_msgType = block.getFieldValue('MSGTYPE');
-    var value_message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
-	var value_timeout = Blockly.JavaScript.valueToCode(block, 'TIMEOUT', Blockly.JavaScript.ORDER_ATOMIC);
-	//var value_msgType = Blockly.JavaScript.valueToCode(block, 'MSGTYPE', Blockly.JavaScript.ORDER_ATOMIC);
+Blockly.JavaScript['enigma2'] = function (block) {
+    const dropdown_instance = block.getFieldValue('INSTANCE');
+    const logLevel = block.getFieldValue('LOG');
+	const value_msgType = block.getFieldValue('MSGTYPE');
+    const value_message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+	const value_timeout = Blockly.JavaScript.valueToCode(block, 'TIMEOUT', Blockly.JavaScript.ORDER_ATOMIC);
 
-    var logText;
+    let logText = '';
     if (logLevel) {
-		logText = 'console.' + logLevel + '("enigma2: " + ' + value_message  + ' + ' + value_timeout + ' + ' + value_msgType + ');\n'
-	} else {
-        logText = '';
+        logText = `console.${logLevel}('enigma2: ' + ${value_message} + ${value_timeout} + ${value_msgType});\n`;
     }
 
-	return 'sendTo("enigma2' + dropdown_instance + '", "send", {message: ' + value_message  + ', timeout: ' + value_timeout + ', msgType: ' + value_msgType + '});\n' +
-        logText;
+	return `sendTo('enigma2${dropdown_instance}', 'send', {\n` +
+        `  message: ${value_message},\n` +
+        `  timeout: ${value_timeout},\n` +
+        `  msgType: ${value_msgType},\n` +
+        `});\n${logText}`;
 };

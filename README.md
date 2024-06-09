@@ -92,15 +92,15 @@
  - Message.Type           = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - Message.Timeout        = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
 
-
 ----
 ### Alexa_Command
  - Alexa_Command.Mute     = Alexa Command
  - Alexa_Command.Standby  = Alexa Command
  
----- 
- ### sendTo 
-#### (in Blockly)
+----
+### sendTo 
+
+#### in Blockly
  - message   = Text of Message
  - msgType   = Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention)
  - timeout   = timeout of Message in sec. Can be empty or the Number of seconds the Message should disappear after.
@@ -110,21 +110,25 @@
 ![Bild Text](admin/enigma2_message.png)
 
 [> zum Blockly Import <](admin/Blockly_Import.md)
- 
-#### (in java)
-```
-sendTo("enigma2.0", "send", {
-   "message": 'Test Nachricht', /* Text of Message */
-   "timeout": 26,               /* timeout of Message in sec. (Can be empty or the Number of seconds the Message should disappear after.) */
-   "msgType": 1                 /* Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention) */
+
+#### in JavaScript
+
+```js
+sendTo('enigma2.0', 'send', {
+    message: 'Test Nachricht', /* Text of Message */
+    timeout: 26,               /* timeout of Message in sec. (Can be empty or the Number of seconds the Message should disappear after.) */
+    msgType: 1,                /* Number from 0 to 3 (0= Yes/No ; 1= Info ; 2=Message ; 3=Attention) */
 });
 ```
- 
+
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (klein0r) Updated Blockly definitions
+
 ### 2.1.0 (2024-04-11)
 * (mcm1957) Adapter requires node.js >=18 and js-controller >= 5 now
 * (mcm1957) Dependencies have been updated
