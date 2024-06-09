@@ -29,24 +29,21 @@ Blockly.Words['enigma2_tooltip']       = {'en': 'Send message to enigma2',    'd
 Blockly.Words['enigma2_help']          = {'en': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md', 'de': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md', 'ru': 'https://github.com/iobroker-community-adapters/ioBroker.enigma2/blob/master/README.md'};
 
 Blockly.Sendto.blocks['enigma2'] =
-    '<block type="enigma2">'
-    + '     <value name="INSTANCE">'
-    + '     </value>'
-    + '     <value name="MESSAGE">'
-    + '         <shadow type="text">'
-    + '             <field name="TEXT">text</field>'
-    + '         </shadow>'
-    + '     </value>'
-    + '     <value name="TIMEOUT">'
-    + '         <shadow type="math_number">'
-    + '             <field name="NUM">30</field>'
-    + '         </shadow>'
-    + '     </value>'
-    + '     <value name="MSGTYPE">'
-    + '     </value>'
-    + '     <value name="LOG">'
-    + '     </value>'
-    + '</block>';
+    '<block type="enigma2">' +
+    '  <field name="INSTANCE"></field>' +
+    '  <field name="MSGTYPE">1</field>' +
+    '  <field name="LOG"></field>' +
+    '  <value name="MESSAGE">' +
+    '    <shadow type="text">' +
+    '      <field name="TEXT">text</field>' +
+    '    </shadow>' +
+    '  </value>' +
+    '  <value name="TIMEOUT">' +
+    '    <shadow type="math_number">' +
+    '      <field name="NUM">30</field>' +
+    '    </shadow>' +
+    '  </value>' +
+    '</block>';
 
 Blockly.Blocks['enigma2'] = {
     init: function () {
@@ -119,7 +116,7 @@ Blockly.JavaScript['enigma2'] = function (block) {
 
     let logText = '';
     if (logLevel) {
-        logText = `console.${logLevel}('enigma2: ' + ${value_message} + ${value_timeout} + ${value_msgType});\n`;
+        logText = `console.${logLevel}('enigma2: ' + ${value_message} + ', timeout: ' + ${value_timeout} + ', msgType: ' + ${value_msgType});\n`;
     }
 
 	return `sendTo('enigma2${dropdown_instance}', 'send', {\n` +
