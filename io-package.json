@@ -42,19 +42,6 @@
         "uk": "Виправлено проблему, що викликає відсутні описи для запису таймера та попередження. #119\nОновлено залежність.",
         "zh-cn": "已经确定了造成时间入境和警告的遗漏说明的问题。 行动119\n情况已经更新。."
       },
-      "2.0.4": {
-        "en": "A problem causing missing descriptions for timer entryies and warnings has been fixed. #119 \nDependencies have been updated.",
-        "de": "Ein Problem, das fehlende Beschreibungen für Timer und Warnungen verursachte, wurde behoben. #119\nAbhängigkeiten wurden aktualisiert.",
-        "ru": "Исправлена проблема, вызывающая недостающие описания для временных въездов и предупреждений. #119\nОбновлены зависимости.",
-        "pt": "Foi corrigido um problema causando descrições ausentes para entradas e avisos de temporizador. #119\nAs dependências foram atualizadas.",
-        "nl": "Een probleem met ontbrekende beschrijvingen voor timer en waarschuwingen is opgelost. #119\nAfhankelijkheid is geüpdateerd.",
-        "fr": "Un problème qui a causé des descriptions manquantes pour les entrées temporelles et les avertissements a été corrigé. #119\nLes dépendances ont été mises à jour.",
-        "it": "Un problema che causa le descrizioni mancanti per gli ingressi e gli avvisi timer è stato risolto. #119 #\nLe dipendenze sono state aggiornate.",
-        "es": "Se ha solucionado un problema que causa descripciones perdidas para entradas y advertencias de temporizador. #119\nSe han actualizado las dependencias.",
-        "pl": "Problem spowodował, że brakujące opisy wjazdów i ostrzeżeń ustalono. #119\nW zależności zostały zaktualizowane.",
-        "uk": "Виправлено проблему, що викликає відсутні описи для запису таймера та попередження. #119\nОновлено залежність.",
-        "zh-cn": "已经确定了造成时间入境和警告的遗漏说明的问题。 行动119\n情况已经更新。."
-      },
       "2.0.3": {
         "en": "fixed the problem that no objects are updated",
         "de": "Das Problem, dass keine Objekte aktualisiert werden, wurde behoben",
