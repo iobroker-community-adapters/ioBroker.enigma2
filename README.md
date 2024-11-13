@@ -126,7 +126,7 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.2.1 (2024-11-13)
 * (mcm1957) Adapter requires js-controller 5.0.19 and admin 6.17.14 now.
 * (mcm1957) Message states have been added. [#229]
 * (simatec) Adapter changed to meet Responsive Design rules.

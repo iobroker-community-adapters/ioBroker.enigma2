@@ -1,20 +1,20 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "news": {
-      "2.2.0": {
-        "en": "Adapter requires js-controller 5.0.19 and admin 6.17.14 now.\nMessage states have been added. [#229]\nAdapter changed to meet Responsive Design rules.\nServeral issues reported by adapter checker have been fixed.\nDependencies have been updated.",
-        "de": "Adapter benötigt jetzt js-controller 5.0.19 und admin 6.17.14.\nNachrichtenstates wurden hinzugefügt. (#229)\nAdapter geändert, um Responsive Design Regeln zu erfüllen.\nProbleme, die von Adapter-Checker gemeldet wurden, wurden behoben.\nAbhängigkeiten wurden aktualisiert.",
-        "ru": "Адаптер требует js-контроллер 5.0.19 и admin 6.17.14.\nДобавлены состояния сообщений. [#229]\nАдаптер изменился, чтобы соответствовать правилам Responsive Design.\nЗадачи сервера, о которых сообщает шашка адаптера, были исправлены.\nЗависимость была обновлена.",
-        "pt": "Adaptador requer js-controller 5.0.19 e admin 6.17.14 agora.\nOs estados de mensagens foram adicionados. [#229]\nAdapter mudou para atender às regras de Design Responsável.\nProblemas de servidor relatados pelo verificador do adaptador foram corrigidos.\nAs dependências foram atualizadas.",
-        "nl": "Adapter vereist js-controller 5.01.19 en admin 6.17.14 nu.\nBericht staten zijn toegevoegd. [#229]\nAdapter veranderd om te voldoen aan Responsive Design regels.\nServerproblemen gemeld door adaptercontroleur zijn opgelost.\nAfhankelijkheden zijn bijgewerkt.",
-        "fr": "Adaptateur nécessite js-controller 5.0.19 et admin 6.17.14 maintenant.\nDes états de message ont été ajoutés. [#229]\nAdaptateur modifié pour respecter les règles de conception réactive.\nLes problèmes de serveur signalés par adaptateur checkerr ont été corrigés.\nLes dépendances ont été actualisées.",
-        "it": "Adattatore richiede js-controller 5.0.19 e admin 6.17.14 ora.\nGli stati dei messaggi sono stati aggiunti. [#229]\nAdattatore modificato per soddisfare le regole di Responsive Design.\nI problemi del serverl riportati dall'adattatore checkerr sono stati fissati.\nLe dipendenze sono state aggiornate.",
-        "es": "Adaptador requiere js-controller 5.0.19 y admin 6.17.14 ahora.\nLos estados del mensaje han sido añadidos. [#229]\nAdaptador cambió para cumplir con las reglas de diseño responsable.\nLos problemas del servidor reportados por el control del adaptador han sido fijos.\nSe han actualizado las dependencias.",
-        "pl": "Adapter wymaga sterownika js- 5.0.19 i admin 6.17.14 teraz.\nDodano stany wiadomości. [# 229]\nAdapter zmienił się w celu spełnienia zasad Responsive Design.\nZagadnienia serverla zgłoszone przez sprawdzacz adaptera zostały naprawione.\nZaktualizowano zależność.",
-        "uk": "Адаптер вимагає js-controller 5.0.19 і admin 6.17.14 тепер.\nДодано повідомлення. [#218]\nПерехідник змінився для дотримання правил адаптивного дизайну.\nВиправлено проблеми, які повідомляються перевірником адаптера.\nОновлено залежність.",
-        "zh-cn": "适配器现在需要js控制器5.0.19和管理员6.17.14.\n信件状态已添加 。 [#229] (中文(简体) )\n适配器更改以满足应变设计规则.\n适配器检查器报告的服务器问题已经解决.\n附属关系已经更新."
+      "2.2.1": {
+        "en": "Adapter requires js-controller 5.0.19 and admin 6.17.14 now.\nMessage states have been added. [#229]\nAdapter changed to meet Responsive Design rules.\nSeveral issues reported by adapter checker have been fixed.\nDependencies have been updated.",
+        "de": "Adapter benötigt jetzt js-controller 5.0.19 und admin 6.17.14.\nNachrichtenzustände wurden hinzugefügt. (#229)\nAdapter geändert, um Responsive Design Regeln zu erfüllen.\nMehrere Probleme, die von Adapter Checker gemeldet wurden, wurden behoben.\nAbhängigkeiten wurden aktualisiert.",
+        "ru": "Адаптер требует js-контроллер 5.0.19 и admin 6.17.14.\nДобавлены состояния сообщений. [#229]\nАдаптер изменился, чтобы соответствовать правилам Responsive Design.\nНесколько вопросов, о которых сообщил адаптер шашки, были исправлены.\nЗависимость была обновлена.",
+        "pt": "Adaptador requer js-controller 5.0.19 e admin 6.17.14 agora.\nOs estados de mensagens foram adicionados. [#229]\nAdapter mudou para atender às regras de Design Responsável.\nVárias questões relatadas pelo verificador do adaptador foram corrigidas.\nAs dependências foram atualizadas.",
+        "nl": "Adapter vereist js-controller 5.01.19 en admin 6.17.14 nu.\nBericht staten zijn toegevoegd. [#229]\nAdapter veranderd om te voldoen aan Responsive Design regels.\nVerschillende problemen gemeld door adapter checker zijn opgelost.\nAfhankelijkheden zijn bijgewerkt.",
+        "fr": "Adaptateur nécessite js-controller 5.0.19 et admin 6.17.14 maintenant.\nDes états de message ont été ajoutés. [#229]\nAdaptateur modifié pour respecter les règles de conception réactive.\nPlusieurs problèmes signalés par le vérificateur d'adaptateurs ont été corrigés.\nLes dépendances ont été actualisées.",
+        "it": "Adattatore richiede js-controller 5.0.19 e admin 6.17.14 ora.\nGli stati dei messaggi sono stati aggiunti. [#229]\nAdattatore modificato per soddisfare le regole di Responsive Design.\nDiversi problemi segnalati dall'adattatore checker sono stati fissati.\nLe dipendenze sono state aggiornate.",
+        "es": "Adaptador requiere js-controller 5.0.19 y admin 6.17.14 ahora.\nLos estados del mensaje han sido añadidos. [#229]\nAdaptador cambió para cumplir con las reglas de diseño responsable.\nSe han fijado varias cuestiones comunicadas por el control de adaptador.\nSe han actualizado las dependencias.",
+        "pl": "Adapter wymaga sterownika js- 5.0.19 i admin 6.17.14 teraz.\nDodano stany wiadomości. [# 229]\nAdapter zmienił się w celu spełnienia zasad Responsive Design.\nKilka problemów zgłoszonych przez sprawdzacz adaptera zostało naprawionych.\nZaktualizowano zależność.",
+        "uk": "Адаптер вимагає js-controller 5.0.19 і admin 6.17.14 тепер.\nДодано повідомлення. [#218]\nПерехідник змінився для дотримання правил адаптивного дизайну.\nВиправлено кілька питань, які повідомляються перевірником адаптера.\nОновлено залежність.",
+        "zh-cn": "适配器现在需要js控制器5.0.19和管理员6.17.14.\n信件状态已添加 。 [#229] (中文(简体) )\n适配器更改以满足应变设计规则.\n适配器检查器报告的几个问题已经解决.\n附属关系已经更新."
       },
       "2.1.1": {
         "en": "Updated Blockly definitions",
@@ -80,19 +80,6 @@
         "pl": "Bugfixes: #61 (https:/github.com/Matten-Matten/ioBroker.enigma2/issues/61) (ang.)\nBugfixes: nieokreślona e2\nAdded json configig\nObecnie węzeł wymaga węzła 16 węzłów",
         "uk": "Виправлення помилок: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nВиправлення помилок\nДодано json config\nАдаптер тепер вимагає вузла 16",
         "zh-cn": "Bugfix:#[61](http://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfix:未界定的电子清单\n增编\n现在需要道歉16"
-      },
-      "1.5.0": {
-        "en": "The adapter has been moved into iobroker-community-adapters organisation\nchanged: Testing has been added and changed to support node 16, 18 and 20\nchanged: Dependencies have been updated\nchanged: issues reported by adapter-checker have been fixed (#15)",
-        "de": "Der Adapter wurde in die iobroker-community-adapters Organisation verlegt\ngeändert: Github babasierendes Testing wurde hinzugefügt mit Support für Node 16, 18 und 20\ngeändert: Abhängigkeiten wurden aktualisiert\ngeändert: Probleme, die vom Adapter-Checker gemeldet wurden, wurden behoben #(15)",
-        "ru": "Адаптер переехал в организацию iobroker-community-adapters\nизменено: Тестирование было добавлено и изменено для поддержки ноды 16, 18 и 20\nизменено: В зависимости были обновлены\nизменено: вопросы, сообщаемые адаптером-чекером, были зафиксированы #(15)",
-        "pt": "O adaptador foi movido para a organização iobroker-community-adapters\nmudou: Os testes foram adicionados e alterados para suportar o nó 16, 18 e 20\nmudou: As dependências foram atualizadas\nalterado: problemas relatados pelo verificador do adaptador foram corrigidos #(15)",
-        "nl": "De adapter is verplaatst naar iobroker-community-papters organisatie\n_ De test is toegevoegd en veranderd om node 16 te ondersteunen, 18 en 20\n_ Afhankelijkheid\nquality over quantity (qoq) releases vertaling:",
-        "fr": "L'adaptateur a été déplacé dans l'organisation iobroker-community-adapters\nchangé: Les essais ont été ajoutés et modifiés pour soutenir les nœuds 16, 18 et 20\nchangé: Les dépendances ont été mises à jour\nchangé: les problèmes signalés par le contrôleur d'adaptateur ont été corrigés #(15)",
-        "it": "L'adattatore è stato spostato nell'organizzazione di hobroker-community-adapters\ncambiato: I test sono stati aggiunti e modificati per supportare il nodo 16, 18 e 20\ncambiato: Le dipendenze sono state aggiornate\ncambiato: i problemi segnalati da adattatore-checker sono stati fissati #(15)",
-        "es": "El adaptador se ha trasladado a la organización de ibroker-community-adapters\ncambiado: Se han añadido y cambiado las pruebas para apoyar el nodo 16, 18 y 20\ncambiado: Se han actualizado las dependencias\ncambiados: los problemas reportados por adaptador-checker han sido fijos #(15)",
-        "pl": "Adaptator został przeniesiony do organizacji iobroker-community-profit\nzmieniono: Testy zostały dodane i zmienione na 16 węzłów, 18 i 20\nzmieniono: Zależności zostały zaktualizowane\nzmieniono następujące problemy: urządzenie regulowane przez adapter-checker zostało ustalone #(15)",
-        "uk": "Перехідник був переведений в організацію iobroker-community-adapters\nзмінено: Тестування було додано та змінено для підтримки вузлів 16, 18 та 20\nзмінено: Оновлено залежність\nзмінено: проблеми, які повідомляються адаптером-шкером, були виправлені #(15)",
-        "zh-cn": "适应者被移入了小型妓院。\n修改: 添加并修改了试验,以支助第16、18和20条。\n修改: 已更新了属地\n变化:适应者报告的问题已确定为第(15)号。"
       }
     },
     "titleLang": {
