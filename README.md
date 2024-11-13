@@ -126,6 +126,9 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (simatec) Responsive Design added
+
 ### 2.1.1 (2024-06-09)
 * (klein0r) Updated Blockly definitions
 
