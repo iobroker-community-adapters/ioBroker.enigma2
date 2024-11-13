@@ -127,7 +127,11 @@ sendTo('enigma2.0', 'send', {
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (simatec) Responsive Design added
+* (mcm1957) Adapter requires js-controller 5.0.19 and admin 6.17.14 now.
+* (mcm1957) Message states have been added. [#229]
+* (simatec) Adapter changed to meet Responsive Design rules.
+* (mcm1957) Serverl issues reported by adapter checkerr have been fixed.
+* (mcm1957) Dependencies have been updated.
 
 ### 2.1.1 (2024-06-09)
 * (klein0r) Updated Blockly definitions
