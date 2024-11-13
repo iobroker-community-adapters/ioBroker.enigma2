@@ -144,7 +144,6 @@
         "admin": ">=6.17.14"
       }
     ],
-    "subscribe": "messagebox",
     "stopBeforeUpdate": true,
     "nondeletable": false,
     "blockly": true
