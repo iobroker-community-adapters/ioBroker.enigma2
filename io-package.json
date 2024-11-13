@@ -204,6 +204,42 @@
       "native": {}
     },
     {
+      "_id": "Message.Timeout",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Message Timeout",
+        "type": "number",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "Message.Type",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Message Type",
+        "type": "number",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "Message.Text",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Message Text",
+        "type": "string",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
       "_id": "enigma2.Update",
       "type": "state",
       "common": {
