@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "news": {
+      "2.2.0": {
+        "en": "Adapter requires js-controller 5.0.19 and admin 6.17.14 now.\nMessage states have been added. [#229]\nAdapter changed to meet Responsive Design rules.\nServeral issues reported by adapter checker have been fixed.\nDependencies have been updated.",
+        "de": "Adapter benötigt jetzt js-controller 5.0.19 und admin 6.17.14.\nNachrichtenstates wurden hinzugefügt. (#229)\nAdapter geändert, um Responsive Design Regeln zu erfüllen.\nProbleme, die von Adapter-Checker gemeldet wurden, wurden behoben.\nAbhängigkeiten wurden aktualisiert.",
+        "ru": "Адаптер требует js-контроллер 5.0.19 и admin 6.17.14.\nДобавлены состояния сообщений. [#229]\nАдаптер изменился, чтобы соответствовать правилам Responsive Design.\nЗадачи сервера, о которых сообщает шашка адаптера, были исправлены.\nЗависимость была обновлена.",
+        "pt": "Adaptador requer js-controller 5.0.19 e admin 6.17.14 agora.\nOs estados de mensagens foram adicionados. [#229]\nAdapter mudou para atender às regras de Design Responsável.\nProblemas de servidor relatados pelo verificador do adaptador foram corrigidos.\nAs dependências foram atualizadas.",
+        "nl": "Adapter vereist js-controller 5.01.19 en admin 6.17.14 nu.\nBericht staten zijn toegevoegd. [#229]\nAdapter veranderd om te voldoen aan Responsive Design regels.\nServerproblemen gemeld door adaptercontroleur zijn opgelost.\nAfhankelijkheden zijn bijgewerkt.",
+        "fr": "Adaptateur nécessite js-controller 5.0.19 et admin 6.17.14 maintenant.\nDes états de message ont été ajoutés. [#229]\nAdaptateur modifié pour respecter les règles de conception réactive.\nLes problèmes de serveur signalés par adaptateur checkerr ont été corrigés.\nLes dépendances ont été actualisées.",
+        "it": "Adattatore richiede js-controller 5.0.19 e admin 6.17.14 ora.\nGli stati dei messaggi sono stati aggiunti. [#229]\nAdattatore modificato per soddisfare le regole di Responsive Design.\nI problemi del serverl riportati dall'adattatore checkerr sono stati fissati.\nLe dipendenze sono state aggiornate.",
+        "es": "Adaptador requiere js-controller 5.0.19 y admin 6.17.14 ahora.\nLos estados del mensaje han sido añadidos. [#229]\nAdaptador cambió para cumplir con las reglas de diseño responsable.\nLos problemas del servidor reportados por el control del adaptador han sido fijos.\nSe han actualizado las dependencias.",
+        "pl": "Adapter wymaga sterownika js- 5.0.19 i admin 6.17.14 teraz.\nDodano stany wiadomości. [# 229]\nAdapter zmienił się w celu spełnienia zasad Responsive Design.\nZagadnienia serverla zgłoszone przez sprawdzacz adaptera zostały naprawione.\nZaktualizowano zależność.",
+        "uk": "Адаптер вимагає js-controller 5.0.19 і admin 6.17.14 тепер.\nДодано повідомлення. [#218]\nПерехідник змінився для дотримання правил адаптивного дизайну.\nВиправлено проблеми, які повідомляються перевірником адаптера.\nОновлено залежність.",
+        "zh-cn": "适配器现在需要js控制器5.0.19和管理员6.17.14.\n信件状态已添加 。 [#229] (中文(简体) )\n适配器更改以满足应变设计规则.\n适配器检查器报告的服务器问题已经解决.\n附属关系已经更新."
+      },
       "2.1.1": {
         "en": "Updated Blockly definitions",
         "de": "Aktualisierte Blockly Definitionen",
