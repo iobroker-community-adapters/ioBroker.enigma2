@@ -126,6 +126,11 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (mcm1957) Protection of message.* states has been corrected, thes are writeable again. [#273]
+* (mcm1957) Dependencies have been updated.
+
 ### 2.2.1 (2024-11-13)
 * (mcm1957) Adapter requires js-controller 5.0.19 and admin 6.17.14 now.
 * (mcm1957) Message states have been added. [#229]
