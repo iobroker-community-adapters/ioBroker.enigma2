@@ -123,8 +123,7 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 2.2.2 (2024-12-22)
 * (mcm1957) States 'message.*' are writeable again now. [#273]
 * (mcm1957) Dependencies have been updated.
 
@@ -145,9 +144,6 @@ sendTo('enigma2.0', 'send', {
 ### 2.0.5 (2023-09-18)
 * (mcm1957) A problem causing missing descriptions for timer entryies and warnings has been fixed. #119 
 * (mcm1957) Dependencies have been updated.
-
-### 2.0.3 (2023-09-06)
-* (TDCroPower) fixed the problem that no objects are updated
 
 ## License
 MIT License

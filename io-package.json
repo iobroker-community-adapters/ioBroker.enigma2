@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "news": {
+      "2.2.2": {
+        "en": "States 'message.*' are writeable again now. [#273]\nDependencies have been updated.",
+        "de": "States 'message.*' sind jetzt wieder beschreibbar. [#273]\nAbhängigkeiten wurden aktualisiert.",
+        "ru": "\"Послание штата\". [#273]\nЗависимость была обновлена.",
+        "pt": "A \"mensagem\" dos Estados é redutível agora. [#273]\nAs dependências foram atualizadas.",
+        "nl": "States 'message.*' zijn nu weer schrijfbaar. [#273]\nAfhankelijkheden zijn bijgewerkt.",
+        "fr": "Les Etats «message.*» sont réécrits maintenant. [#273]\nLes dépendances ont été actualisées.",
+        "it": "Gli Stati 'message.*' sono ancora scrivibili. [#273]\nLe dipendenze sono state aggiornate.",
+        "es": "Los estados 'mensaje.*' se pueden escribir de nuevo ahora. [#273]\nSe han actualizado las dependencias.",
+        "pl": "Przesłanie Stanów. * 'są znowu do zapisu. [# 273]\nZaktualizowano zależność.",
+        "uk": "США 'message.*' знову записуються. [#273]\nОновлено залежність.",
+        "zh-cn": "国家“ message.*”现在又可以写了。 [# 273]\n附属关系已经更新."
+      },
       "2.2.1": {
         "en": "Adapter requires js-controller 5.0.19 and admin 6.17.14 now.\nMessage states have been added. [#229]\nAdapter changed to meet Responsive Design rules.\nSeveral issues reported by adapter checker have been fixed.\nDependencies have been updated.",
         "de": "Adapter benötigt jetzt js-controller 5.0.19 und admin 6.17.14.\nNachrichtenzustände wurden hinzugefügt. (#229)\nAdapter geändert, um Responsive Design Regeln zu erfüllen.\nMehrere Probleme, die von Adapter Checker gemeldet wurden, wurden behoben.\nAbhängigkeiten wurden aktualisiert.",
