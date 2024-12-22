@@ -109,7 +109,9 @@
       "zh-cn": "万国邮联+,Dream箱,EDISON..."
     },
     "authors": [
-      "Matten-Matten <matten-matten@web.de>"
+      "Matten-Matten <matten-matten@web.de>",
+      "mcm1957 <mcm57@gmx.at>",
+      "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
     ],
     "keywords": [
       "enigma2"
