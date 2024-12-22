@@ -123,7 +123,7 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 2.2.2 (2024-12-22)
+### **WORK IN PROGRESS**
 * (mcm1957) Adapter has been moigrated to @iobroker/eslint-config. [#266]
 
 ### 2.2.2 (2024-12-22)
