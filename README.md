@@ -124,6 +124,9 @@ sendTo('enigma2.0', 'send', {
     ### **WORK IN PROGRESS**
 -->
 ### 2.2.2 (2024-12-22)
+* (mcm1957) Adapter has been moigrated to @iobroker/eslint-config. [#266]
+
+### 2.2.2 (2024-12-22)
 * (mcm1957) States 'message.*' are writeable again now. [#273]
 * (mcm1957) Dependencies have been updated.
 
