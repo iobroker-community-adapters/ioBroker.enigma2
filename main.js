@@ -32,7 +32,7 @@ const PATH = {
     ISRECORD: '/web/timerlist',
     API: '/api/statusinfo',
     GETLOCATIONS: '/web/getlocations',
-    GETALLSERVICES: '/web/getallservices'
+    GETALLSERVICES: '/web/getallservices',
 };
 
 const commands = {
@@ -83,7 +83,7 @@ function startAdapter(options) {
 
             movieListInterval && clearInterval(movieListInterval);
             movieListInterval = null;
-        } catch (e) {
+        } catch {
             callback();
         }
     });
@@ -92,20 +92,27 @@ function startAdapter(options) {
         if (obj !== null && obj !== undefined) {
             adapter.log.debug(`enigma2 message: ${JSON.stringify(obj.message)}`);
 
-            adapter.log.debug(`enigma2 message Timeout: ${parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, ''))}`);
+            adapter.log.debug(
+                `enigma2 message Timeout: ${parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, ''))}`,
+            );
             await adapter.setStateAsync('Message.Timeout', {
                 val: parseFloat(JSON.stringify(obj.message.timeout).replace(/"/g, '')),
-                ack: true
+                ack: true,
             });
 
-            adapter.log.debug(`enigma2 command Message Type: ${parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, ''))}`);
+            adapter.log.debug(
+                `enigma2 command Message Type: ${parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, ''))}`,
+            );
             await adapter.setStateAsync('Message.Type', {
                 val: parseFloat(JSON.stringify(obj.message.msgType).replace(/"/g, '')),
-                ack: true
+                ack: true,
             });
 
             adapter.log.debug(`enigma2 message Text: ${JSON.stringify(obj.message.message).replace(/"/g, '')}`);
-            await adapter.setStateAsync('Message.Text', {val: JSON.stringify(obj.message.message).replace(/"/g, ''), ack: false});
+            await adapter.setStateAsync('Message.Text', {
+                val: JSON.stringify(obj.message.message).replace(/"/g, ''),
+                ack: false,
+            });
         }
     });
 
@@ -116,10 +123,10 @@ function startAdapter(options) {
 
             if (id === `${adapter.namespace}.Message.Type`) {
                 adapter.log.debug(`Info Message Type: ${state.val}`);
-                await adapter.setStateAsync('Message.Type', {val: state.val, ack: true});
+                await adapter.setStateAsync('Message.Type', { val: state.val, ack: true });
             } else if (id === `${adapter.namespace}.Message.Timeout`) {
                 adapter.log.debug(`Info Message Timeout: ${state.val}s`);
-                await adapter.setStateAsync('Message.Timeout', {val: state.val, ack: true});
+                await adapter.setStateAsync('Message.Timeout', { val: state.val, ack: true });
             }
 
             if (commands[name]) {
@@ -131,7 +138,6 @@ function startAdapter(options) {
                 await timerSearchResponse('TIMERLIST', deviceId, xml);
 
                 adapter.log.debug('Timer manuell aktualisiert');
-
             } else if (id === `${adapter.namespace}.Alexa_Command.Standby`) {
                 //+++++++++++++++++++++++++++
                 const _state = await adapter.getStateAsync('Alexa_Command.Standby');
@@ -140,12 +146,12 @@ function startAdapter(options) {
                 } else if (_state.val === false) {
                     await getResponseAsync('NONE', deviceId, `${PATH['MAIN_COMMAND']}5`);
                 }
-                await adapter.setStateAsync('Alexa_Command.Standby', {val: _state.val, ack: true});
+                await adapter.setStateAsync('Alexa_Command.Standby', { val: _state.val, ack: true });
             } else if (id === `${adapter.namespace}.Alexa_Command.Mute`) {
                 const _state = await adapter.getStateAsync('Alexa_Command.Mute');
-                if ((_state && _state.val === true) || (!_state || _state.val === false)) {
+                if ((_state && _state.val === true) || !_state || _state.val === false) {
                     await getResponseAsync('NONE', deviceId, `${PATH['REMOTE_CONTROL']}113`);
-                    await adapter.setStateAsync('Alexa_Command.Mute', {val: _state.val, ack: true});
+                    await adapter.setStateAsync('Alexa_Command.Mute', { val: _state.val, ack: true });
                 }
             } else if (id === `${adapter.namespace}.enigma2.Update`) {
                 // enigma2.Update
@@ -174,33 +180,33 @@ function startAdapter(options) {
                 await evaluateCommandResponse('GETMOVIELIST', deviceId, xml);
 
                 adapter.log.debug('E2 States manuell aktualisiert');
-                await adapter.setStateAsync('enigma2.Update', {val: state.val, ack: true});
+                await adapter.setStateAsync('enigma2.Update', { val: state.val, ack: true });
             } else if (id === `${adapter.namespace}.enigma2.STANDBY`) {
                 await getResponseAsync('NONE', deviceId, `${PATH['MAIN_COMMAND']}0`);
                 await adapter.setStateAsync('enigma2.STANDBY', state.val, true);
                 const xml = await getResponseAsync('GETSTANDBY', deviceId, PATH['POWERSTATE']);
                 await evaluateCommandResponse('GETSTANDBY', deviceId, xml);
             } else if (id === `${adapter.namespace}.command.SET_VOLUME`) {
-                await getResponseAsync('NONE', deviceId, `${PATH['VOLUME_SET']}set${parseInt(state.val, /*10*/)}`);
-                await adapter.setStateAsync('command.SET_VOLUME', {val: state.val, ack: true});
+                await getResponseAsync('NONE', deviceId, `${PATH['VOLUME_SET']}set${parseInt(state.val /*10*/)}`);
+                await adapter.setStateAsync('command.SET_VOLUME', { val: state.val, ack: true });
                 const xml = await getResponseAsync('GETVOLUME', deviceId, PATH['VOLUME']);
                 await evaluateCommandResponse('GETVOLUME', deviceId, xml);
             } else if (id === `${adapter.namespace}.command.VOLUME_UP`) {
                 adapter.log.debug(' Vol UP');
                 await getResponseAsync('NONE', deviceId, `${PATH['VOLUME_SET']}up`);
-                await adapter.setStateAsync('command.VOLUME_UP', {val: true, ack: true});
+                await adapter.setStateAsync('command.VOLUME_UP', { val: true, ack: true });
                 const xml = await getResponseAsync('GETVOLUME', deviceId, PATH['VOLUME']);
                 await evaluateCommandResponse('GETVOLUME', deviceId, xml);
             } else if (id === `${adapter.namespace}.command.VOLUME_DOWN`) {
                 adapter.log.debug(' Vol Down');
                 await getResponseAsync('NONE', deviceId, `${PATH['VOLUME_SET']}down`);
-                await adapter.setStateAsync('command.VOLUME_DOWN', {val: true, ack: true});
+                await adapter.setStateAsync('command.VOLUME_DOWN', { val: true, ack: true });
                 const xml = await getResponseAsync('GETVOLUME', deviceId, PATH['VOLUME']);
                 await evaluateCommandResponse('GETVOLUME', deviceId, xml);
             } else if (id === `${adapter.namespace}.command.REMOTE-CONTROL`) {
                 adapter.log.debug(`Its our Command: ${state.val}`);
                 await getResponseAsync('NONE', deviceId, `${PATH['REMOTE_CONTROL'] + state.val}&rcu=advanced`);
-                await adapter.setStateAsync('command.REMOTE-CONTROL', {val: state.val, ack: true});
+                await adapter.setStateAsync('command.REMOTE-CONTROL', { val: state.val, ack: true });
             } else if (id === `${adapter.namespace}.Message.Text`) {
                 adapter.log.debug(`Info message: ${state.val}`);
                 const MESSAGE_TEXT = state.val;
@@ -213,14 +219,18 @@ function startAdapter(options) {
                 adapter.log.debug(`Info Message Type: ${_state.val}`);
                 const MESSAGE_TIMEOUT = _state.val;
 
-                await getResponseAsync('NONE', deviceId, `${PATH['MESSAGE'] + encodeURIComponent(MESSAGE_TEXT)}&type=${MESSAGE_TYPE}&timeout=${MESSAGE_TIMEOUT}`);
-                await adapter.setStateAsync('Message.Text', {val: MESSAGE_TEXT, ack: true});
+                await getResponseAsync(
+                    'NONE',
+                    deviceId,
+                    `${PATH['MESSAGE'] + encodeURIComponent(MESSAGE_TEXT)}&type=${MESSAGE_TYPE}&timeout=${MESSAGE_TIMEOUT}`,
+                );
+                await adapter.setStateAsync('Message.Text', { val: MESSAGE_TEXT, ack: true });
             } else if (id === `${adapter.namespace}.command.ZAP`) {
                 // ZAP
                 adapter.log.debug(`Info message: ${state.val}`);
                 //const MESSAGE_TEXT  = state.val;
                 await getResponseAsync('NONE', deviceId, PATH['ZAP'] + state.val);
-                await adapter.setStateAsync('command.ZAP', {val: state.val, ack: true});
+                await adapter.setStateAsync('command.ZAP', { val: state.val, ack: true });
             } else if (parts[1] === 'Timer' && name === 'Timer_Toggle') {
                 //Timer
                 const timerID = parts[2];
@@ -231,7 +241,11 @@ function startAdapter(options) {
                 const T_begin = _state.val;
                 _state = await adapter.getStateAsync(`Timer.${timerID}.Timer_End`);
                 const T_end = _state.val;
-                await getResponseAsync('NONE', deviceId, `${PATH['TIMER_TOGGLE'] + T_sRef}&begin=${T_begin}&end=${T_end}`);
+                await getResponseAsync(
+                    'NONE',
+                    deviceId,
+                    `${PATH['TIMER_TOGGLE'] + T_sRef}&begin=${T_begin}&end=${T_end}`,
+                );
                 const xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
                 await timerSearchResponse('TIMERLIST', deviceId, xml);
             } else if (parts[1] === 'Timer' && name === 'Delete') {
@@ -244,7 +258,7 @@ function startAdapter(options) {
                 state = await adapter.getStateAsync(`Timer.${timerID}.Timer_End`);
                 const T_end = state.val;
                 await getResponseAsync('NONE', deviceId, `${PATH['DELETE'] + T_sRef}&begin=${T_begin}&end=${T_end}`);
-                await adapter.setStateAsync(`Timer.${timerID}.Delete`, {val: state.val, ack: true});
+                await adapter.setStateAsync(`Timer.${timerID}.Delete`, { val: state.val, ack: true });
                 const xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
                 await timerSearchResponse('TIMERLIST', deviceId, xml);
             }
@@ -265,7 +279,7 @@ function startAdapter(options) {
 async function getResponseAsync(command, deviceId, path) {
     command = command || 'NONE';
 
-    return new Promise(resolve  => {
+    return new Promise(resolve => {
         // const device = dreamSettings.boxes[deviceId];
         const options = {
             host: adapter.config.IPAddress,
@@ -279,12 +293,14 @@ async function getResponseAsync(command, deviceId, path) {
             method: 'GET',
         };
 
-        adapter.log.debug(`creating request for command '${command}' (deviceId: ${deviceId}, host: ${options.host}, port: ${options.port}, path: '${options.path}')`);
+        adapter.log.debug(
+            `creating request for command '${command}' (deviceId: ${deviceId}, host: ${options.host}, port: ${options.port}, path: '${options.path}')`,
+        );
 
         if (typeof adapter.config.Username != 'undefined' && typeof adapter.config.Password != 'undefined') {
             if (adapter.config.Username.length > 0 && adapter.config.Password.length > 0) {
                 options.headers = {
-                    'Authorization': `Basic ${Buffer.from(`${adapter.config.Username}:${adapter.config.Password}`).toString('base64')}`
+                    Authorization: `Basic ${Buffer.from(`${adapter.config.Username}:${adapter.config.Password}`).toString('base64')}`,
                 };
                 adapter.log.debug(`using authorization with user '${adapter.config.Username}'`);
             } else {
@@ -308,7 +324,7 @@ async function getResponseAsync(command, deviceId, path) {
                 }
             }
 
-            res.on('data', chunk => pageData += chunk);
+            res.on('data', chunk => (pageData += chunk));
             res.on('end', () => {
                 if (command !== 'PICON') {
                     if (path.includes('/api/')) {
@@ -324,8 +340,7 @@ async function getResponseAsync(command, deviceId, path) {
                     } else {
                         // using XML API
                         const parser = new xml2js.Parser();
-                        parser.parseString(pageData, (err, result) =>
-                            resolve(result));
+                        parser.parseString(pageData, (err, result) => resolve(result));
                     }
                 } else {
                     resolve(pageData);
@@ -353,8 +368,8 @@ function sec2HMS(sec) {
 
     const sec_num = parseInt(sec, 10);
     let hours = Math.floor(sec_num / 3600);
-    let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    let seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let minutes = Math.floor((sec_num - hours * 3600) / 60);
+    let seconds = sec_num - hours * 3600 - minutes * 60;
 
     if (minutes < 10) {
         minutes = `0${minutes}`;
@@ -386,7 +401,10 @@ async function evaluateCommandResponse(command, deviceId, xml) {
             case 'MESSAGETEXT':
             case 'MESSAGEANSWER':
                 adapter.log.debug(`message answer: ${xml.e2simplexmlresult.e2statetext[0]}`);
-                await adapter.setStateAsync('enigma2.MESSAGE_ANSWER', {val: xml.e2simplexmlresult.e2statetext[0], ack: true});
+                await adapter.setStateAsync('enigma2.MESSAGE_ANSWER', {
+                    val: xml.e2simplexmlresult.e2statetext[0],
+                    ack: true,
+                });
                 break;
             case 'RESTART':
             case 'REBOOT':
@@ -397,7 +415,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
             case 'MUTE_TOGGLE':
             case 'VOLUME':
             case 'SET_VOLUME':
-                await adapter.setStateAsync('enigma2.COMMAND', {val: '', ack: true});
+                await adapter.setStateAsync('enigma2.COMMAND', { val: '', ack: true });
                 break;
             case 'WAKEUP':
             case 'STANDBY':
@@ -406,17 +424,20 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                 break;
             case 'GETSTANDBY':
                 adapter.log.debug(`Box Standby: ${parseBool(xml.e2powerstate.e2instandby)}`);
-                await adapter.setStateAsync('enigma2.STANDBY', {val: parseBool(xml.e2powerstate.e2instandby), ack: true});
+                await adapter.setStateAsync('enigma2.STANDBY', {
+                    val: parseBool(xml.e2powerstate.e2instandby),
+                    ack: true,
+                });
                 if (adapter.config.Webinterface === 'true' && parseBool(xml.e2powerstate.e2instandby) === true) {
-                    await adapter.setStateAsync('enigma2.CHANNEL_PICON', {val: '', ack: true});
+                    await adapter.setStateAsync('enigma2.CHANNEL_PICON', { val: '', ack: true });
                 }
                 // Alexa_Command.Standby
                 if (adapter.config.Alexa) {
                     const alexastby = parseBool(xml.e2powerstate.e2instandby);
                     if (alexastby === false || alexastby === 'false') {
-                        await adapter.setStateAsync('Alexa_Command.Standby', {val: true, ack: true});
+                        await adapter.setStateAsync('Alexa_Command.Standby', { val: true, ack: true });
                     } else if (alexastby === true || alexastby === 'true') {
-                        await adapter.setStateAsync('Alexa_Command.Standby', {val: false, ack: true});
+                        await adapter.setStateAsync('Alexa_Command.Standby', { val: false, ack: true });
                     }
                 }
                 break;
@@ -427,90 +448,128 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                 }
                 bool = parseBool(xml.e2volume.e2ismuted);
                 adapter.log.debug(`Box Volume:${parseInt(xml.e2volume.e2current[0])}`);
-                await adapter.setStateAsync('enigma2.VOLUME', {val: parseInt(xml.e2volume.e2current[0]), ack: true});
+                await adapter.setStateAsync('enigma2.VOLUME', { val: parseInt(xml.e2volume.e2current[0]), ack: true });
                 adapter.log.debug(`Box Muted:${bool}`);
-                await adapter.setStateAsync('enigma2.MUTED', {val: bool, ack: true});
+                await adapter.setStateAsync('enigma2.MUTED', { val: bool, ack: true });
                 // Alexa_Command.Mute
                 if (adapter.config.Alexa) {
                     if (bool === false || bool === 'false') {
-                        await adapter.setStateAsync('Alexa_Command.Mute', {val: true, ack: true});
+                        await adapter.setStateAsync('Alexa_Command.Mute', { val: true, ack: true });
                     } else if (bool === true || bool === 'true') {
-                        await adapter.setStateAsync('Alexa_Command.Mute', {val: false, ack: true});
+                        await adapter.setStateAsync('Alexa_Command.Mute', { val: false, ack: true });
                     }
                 }
                 break;
             case 'GETCURRENT':
-                if (xml && xml.e2currentserviceinformation && xml.e2currentserviceinformation.e2eventlist[0] !== undefined) {
-                    adapter.log.debug(`Box EVENTDURATION: ${parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0])}`);
-                    const e2EVENTDURATION_X = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0]);
-                    await adapter.setStateAsync('enigma2.EVENTDURATION_MIN', {val: Math.round(e2EVENTDURATION_X / 60), ack: true});
+                if (
+                    xml &&
+                    xml.e2currentserviceinformation &&
+                    xml.e2currentserviceinformation.e2eventlist[0] !== undefined
+                ) {
+                    adapter.log.debug(
+                        `Box EVENTDURATION: ${parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0])}`,
+                    );
+                    const e2EVENTDURATION_X =
+                        xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventduration[0];
+                    await adapter.setStateAsync('enigma2.EVENTDURATION_MIN', {
+                        val: Math.round(e2EVENTDURATION_X / 60),
+                        ack: true,
+                    });
                     const e2EVENTDURATION = sec2HMS(parseFloat(e2EVENTDURATION_X));
 
                     if (e2EVENTDURATION === 'NaN:NaN:NaN' || e2EVENTDURATION === '0') {
-                        await adapter.setStateAsync('enigma2.EVENTDURATION', {val: ''/*'0:0:0'*/, ack: true});
+                        await adapter.setStateAsync('enigma2.EVENTDURATION', { val: '' /*'0:0:0'*/, ack: true });
                     } else {
-                        await adapter.setStateAsync('enigma2.EVENTDURATION', {val: e2EVENTDURATION, ack: true});
+                        await adapter.setStateAsync('enigma2.EVENTDURATION', { val: e2EVENTDURATION, ack: true });
                     }
 
                     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                    adapter.log.debug(`Box EVENTREMAINING: ${parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0])}`);
-                    const e2EVENTREMAINING_X = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0];
+                    adapter.log.debug(
+                        `Box EVENTREMAINING: ${parseInt(xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0])}`,
+                    );
+                    const e2EVENTREMAINING_X =
+                        xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventremaining[0];
                     await adapter.setStateAsync('enigma2.EVENTREMAINING_MIN', {
                         val: Math.round(e2EVENTREMAINING_X / 60),
-                        ack: true
+                        ack: true,
                     });
                     const e2EVENTREMAINING = sec2HMS(parseFloat(e2EVENTREMAINING_X));
 
                     if (e2EVENTREMAINING === 'NaN:NaN:NaN' || e2EVENTREMAINING === '0') {
-                        await adapter.setStateAsync('enigma2.EVENTREMAINING', {val: ''/*'0:0:0'*/, ack: true});
+                        await adapter.setStateAsync('enigma2.EVENTREMAINING', { val: '' /*'0:0:0'*/, ack: true });
                     } else {
-                        await adapter.setStateAsync('enigma2.EVENTREMAINING', {val: e2EVENTREMAINING, ack: true});
+                        await adapter.setStateAsync('enigma2.EVENTREMAINING', { val: e2EVENTREMAINING, ack: true });
                     }
 
                     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                    adapter.log.debug(`Box Programm: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]}`);
+                    adapter.log.debug(
+                        `Box Programm: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]}`,
+                    );
                     await adapter.setStateAsync('enigma2.PROGRAMM', {
-                        val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0]).replace('N/A', ''),
-                        ack: true
+                        val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventname[0].replace(
+                            'N/A',
+                            '',
+                        ),
+                        ack: true,
                     });
 
-                    adapter.log.debug(`Box Programm_danach: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]}`);
+                    adapter.log.debug(
+                        `Box Programm_danach: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]}`,
+                    );
                     await adapter.setStateAsync('enigma2.PROGRAMM_AFTER', {
-                        val: (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0]).replace('N/A', ''),
-                        ack: true
+                        val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventname[0].replace(
+                            'N/A',
+                            '',
+                        ),
+                        ack: true,
                     });
 
-                    adapter.log.debug(`Box Programm Info: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]}`);
+                    adapter.log.debug(
+                        `Box Programm Info: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0]}`,
+                    );
                     await adapter.setStateAsync('enigma2.PROGRAMM_INFO', {
                         val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescriptionextended[0],
-                        ack: true
+                        ack: true,
                     });
 
-                    adapter.log.debug(`Box Programm danach Info: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]}`);
+                    adapter.log.debug(
+                        `Box Programm danach Info: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0]}`,
+                    );
                     await adapter.setStateAsync('enigma2.PROGRAMM_AFTER_INFO', {
                         val: xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventdescriptionextended[0],
-                        ack: true
+                        ack: true,
                     });
 
-                    adapter.log.debug(`Box eventdescription: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]}`);
+                    adapter.log.debug(
+                        `Box eventdescription: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0]}`,
+                    );
                     await adapter.setStateAsync('enigma2.EVENTDESCRIPTION', {
                         val: xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventdescription[0],
-                        ack: true
+                        ack: true,
                     });
 
-                    adapter.log.debug(`Box Sender Servicereference: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]}`);
-                    const e2SERVICEREFERENCE = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]);
+                    adapter.log.debug(
+                        `Box Sender Servicereference: ${xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0]}`,
+                    );
+                    const e2SERVICEREFERENCE =
+                        xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventservicereference[0];
 
-                    if (e2SERVICEREFERENCE === '-1:8087252:0:77132724:2:0:C:0:0:77040804:' || e2EVENTREMAINING === '0') {
-                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE', {val: '', ack: true});
-                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {val: '', ack: true});
+                    if (
+                        e2SERVICEREFERENCE === '-1:8087252:0:77132724:2:0:C:0:0:77040804:' ||
+                        e2EVENTREMAINING === '0'
+                    ) {
+                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE', { val: '', ack: true });
+                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE_NAME', { val: '', ack: true });
                     } else {
-                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE', {val: e2SERVICEREFERENCE, ack: true});
+                        await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE', {
+                            val: e2SERVICEREFERENCE,
+                            ack: true,
+                        });
                         await adapter.setStateAsync('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {
                             val: e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1),
-                            ack: true
+                            ack: true,
                         });
                         if (adapter.config.Webinterface === 'true' || adapter.config.Webinterface === true) {
                             const state = await adapter.getStateAsync('enigma2.STANDBY');
@@ -518,28 +577,31 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                                 //openwebif PICON http://...
                                 await adapter.setStateAsync('enigma2.CHANNEL_PICON', {
                                     val: `http://${adapter.config.IPAddress}:${adapter.config.Port}/picon/${e2SERVICEREFERENCE.replace(/:/g, '_').slice(0, -1)}.png`,
-                                    ack: true
+                                    ack: true,
                                 });
                             } else {
-                                await adapter.setStateAsync('enigma2.CHANNEL_PICON', {val: '', ack: true});
+                                await adapter.setStateAsync('enigma2.CHANNEL_PICON', { val: '', ack: true });
                             }
                         }
                     }
                     //EVENT_PROGRESS_PERCENT
-                    const Step1 = parseFloat((parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X)));
-                    const Step2 = parseFloat((Step1 / parseFloat(e2EVENTDURATION_X)));
-                    const Step3 = parseFloat((Math.round(Step2 * 100)));
-                    await adapter.setStateAsync('enigma2.EVENT_PROGRESS_PERCENT', {val: parseInt(Step3), ack: true});
+                    const Step1 = parseFloat(parseFloat(e2EVENTDURATION_X) - parseFloat(e2EVENTREMAINING_X));
+                    const Step2 = parseFloat(Step1 / parseFloat(e2EVENTDURATION_X));
+                    const Step3 = parseFloat(Math.round(Step2 * 100));
+                    await adapter.setStateAsync('enigma2.EVENT_PROGRESS_PERCENT', { val: parseInt(Step3), ack: true });
                     //EVENT_TIME_PASSED //NaN:NaN:NaN
                     const Step1_1 = sec2HMS(parseInt(Step1));
                     if (Step1_1 === 'NaN:NaN:NaN') {
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_PASSED', {val: '', ack: true});
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_PASSED', { val: '', ack: true });
                     } else {
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_PASSED', {val: sec2HMS(parseInt(Step1)), ack: true});
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_PASSED', {
+                            val: sec2HMS(parseInt(Step1)),
+                            ack: true,
+                        });
                     }
 
-                    const e2Eventstart = (xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventstart[0]);
-                    const e2Eventend = (xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventstart[0]);
+                    const e2Eventstart = xml.e2currentserviceinformation.e2eventlist[0].e2event[0].e2eventstart[0];
+                    const e2Eventend = xml.e2currentserviceinformation.e2eventlist[0].e2event[1].e2eventstart[0];
 
                     if (e2Eventstart !== e2Eventend) {
                         //EVENT_TIME_START
@@ -551,7 +613,7 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
                         // Will display time in 10:30 format
                         let formattedTime = `${hours}:${minutes.substr(-2)}`;
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_START', {val: (formattedTime), ack: true});
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_START', { val: formattedTime, ack: true });
 
                         //EVENT_TIME_END
                         date = new Date(e2Eventend * 1000);
@@ -562,29 +624,34 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
                         // Will display time in 10:30 format
                         formattedTime = `${hours}:${minutes.substr(-2)}`;
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_END', {val: (formattedTime), ack: true});
-
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_END', { val: formattedTime, ack: true });
                     } else {
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_END', {val: '', ack: true});
-                        await adapter.setStateAsync('enigma2.EVENT_TIME_START', {val: '', ack: true});
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_END', { val: '', ack: true });
+                        await adapter.setStateAsync('enigma2.EVENT_TIME_START', { val: '', ack: true });
                     }
                 }
                 break;
             case 'GETINFO':
                 adapter.log.debug(`Box Sender: ${xml.e2abouts.e2about[0].e2servicename[0]}`);
-                await adapter.setStateAsync('enigma2.CHANNEL', {val: xml.e2abouts.e2about[0].e2servicename[0], ack: true});
+                await adapter.setStateAsync('enigma2.CHANNEL', {
+                    val: xml.e2abouts.e2about[0].e2servicename[0],
+                    ack: true,
+                });
                 break;
             case 'DEVICEINFO':
-                await adapter.setStateAsync('enigma2.WEB_IF_VERSION', {val: xml.e2deviceinfo.e2webifversion[0], ack: true});
+                await adapter.setStateAsync('enigma2.WEB_IF_VERSION', {
+                    val: xml.e2deviceinfo.e2webifversion[0],
+                    ack: true,
+                });
                 await adapter.setStateAsync('enigma2.NETWORK', {
                     val: xml.e2deviceinfo.e2network[0].e2interface[0].e2name[0],
-                    ack: true
+                    ack: true,
                 });
                 await adapter.setStateAsync('enigma2.BOX_IP', {
                     val: xml.e2deviceinfo.e2network[0].e2interface[0].e2ip[0],
-                    ack: true
+                    ack: true,
                 });
-                await adapter.setStateAsync('enigma2.MODEL', {val: xml.e2deviceinfo.e2devicename[0], ack: true});
+                await adapter.setStateAsync('enigma2.MODEL', { val: xml.e2deviceinfo.e2devicename[0], ack: true });
                 break;
             case 'DEVICEINFO_HDD':
                 if (xml.e2deviceinfo.e2hdds[0].e2hdd !== undefined) {
@@ -595,9 +662,9 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                             role: 'state',
                             name: 'maximal Flash Capacity (Flash 1)',
                             read: true,
-                            write: false
+                            write: false,
                         },
-                        native: {}
+                        native: {},
                     });
                     await adapter.setObjectNotExistsAsync('enigma2.HDD_FREE', {
                         type: 'state',
@@ -606,18 +673,18 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                             role: 'state',
                             name: 'free Flash Capacity (Flash 1)',
                             read: true,
-                            write: false
+                            write: false,
                         },
-                        native: {}
+                        native: {},
                     });
 
                     await adapter.setStateAsync('enigma2.HDD_CAPACITY', {
                         val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2capacity[0],
-                        ack: true
+                        ack: true,
                     });
                     await adapter.setStateAsync('enigma2.HDD_FREE', {
                         val: xml.e2deviceinfo.e2hdds[0].e2hdd[0].e2free[0],
-                        ack: true
+                        ack: true,
                     });
                     if (xml.e2deviceinfo.e2hdds[0].e2hdd[1] !== undefined) {
                         await adapter.setObjectNotExistsAsync('enigma2.HDD2_CAPACITY', {
@@ -627,9 +694,9 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                                 role: 'state',
                                 name: 'maximal Flash Capacity (Flash 2)',
                                 read: true,
-                                write: false
+                                write: false,
                             },
-                            native: {}
+                            native: {},
                         });
                         await adapter.setObjectNotExistsAsync('enigma2.HDD2_FREE', {
                             type: 'state',
@@ -638,18 +705,18 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                                 role: 'state',
                                 name: 'free Flash Capacity (Flash 2)',
                                 read: true,
-                                write: false
+                                write: false,
                             },
-                            native: {}
+                            native: {},
                         });
 
                         await adapter.setStateAsync('enigma2.HDD2_CAPACITY', {
                             val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2capacity[0],
-                            ack: true
+                            ack: true,
                         });
                         await adapter.setStateAsync('enigma2.HDD2_FREE', {
                             val: xml.e2deviceinfo.e2hdds[0].e2hdd[1].e2free[0],
-                            ack: true
+                            ack: true,
                         });
                     } else {
                         await adapter.delObjectAsync('enigma2.HDD2_CAPACITY');
@@ -686,64 +753,70 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
                     for (let i = 0; i < meinArray.length; i++) {
                         if (2 === parseFloat(meinArray[i].e2state[0])) {
-                            await adapter.setStateAsync('enigma2.isRecording', {val: true, ack: true});
+                            await adapter.setStateAsync('enigma2.isRecording', { val: true, ack: true });
                             rec = 2;
-                        } else if (i === (meinArray.length - 1) && rec !== 2) {
-                            await adapter.setStateAsync('enigma2.isRecording', {val: false, ack: true});
+                        } else if (i === meinArray.length - 1 && rec !== 2) {
+                            await adapter.setStateAsync('enigma2.isRecording', { val: false, ack: true });
                         }
                         if (parseFloat(meinArray[i].e2state[0]) === 0 || parseFloat(meinArray[i].e2state[0]) === 2) {
-                            await adapter.setStateAsync('enigma2.Timer_is_set', {val: true, ack: true});
+                            await adapter.setStateAsync('enigma2.Timer_is_set', { val: true, ack: true });
                             isset = 2;
                         } else if (parseFloat(meinArray[i].e2state[0]) === 3 && isset !== 2) {
-                            await adapter.setStateAsync('enigma2.Timer_is_set', {val: false, ack: true});
+                            await adapter.setStateAsync('enigma2.Timer_is_set', { val: false, ack: true });
                         }
                     }
                 } else {
-                    await adapter.setStateAsync('enigma2.Timer_is_set', {val: false, ack: true});
-                    await adapter.setStateAsync('enigma2.isRecording', {val: false, ack: true});
+                    await adapter.setStateAsync('enigma2.Timer_is_set', { val: false, ack: true });
+                    await adapter.setStateAsync('enigma2.isRecording', { val: false, ack: true });
                 }
                 break;
-            case 'TIMERLIST': {
-                let result = [];
-                if (adapter.config.timerliste) {
-                    if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
-                        const timerList = xml.e2timerlist.e2timer;
+            case 'TIMERLIST':
+                {
+                    let result = [];
+                    if (adapter.config.timerliste) {
+                        if (xml && xml.e2timerlist && xml.e2timerlist.e2timer) {
+                            const timerList = xml.e2timerlist.e2timer;
 
-                        timerList.forEach(timerItem => result.push({
-                            title: timerItem.e2name.toString(),
-                            channel: timerItem.e2servicename.toString(),
-                            serviceRef: timerItem.e2servicereference.toString(),
-                            serviceRefName: timerItem.e2servicereference.toString().replace(/:/g, '_').slice(0, -1),
-                            //starTime: timerItem.e2timebegin.toString(),
-                            //endTime: timerItem.e2timeend.toString(),
-                            // V1.3.4 #59
-                            starTime: (timerItem.e2timebegin * 1000).toString(),
-                            endTime: (timerItem.e2timeend * 1000).toString(),
-                            // end
-                            duration: timerItem.e2duration.toString(),
-                            subtitle: timerItem.e2description.toString(),
-                            description: timerItem.e2descriptionextended.toString(),
-                        }));
+                            timerList.forEach(timerItem =>
+                                result.push({
+                                    title: timerItem.e2name.toString(),
+                                    channel: timerItem.e2servicename.toString(),
+                                    serviceRef: timerItem.e2servicereference.toString(),
+                                    serviceRefName: timerItem.e2servicereference
+                                        .toString()
+                                        .replace(/:/g, '_')
+                                        .slice(0, -1),
+                                    //starTime: timerItem.e2timebegin.toString(),
+                                    //endTime: timerItem.e2timeend.toString(),
+                                    // V1.3.4 #59
+                                    starTime: (timerItem.e2timebegin * 1000).toString(),
+                                    endTime: (timerItem.e2timeend * 1000).toString(),
+                                    // end
+                                    duration: timerItem.e2duration.toString(),
+                                    subtitle: timerItem.e2description.toString(),
+                                    description: timerItem.e2descriptionextended.toString(),
+                                }),
+                            );
 
-                        // only update if we have a result -> keep on data if box is in deepStandby
-                        result = JSON.stringify(result);
+                            // only update if we have a result -> keep on data if box is in deepStandby
+                            result = JSON.stringify(result);
 
-                        const state = await adapter.getStateAsync('enigma2.TIMER_LIST');
-                        // only update if we have a new timer
-                        if (state && state.val !== null) {
-                            if (result !== state.val) {
+                            const state = await adapter.getStateAsync('enigma2.TIMER_LIST');
+                            // only update if we have a new timer
+                            if (state && state.val !== null) {
+                                if (result !== state.val) {
+                                    await adapter.setStateAsync('enigma2.TIMER_LIST', result, true);
+                                    adapter.log.debug('timer list updated');
+                                } else {
+                                    adapter.log.debug('no new timer found -> timer list is up to date');
+                                }
+                            } else {
                                 await adapter.setStateAsync('enigma2.TIMER_LIST', result, true);
                                 adapter.log.debug('timer list updated');
-                            } else {
-                                adapter.log.debug('no new timer found -> timer list is up to date');
                             }
-                        } else {
-                            await adapter.setStateAsync('enigma2.TIMER_LIST', result, true);
-                            adapter.log.debug('timer list updated');
                         }
                     }
                 }
-            }
                 break;
             case 'GETMOVIELIST':
                 try {
@@ -752,10 +825,14 @@ async function evaluateCommandResponse(command, deviceId, xml) {
 
                         let movieList = [];
                         const movieDirs = xml.e2locations.e2location;
-                        const allServices = await getResponseAsync('', deviceId, PATH['GETALLSERVICES']);		// list of all services to get the ref for movies (picons)
+                        const allServices = await getResponseAsync('', deviceId, PATH['GETALLSERVICES']); // list of all services to get the ref for movies (picons)
 
                         let servicesList = [];
-                        if (allServices && allServices.e2servicelistrecursive && allServices.e2servicelistrecursive.e2bouquet) {
+                        if (
+                            allServices &&
+                            allServices.e2servicelistrecursive &&
+                            allServices.e2servicelistrecursive.e2bouquet
+                        ) {
                             // prepare serviceList
                             for (const bouquet of allServices.e2servicelistrecursive.e2bouquet) {
                                 if (bouquet && bouquet.e2servicelist) {
@@ -766,7 +843,11 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                             }
 
                             //remove duplicates
-                            servicesList = servicesList.filter(obj => !servicesList[obj.e2servicereference] && (servicesList[obj.e2servicereference] = true));
+                            servicesList = servicesList.filter(
+                                obj =>
+                                    !servicesList[obj.e2servicereference] &&
+                                    (servicesList[obj.e2servicereference] = true),
+                            );
                         }
 
                         for (const dir of movieDirs) {
@@ -776,7 +857,9 @@ async function evaluateCommandResponse(command, deviceId, xml) {
                         }
 
                         // sort recording time desc
-                        movieList.sort((a, b) => b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1);
+                        movieList.sort((a, b) =>
+                            b.recordingtime == a.recordingtime ? 0 : +(b.recordingtime > a.recordingtime) || -1,
+                        );
 
                         movieList = JSON.stringify(movieList);
 
@@ -822,11 +905,16 @@ async function getAllMovies(directory, movieList, servicesList) {
                 if (result) {
                     if (result.movies && result.movies.length > 0) {
                         for (const movie of result.movies) {
-                            const service = servicesList.filter(obj => obj.e2servicename.toString() === movie.servicename.toString());
+                            const service = servicesList.filter(
+                                obj => obj.e2servicename.toString() === movie.servicename.toString(),
+                            );
 
                             if (service && service[0]) {
                                 movie.service = service[0].e2servicereference.toString();
-                                movie.serviceRefName = service[0].e2servicereference.toString().replace(/:/g, '_').slice(0, -1);
+                                movie.serviceRefName = service[0].e2servicereference
+                                    .toString()
+                                    .replace(/:/g, '_')
+                                    .slice(0, -1);
                             }
                             movieList.push(movie);
                         }
@@ -912,9 +1000,13 @@ async function setStatus(status) {
 
 async function main() {
     // migrate configuration
-    if (adapter.config.movieliste === 'true' || adapter.config.movieliste === 'false' ||
-        adapter.config.timerliste === 'true' || adapter.config.timerliste === 'false' ||
-        adapter.config.Alexa === 'true' || adapter.config.Alexa === 'false'
+    if (
+        adapter.config.movieliste === 'true' ||
+        adapter.config.movieliste === 'false' ||
+        adapter.config.timerliste === 'true' ||
+        adapter.config.timerliste === 'false' ||
+        adapter.config.Alexa === 'true' ||
+        adapter.config.Alexa === 'false'
     ) {
         const obj = await adapter.getForeignObjectAsync(`system.adapter.${adapter.namespace}`);
         obj.native.movieliste = adapter.config.movieliste === 'true' || adapter.config.movieliste === true;
@@ -938,9 +1030,9 @@ async function main() {
             name: 'Send a info Message to the Receiver Screen',
             desc: 'messagetext=Text of Message',
             read: false,
-            write: true
+            write: true,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('Message.Type', {
@@ -954,14 +1046,14 @@ async function main() {
                 0: 'Yes/No',
                 1: 'Info',
                 2: 'Message',
-                3: 'Attention'
+                3: 'Attention',
             },
             min: 0,
             max: 3,
             read: true,
-            write: true
+            write: true,
         },
-        native: {}
+        native: {},
     });
     await adapter.setStateAsync('Message.Type', 1, true);
 
@@ -972,9 +1064,9 @@ async function main() {
             role: 'control',
             desc: 'timeout=Can be empty or the Number of seconds the Message should disappear after',
             read: true,
-            write: true
+            write: true,
         },
-        native: {}
+        native: {},
     });
     await adapter.setStateAsync('Message.Timeout', 15, true);
 
@@ -986,9 +1078,9 @@ async function main() {
             role: 'state',
             name: 'Connection to Receiver',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setStateAsync('enigma2-CONNECTION', false, true);
 
@@ -1001,9 +1093,9 @@ async function main() {
                 role: 'state',
                 name: 'Receiver Standby Toggle with Alexa (true=Receiver ON / false=Receiver OFF)',
                 read: true,
-                write: true
+                write: true,
             },
-            native: {}
+            native: {},
         });
         await adapter.setObjectNotExistsAsync('Alexa_Command.Mute', {
             type: 'state',
@@ -1012,9 +1104,9 @@ async function main() {
                 role: 'state',
                 name: 'Receiver Mute Toggle with Alexa (true=volume ON / false=Volume OFF)',
                 read: true,
-                write: true
+                write: true,
             },
-            native: {}
+            native: {},
         });
     } else {
         await adapter.delObjectAsync('Alexa_Command.Standby');
@@ -1029,9 +1121,9 @@ async function main() {
             role: 'level.volume',
             name: 'Volume 0-100%',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.MESSAGE_ANSWER', {
         type: 'state',
@@ -1040,9 +1132,9 @@ async function main() {
             role: 'message',
             name: 'Message Answer',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.MUTED', {
         type: 'state',
@@ -1051,9 +1143,9 @@ async function main() {
             role: 'media.mute',
             name: 'is Muted',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.STANDBY', {
         type: 'state',
@@ -1062,9 +1154,9 @@ async function main() {
             role: 'state',
             name: 'Receiver in Standby',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.CHANNEL', {
         type: 'state',
@@ -1073,9 +1165,9 @@ async function main() {
             role: 'state',
             name: 'Channel Name',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.CHANNEL_SERVICEREFERENCE', {
         type: 'state',
@@ -1084,9 +1176,9 @@ async function main() {
             role: 'state',
             name: 'Servicereference Code',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.CHANNEL_SERVICEREFERENCE_NAME', {
         type: 'state',
@@ -1095,9 +1187,9 @@ async function main() {
             role: 'state',
             name: 'Servicereference Name',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     if (adapter.config.Webinterface === 'true' || adapter.config.Webinterface === true) {
         // openwebif api
@@ -1108,9 +1200,9 @@ async function main() {
                 role: 'state',
                 name: 'Servicereference Picon',
                 read: true,
-                write: false
+                write: false,
             },
-            native: {}
+            native: {},
         });
     } else {
         await adapter.delObjectAsync('enigma2.CHANNEL_PICON');
@@ -1122,9 +1214,9 @@ async function main() {
             role: 'state',
             name: 'current Programm',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.PROGRAMM_INFO', {
         type: 'state',
@@ -1133,9 +1225,9 @@ async function main() {
             role: 'state',
             name: 'current Programm Info',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.PROGRAMM_AFTER', {
         type: 'state',
@@ -1144,9 +1236,9 @@ async function main() {
             role: 'state',
             name: 'Programm after',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.PROGRAMM_AFTER_INFO', {
         type: 'state',
@@ -1155,9 +1247,9 @@ async function main() {
             role: 'state',
             name: 'Programm Info after',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.EVENTDESCRIPTION', {
         type: 'state',
@@ -1166,9 +1258,9 @@ async function main() {
             role: 'state',
             name: 'Event description',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENTDURATION', {
@@ -1178,9 +1270,9 @@ async function main() {
             role: 'media.duration.text',
             name: 'Event Duration in H:M:S',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENTREMAINING', {
@@ -1190,9 +1282,9 @@ async function main() {
             role: 'media.elapsed.text',
             name: 'Event Remaining in H:M:S',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENTDURATION_MIN', {
@@ -1202,9 +1294,9 @@ async function main() {
             role: 'media.duration',
             name: 'Event Duration in Minute',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENTREMAINING_MIN', {
@@ -1214,9 +1306,9 @@ async function main() {
             role: 'media.elapsed',
             name: 'Event Remaining in Minute',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENT_PROGRESS_PERCENT', {
@@ -1226,9 +1318,9 @@ async function main() {
             role: 'media.progress',
             name: 'Event Progress Percent',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENT_TIME_PASSED', {
@@ -1238,9 +1330,9 @@ async function main() {
             role: 'media.broadcastDate',
             name: 'Event Time Passed',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENT_TIME_START', {
@@ -1250,9 +1342,9 @@ async function main() {
             role: 'media.broadcastDate',
             name: 'Event Start',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.setObjectNotExistsAsync('enigma2.EVENT_TIME_END', {
@@ -1262,9 +1354,9 @@ async function main() {
             role: 'media.broadcastDate',
             name: 'Event End',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
+        native: {},
     });
 
     await adapter.subscribeStatesAsync('*');
@@ -1304,7 +1396,7 @@ async function main() {
         await evaluateCommandResponse('GETVOLUME', deviceId, xml);
         xml = await getResponseAsync('GETCURRENT', deviceId, PATH['GET_CURRENT']);
         await evaluateCommandResponse('GETCURRENT', deviceId, xml);
-        xml = await getResponseAsync('ISRECORD', deviceId, PATH['ISRECORD'],);
+        xml = await getResponseAsync('ISRECORD', deviceId, PATH['ISRECORD']);
         await evaluateCommandResponse('ISRECORD', deviceId, xml);
         xml = await getResponseAsync('TIMERLIST', deviceId, PATH['TIMERLIST']);
         await evaluateCommandResponse('TIMERLIST', deviceId, xml);
@@ -1317,7 +1409,7 @@ async function main() {
         }
     }, 30000);
 
-    movieListInterval = setInterval(async() => {
+    movieListInterval = setInterval(async () => {
         if (isConnected) {
             const xml = await getResponseAsync('GETMOVIELIST', deviceId, PATH['GETLOCATIONS']);
             await evaluateCommandResponse('GETMOVIELIST', deviceId, xml);
@@ -1335,7 +1427,7 @@ async function main2() {
             read: true,
             write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.WEB_IF_VERSION', {
         type: 'state',
@@ -1346,7 +1438,7 @@ async function main2() {
             read: true,
             write: false,
         },
-        native: {}
+        native: {},
     });
     await adapter.setObjectNotExistsAsync('enigma2.NETWORK', {
         type: 'state',
