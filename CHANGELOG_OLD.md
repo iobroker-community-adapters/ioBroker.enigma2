@@ -1,4 +1,8 @@
 # Older changes
+## 2.0.5 (2023-09-18)
+* (mcm1957) A problem causing missing descriptions for timer entryies and warnings has been fixed. #119 
+* (mcm1957) Dependencies have been updated.
+
 ## 2.0.3 (2023-09-06)
 * (TDCroPower) fixed the problem that no objects are updated
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "enigma2",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "news": {
+      "2.2.3": {
+        "en": "Adapter has been migrated to @iobroker/eslint-config. [#266]",
+        "de": "Adapter wurde auf @iobroker/eslint-config migriert. [#266]",
+        "ru": "Адаптер был изменен на @iobroker/eslint-config. [#266]",
+        "pt": "Adapter foi moigrated para @iobroker/eslint-config. [#266]",
+        "nl": "Adapter is gemoigreerd naar @iobroker/eslint-config. [#266]",
+        "fr": "L'adaptateur a été déplacé vers @iobroker/eslint-config. [#266]",
+        "it": "L'adattatore è stato moigrated a @iobroker/eslint-config. [#266]",
+        "es": "Adaptador ha sido moigrado a @iobroker/eslint-config. [#266]",
+        "pl": "Adapter został przekierowany na @ iobroker / eslint- config. [# 266]",
+        "uk": "Перехідник був moigrated to @iobroker/eslint-config. [#266]",
+        "zh-cn": "适配器已被移动到@iobroster/eslint-config。 [266] (中文(简体) )"
+      },
       "2.2.2": {
         "en": "States 'message.*' are writeable again now. [#273]\nDependencies have been updated.",
         "de": "States 'message.*' sind jetzt wieder beschreibbar. [#273]\nAbhängigkeiten wurden aktualisiert.",
@@ -80,19 +93,6 @@
         "pl": "zastosowano problem, który nie jest aktualizowany",
         "uk": "виправлено проблему, яку немає об'єктів",
         "zh-cn": "未更新物体的固定问题"
-      },
-      "2.0.2": {
-        "en": "Bugfixes: [#61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAdded json config\nAdapter now requires node 16",
-        "de": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefinierte e2eventlist\nHinzugefügt json config\nAdapter benötigt nun den Knoten 16",
-        "ru": "Исправления: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: неопределенный e2eventlist\nДобавлено json config\nАдаптер теперь требует ноды 16",
-        "pt": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: indefinido e2eventlist\nAdicionado json config\nAdaptador agora requer nó 16",
-        "nl": "Quality over Quantity (QoQ) Releases Vertaling:\nOnbepaalde e2eventlist\n_\nAdapter vereist nu node 16",
-        "fr": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: undefined e2eventlist\nAjouté json config\nL'adaptateur ne nécessite plus 16 ans",
-        "it": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist non definita\nAggiunto json config\nAdattatore ora richiede nodo 16",
-        "es": "Bugfixes: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfixes: e2eventlist indefinido\nAñadido json config\nAdaptador ahora requiere nodo 16",
-        "pl": "Bugfixes: #61 (https:/github.com/Matten-Matten/ioBroker.enigma2/issues/61) (ang.)\nBugfixes: nieokreślona e2\nAdded json configig\nObecnie węzeł wymaga węzła 16 węzłów",
-        "uk": "Виправлення помилок: #[61](https://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nВиправлення помилок\nДодано json config\nАдаптер тепер вимагає вузла 16",
-        "zh-cn": "Bugfix:#[61](http://github.com/Matten-Matten/ioBroker.enigma2/issues/61)\nBugfix:未界定的电子清单\n增编\n现在需要道歉16"
       }
     },
     "titleLang": {
