@@ -211,7 +211,7 @@
         "name": "Message Timeout",
         "type": "number",
         "read": true,
-        "write": false
+        "write": true
       },
       "native": {}
     },
@@ -223,7 +223,7 @@
         "name": "Message Type",
         "type": "number",
         "read": true,
-        "write": false
+        "write": true
       },
       "native": {}
     },
@@ -235,7 +235,7 @@
         "name": "Message Text",
         "type": "string",
         "read": true,
-        "write": false
+        "write": true
       },
       "native": {}
     },
