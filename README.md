@@ -10,9 +10,6 @@
 - (DE) Adapter für ioBroker um Informationen von einem enigma2 Receiver abzufragen und Befehle zu senden
 - (DE)(Adapter läuft nur auf einem Host! bei einer Client Installation gib's aktuell noch probleme.)
 
-## Forum
-[![ioBroker](https://forum.iobroker.net/assets/uploads/system/site-logo.png)](https://forum.iobroker.net/topic/25112/enigma2-adapter-ab-v1-2-3)
-
 ----
 ### Funktionen
 - BOX_IP
@@ -128,7 +125,7 @@ sendTo('enigma2.0', 'send', {
 -->
 
 ### **WORK IN PROGRESS**
-* (mcm1957) Protection of message.* states has been corrected, thes are writeable again. [#273]
+* (mcm1957) States 'message.*' are writeable again now. [#273]
 * (mcm1957) Dependencies have been updated.
 
 ### 2.2.1 (2024-11-13)
