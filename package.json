@@ -2,10 +2,10 @@
   "name": "iobroker.enigma2",
   "description": "enigma2 adapter für VU+;Dreambox;EDISON... ",
   "version": "2.2.3",
-  "author": {
-    "name": "Matten-Matten",
-    "email": "matten-matten@web.de"
-  },
+  "author": "Matten-Matten <matten-matten@web.de>",
+  "contributors": [
+    "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
+  ],
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.enigma2",
   "license": "MIT",
   "keywords": [
