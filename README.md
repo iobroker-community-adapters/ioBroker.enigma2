@@ -123,8 +123,7 @@ sendTo('enigma2.0', 'send', {
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 2.3.0 (2026-03-05)
 - (mcm1957) Adapter requires node.js >= 20 now.
 - (copilot) Adapter requires admin >= 7.7.22 now
 - (copilot) Adapter requires js-controller >= 6.0.11 now
@@ -146,10 +145,6 @@ sendTo('enigma2.0', 'send', {
 
 ### 2.1.1 (2024-06-09)
 * (klein0r) Updated Blockly definitions
-
-### 2.1.0 (2024-04-11)
-* (mcm1957) Adapter requires node.js >=18 and js-controller >= 5 now
-* (mcm1957) Dependencies have been updated
 
 ## License
 MIT License
