@@ -125,9 +125,10 @@ sendTo('enigma2.0', 'send', {
 -->
 
 ### **WORK IN PROGRESS**
+- (mcm1957) Adapter requires node.js >= 20 now.
 - (copilot) Adapter requires admin >= 7.7.22 now
 - (copilot) Adapter requires js-controller >= 6.0.11 now
-- (copilot) Adapter requires admin >= 7.6.17 now
+- (mcm1957) Dependencies have been updated.
 
 ### 2.2.3 (2024-12-22)
 * (mcm1957) Adapter has been moigrated to @iobroker/eslint-config. [#266]
