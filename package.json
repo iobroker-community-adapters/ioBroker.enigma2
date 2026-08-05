@@ -35,7 +35,7 @@
     "@iobroker/testing": "^5.2.2",
     "@tsconfig/node22": "^22.0.5",
     "@types/gulp": "^4.0.18",
-    "@types/node": "^22.20.0"
+    "@types/node": "^22.20.1"
   },
   "bugs": {
     "url": "https://github.com/iobroker-community-adapters/ioBroker.enigma2/issues"
